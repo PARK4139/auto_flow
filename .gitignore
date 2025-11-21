@@ -2,7 +2,6 @@
 .venv/
 .idea/
 resource/
-assets/pk_system
 output
 
 # external files

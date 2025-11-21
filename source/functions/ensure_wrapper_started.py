@@ -1,37 +1,40 @@
-from pk_system_functions.ensure_window_to_front import ensure_window_to_front
 
-from pk_system_functions.ensure_slept import ensure_slept
+import sys
+from pathlib import Path
 
-from pk_system_objects.pk_system_files import F_VENV_PYTHON_EXE
+# When running a script directly, its parent directory is added to sys.path.
+# To allow imports from the 'source' package, we need to add the project root.
+# This script is at 'source/functions/', so the project root is three levels up.
+_project_root = Path(__file__).resolve().parent.parent.parent
+if str(_project_root) not in sys.path:
+    sys.path.insert(0, str(_project_root))
 
-from pk_system_objects.pk_system_not_organized import pk_
+# Now that the project root is on the path, we can import the setup script
+# which handles the rest of the paths (like the submodule).
+import source.internal_setup
 
-from pk_system_functions.get_nx import get_nx
-
-from pk_system_functions.save_to_history import save_to_history
-
-from pk_system_functions.get_smart_file_selection_fast import \
-    get_smart_file_selection_fast
-
-from pk_system_functions.ensure_debug_loged_verbose import \
+from assets.pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import \
     ensure_debug_loged_verbose
-
-from pk_system_objects.pk_fzf_processor import PkFzfProcessor
-
-from pk_system_functions.get_fzf_command import get_fzf_command
-
-from pk_system_functions.get_last_choice_from_history_file import \
+from assets.pk_system.pk_system_sources.pk_system_functions.ensure_seconds_measured import ensure_seconds_measured
+from assets.pk_system.pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
+from assets.pk_system.pk_system_sources.pk_system_functions.ensure_value_completed_2025_11_11 import \
+    ensure_value_completed_2025_11_11
+from assets.pk_system.pk_system_sources.pk_system_functions.ensure_window_to_front import ensure_window_to_front
+from assets.pk_system.pk_system_sources.pk_system_functions.get_cached_files import get_cached_pk_system_wrappers_path
+from assets.pk_system.pk_system_sources.pk_system_functions.get_caller_name import get_caller_name
+from assets.pk_system.pk_system_sources.pk_system_functions.get_f_historical import get_history_file_path
+from assets.pk_system.pk_system_sources.pk_system_functions.get_file_id import get_file_id
+from assets.pk_system.pk_system_sources.pk_system_functions.get_fzf_command import get_fzf_command
+from assets.pk_system.pk_system_sources.pk_system_functions.get_last_choice_from_history_file import \
     get_last_choice_from_history_file
-
-from pk_system_functions.get_file_id import get_file_id
-
-from pk_system_functions.get_f_historical import get_history_file_path
-
-from pk_system_functions.get_cached_files import get_cached_pk_system_wrappers_path
-
-from pk_system_functions.get_caller_n import get_caller_name
-
-from pk_system_functions.ensure_seconds_measured import ensure_seconds_measured
+from assets.pk_system.pk_system_sources.pk_system_functions.get_nx import get_nx
+from assets.pk_system.pk_system_sources.pk_system_functions.get_smart_file_selection_fast import \
+    get_smart_file_selection_fast
+from assets.pk_system.pk_system_sources.pk_system_functions.save_to_history import save_to_history
+from assets.pk_system.pk_system_sources.pk_system_objects.pk_fzf import PkFzf
+from assets.pk_system.pk_system_sources.pk_system_objects.pk_system_files import F_VENV_PYTHON_EXE
+from assets.pk_system.pk_system_sources.pk_system_objects.pk_system_not_organized import pk_
+from source.constants.directory_paths import D_HUVITS_WRAPPERS_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH
 
 
 @ensure_seconds_measured
@@ -42,8 +45,6 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     import time
     import traceback
 
-    from source.constants.directory_paths import D_WRAPPERS
-
     func_n = get_caller_name()
 
     step_start = time.time()
@@ -51,7 +52,14 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
 
     if pk_wrapper_files is None:
         t1 = time.time()
-        pk_wrapper_files = get_cached_pk_system_wrappers_path(D_WRAPPERS)
+        wrapper_paths = [D_HUVITS_WRAPPERS_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH]
+        selected_wrapper_path = ensure_value_completed_2025_11_11(
+            key_name="selected_wrapper_path",
+            func_n=func_n,
+            guide_text="실행할 래퍼의 종류를 선택해주세요:",
+            options=[str(p) for p in wrapper_paths]
+        )
+        pk_wrapper_files = get_cached_pk_system_wrappers_path(selected_wrapper_path)
         logging.debug(f"get_cached_pk_system_wrappers_path 실행 시간: {time.time() - t1:.3f}초")
         # pk_files = get_pnxs_from_d_working(D_PK_SYSTEM_WRAPPERS)
 
@@ -76,7 +84,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     if fzf_cmd and os.path.exists(fzf_cmd):
         try:
             last_choice = get_nx(last_choice).removeprefix(pk_)
-            processor = PkFzfProcessor(fzf_cmd=fzf_cmd, files=pk_wrapper_files, last_choice=last_choice)
+            processor = PkFzf(fzf_cmd=fzf_cmd, files=pk_wrapper_files, last_choice=last_choice)
             returncode, selected_name, err = processor.run_ultra_fast_fzf()
 
             if returncode == 0 and selected_name:
