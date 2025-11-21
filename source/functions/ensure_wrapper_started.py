@@ -1,37 +1,37 @@
-from resource.pk_system.pk_system_sources.pk_system_functions.ensure_window_to_front import ensure_window_to_front
+from pk_system_functions.ensure_window_to_front import ensure_window_to_front
 
-from resource.pk_system.pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
+from pk_system_functions.ensure_slept import ensure_slept
 
-from resource.pk_system.pk_system_sources.pk_system_objects.pk_system_files import F_VENV_PYTHON_EXE
+from pk_system_objects.pk_system_files import F_VENV_PYTHON_EXE
 
-from resource.pk_system.pk_system_sources.pk_system_objects.pk_system_not_organized import pk_
+from pk_system_objects.pk_system_not_organized import pk_
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_nx import get_nx
+from pk_system_functions.get_nx import get_nx
 
-from resource.pk_system.pk_system_sources.pk_system_functions.save_to_history import save_to_history
+from pk_system_functions.save_to_history import save_to_history
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_smart_file_selection_fast import \
+from pk_system_functions.get_smart_file_selection_fast import \
     get_smart_file_selection_fast
 
-from resource.pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import \
+from pk_system_functions.ensure_debug_loged_verbose import \
     ensure_debug_loged_verbose
 
-from resource.pk_system.pk_system_sources.pk_system_objects.pk_fzf_processor import PkFzfProcessor
+from pk_system_objects.pk_fzf_processor import PkFzfProcessor
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_fzf_command import get_fzf_command
+from pk_system_functions.get_fzf_command import get_fzf_command
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_last_choice_from_history_file import \
+from pk_system_functions.get_last_choice_from_history_file import \
     get_last_choice_from_history_file
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_file_id import get_file_id
+from pk_system_functions.get_file_id import get_file_id
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_f_historical import get_history_file_path
+from pk_system_functions.get_f_historical import get_history_file_path
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_cached_files import get_cached_pk_system_wrappers_path
+from pk_system_functions.get_cached_files import get_cached_pk_system_wrappers_path
 
-from resource.pk_system.pk_system_sources.pk_system_functions.get_caller_n import get_caller_name
+from pk_system_functions.get_caller_n import get_caller_name
 
-from resource.pk_system.pk_system_sources.pk_system_functions.ensure_seconds_measured import ensure_seconds_measured
+from pk_system_functions.ensure_seconds_measured import ensure_seconds_measured
 
 
 @ensure_seconds_measured
@@ -42,7 +42,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     import time
     import traceback
 
-    from source.constants.project_paths import D_WRAPPERS
+    from source.constants.directory_paths import D_WRAPPERS
 
     func_n = get_caller_name()
 

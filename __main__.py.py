@@ -3,16 +3,13 @@ from pathlib import Path
 import traceback
 
 try:
-    current_file_path = Path(__file__).resolve()
-    project_root_path = current_file_path.parent
-    pk_system_path =   project_root_path / "resource" / "pk_system"
-    pk_system_sources_path = pk_system_path / "pk_system_sources"
+    from source.constants.directory_paths import PK_SYSTEM_PATH, PK_SYSTEM_SOURCES_PATH
 
-    if str(pk_system_path) not in sys.path:
-        sys.path.insert(0, str(pk_system_path))
+    if str(PK_SYSTEM_PATH) not in sys.path:
+        sys.path.insert(0, str(PK_SYSTEM_PATH))
         
-    if str(pk_system_sources_path) not in sys.path:
-        sys.path.insert(0, str(pk_system_sources_path))
+    if str(PK_SYSTEM_SOURCES_PATH) not in sys.path:
+        sys.path.insert(0, str(PK_SYSTEM_SOURCES_PATH))
 
     from pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
     from pk_system_functions.ensure_pk_system_log_initialized import ensure_pk_system_log_initialized
