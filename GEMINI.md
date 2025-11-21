@@ -373,7 +373,7 @@ def ensure_example_function():
     """함수 설명"""
     # lazy import로 순환 import 문제 해결
     try:
-        from pk_system_sources.pk_system_objects.pk_system_directories import D_PROJECT, D_PK_SYSTEM_TESTS
+        from assets.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import D_PROJECT, D_PK_SYSTEM_TESTS
     except ImportError:
         # fallback: 직접 경로 계산
         from pathlib import Path
@@ -427,10 +427,21 @@ def ensure_user_logged_in():
     # ... 함수 로직
 ```
 
+### **함수 파일 작성 규칙**
+- **`if __name__ == '__main__'` 금지**: `pk_system_sources/pk_system_functions/` 디렉토리에 생성되는 개별 함수 파일에는 `if __name__ == '__main__':` 블록을 작성하지 않습니다. 함수는 다른 모듈에서 호출하여 사용하는 것을 전제로 합니다.
+
 ### **예외 처리 규칙**
-- **시스템 함수**: `pk_system_sources/pk_system_functions/` 내의 시스템 함수에서는 `ensure_debug_loged_verbose(traceback)`를 사용하여 예외를 처리합니다.
-- **래퍼 스크립트**: 래퍼 스크립트에서는 `ensure_exception_routine_done(traced_file=__file__, traceback=traceback, exception=exception)`를 사용하여 예외를 처리합니다。
-- **로깅**: 모든 예외 처리 시 `logging.error`를 사용하여 오류를 로깅하고, 필요한 경우 `exc_info=True`를 포함하여 트레이스백을 기록합니다。
+- **`try...except` 구조**: 모든 주요 로직은 `try...except` 블록으로 감싸 예외 발생에 대비합니다.
+- **예외 로깅**: 예외 발생 시, `except Exception:` 블록 내에서 `ensure_debug_loged_verbose(traceback)` 함수를 호출하여 오류 정보를 상세히 로깅합니다.
+- **래퍼 스크립트 예외 처리**: 최상위 래퍼 스크립트에서는 `ensure_exception_routine_done`을 사용하여 예외를 처리할 수 있습니다.
+- **세분화된 예외 처리**: `FileNotFoundError`나 `TypeError`처럼 특정 예외를 예상할 수 있는 경우, `except SpecificError as e:` 형태로 명시적으로 처리할 수 있습니다. 하지만 일반적인 오류 포착을 위해 포괄적인 `except Exception:` 블록과 `ensure_debug_loged_verbose` 사용을 권장합니다.
+
+### 변수명 규칙 (Variable Naming Rules)
+- **경로 변수명 규칙**:
+  - 디렉토리 경로를 나타내는 변수는 `D_` 접두사와 `_PATH` 접미사를 함께 사용합니다 (예: `D_PROJECT_ROOT_PATH`).
+  - 파일 경로를 나타내는 변수는 `F_` 접두사와 `_PATH` 접미사를 함께 사용합니다 (예: `F_LOG_FILE_PATH`).
+
+
 
 ### **사용자 입력 처리 규칙**
 - **표준 함수 사용**: 사용자로부터 대화형 입력을 받을 때는 `input()` 함수 대신 `ensure_value_completed_2025_10_13_0000` (또는 유사한 `ensure_value~` 패턴의 함수)를 사용합니다.
@@ -533,7 +544,7 @@ def process_images_in_downloads():
 def process_images_in_directory(directory_path, allowed_extensions=None):
     """지정된 디렉토리의 이미지 파일을 처리"""
     if allowed_extensions is None:
-        from pk_system_sources.pk_system_objects.pk_file_extensions import IMAGE_EXTENSIONS
+        from assets.pk_system.pk_system_sources.pk_system_objects.pk_file_extensions import IMAGE_EXTENSIONS
         allowed_extensions = IMAGE_EXTENSIONS
     
     # ... 유연한 로직

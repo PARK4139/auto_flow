@@ -1,20 +1,17 @@
 import sys
 from pathlib import Path
 
-# When running a script directly, its parent directory is added to sys.path.
-# To allow imports from the 'source' package, we need to add the project root.
-# This script is at 'source/functions/', so the project root is three levels up.
-_project_root = Path(__file__).resolve().parent.parent.parent
-if str(_project_root) not in sys.path:
-    sys.path.insert(0, str(_project_root))
-
-# Now that the project root is on the path, we can import the setup script
-# which handles the rest of the paths (like the submodule).
-import source.internal_setup
-
-from assets.pk_system.pk_system_sources.pk_system_objects.pk_system_operation_options import \
-    SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced
-
+# Add pk_system to sys.path to allow direct execution of this script
+try:
+    from source.constants.directory_paths import D_PK_SYSTEM_SOURCES_PATH
+    if str(D_PK_SYSTEM_SOURCES_PATH) not in sys.path:
+        sys.path.insert(0, str(D_PK_SYSTEM_SOURCES_PATH))
+except (ImportError, ModuleNotFoundError):
+    # Fallback for standalone execution or if constants are not yet available
+    _project_root = Path(__file__).resolve().parent.parent.parent
+    _pk_system_sources = _project_root / "assets" / "pk_system" / "pk_system_sources"
+    if str(_pk_system_sources) not in sys.path:
+        sys.path.insert(0, str(_pk_system_sources))
 
 from source.constants.directory_paths import D_PROJECT_ROOT_PATH, D_PK_SYSTEM_PATH, D_FUNCTIONS_PATH
 from source.constants.file_paths import (
@@ -31,20 +28,28 @@ from source.constants.file_paths import (
 
 if __name__ == "__main__":
     import logging
+    from pk_system_objects.pk_system_operation_options import \
+        SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced
 
     from assets.pk_system.pk_system_sources.pk_system_functions.ensure_target_filename_and_file_content_text_replaced import \
         ensure_target_filename_and_file_content_text_replaced
 
-
+    from pk_system_objects.pk_system_directories import D_DOWNLOADS, \
+        D_PK_SYSTEM, \
+        D_MOUSE_CLICK_HISTORY, D_HISTORY_CACHE, D_PK_SYSTEM_TESTS, D_PK_SYSTEM_OBJECTS, D_PK_SYSTEM_REFACTORS, \
+        D_PK_SYSTEM_FUNCTIONS, D_PK_SYSTEM_OS_LAYER_RESOURCES, D_PK_SYSTEM_RESOURCES, D_PK_SYSTEM_SOURCES, \
+        D_PK_SYSTEM_SENSITIVE
 
     from assets.pk_system.pk_system_sources.pk_system_functions.ensure_target_filenames_and_file_content_texts_replaced import \
         ensure_target_filenames_and_file_content_texts_replaced
 
+    # literal to replace
+    # signature
+    # signature
+
     # pk_option : simple
-    # old_text = '업무자동화'
-    # new_text = 'auto_flow'
-    old_text = 'ensure_wrapper_started'
-    new_text = 'ensure_custom_cli_started'
+    old_text = '업무자동화'
+    new_text = 'auto_flow'
     # pk_ensure_target_filenames_and_file_content_texts_replaced
 
 
@@ -130,9 +135,10 @@ if __name__ == "__main__":
 
     # pk_option : default
     d_targets = [
+        #     D_PK_SYSTEM_PATH,  # not recomanded, too slow, for too many files, include system like .git
         D_PROJECT_ROOT_PATH,
+        D_PK_SYSTEM_PATH,
         D_FUNCTIONS_PATH,
-        # D_PK_SYSTEM_PATH,  # Removed to comply with read-only pk_system submodule rule
     ]
 
     # d_targets = [ # pk_option
@@ -162,14 +168,14 @@ if __name__ == "__main__":
 
 
     f_targets = [
-        F_GITIGNORE_PATH, # Re-enabled as per user's request
-        F_GITIGNORE_PUBLIC_PATH, # Re-enabled as per user's request
-        F_GEMINI_MD_PATH, # Re-enabled as per user's request
-        F_PYPROJECT_TOML_PATH, # Re-enabled as per user's request
-        F_RUN_CMD_PATH, # Re-enabled as per user's request
-        F_SETUP_CMD_PATH, # Re-enabled as per user's request
-        F_TEARDOWN_CMD_PATH, # Re-enabled as per user's request
-        F_GITATTRIBUTES_PATH, # Re-enabled as per user's request
+        F_GITIGNORE_PATH,
+        F_GITIGNORE_PUBLIC_PATH,
+        F_GEMINI_MD_PATH,
+        F_PYPROJECT_TOML_PATH,
+        F_RUN_CMD_PATH,
+        F_SETUP_CMD_PATH,
+        F_TEARDOWN_CMD_PATH,
+        F_GITATTRIBUTES_PATH,
         F_ENV_PATH,
     ]
     for f_target in f_targets:
