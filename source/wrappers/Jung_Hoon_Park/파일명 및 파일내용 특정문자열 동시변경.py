@@ -1,19 +1,13 @@
 import sys
 from pathlib import Path
 
-# Add pk_system to sys.path to allow direct execution of this script
-try:
-    from source.constants.directory_paths import D_PK_SYSTEM_SOURCES_PATH
-    if str(D_PK_SYSTEM_SOURCES_PATH) not in sys.path:
-        sys.path.insert(0, str(D_PK_SYSTEM_SOURCES_PATH))
-except (ImportError, ModuleNotFoundError):
-    # Fallback for standalone execution or if constants are not yet available
-    _project_root = Path(__file__).resolve().parent.parent.parent
-    _pk_system_sources = _project_root / "assets" / "pk_system" / "pk_system_sources"
-    if str(_pk_system_sources) not in sys.path:
-        sys.path.insert(0, str(_pk_system_sources))
+# When running a script directly, its parent directory is added to sys.path.
+# To allow imports from the 'source' package, we need to add the project root.
+_project_root = Path(__file__).resolve().parent.parent.parent.parent
+if str(_project_root) not in sys.path:
+    sys.path.insert(0, str(_project_root))
 
-from source.constants.directory_paths import D_PROJECT_ROOT_PATH, D_PK_SYSTEM_PATH, D_FUNCTIONS_PATH
+from source.constants.directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
 from source.constants.file_paths import (
     F_GITIGNORE_PATH,
     F_GITIGNORE_PUBLIC_PATH,
@@ -28,19 +22,19 @@ from source.constants.file_paths import (
 
 if __name__ == "__main__":
     import logging
-    from pk_system_objects.pk_system_operation_options import \
+    from pk_system_sources.pk_system_objects.pk_system_operation_options import \
         SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced
 
-    from assets.pk_system.pk_system_sources.pk_system_functions.ensure_target_filename_and_file_content_text_replaced import \
+    from pk_system_sources.pk_system_functions.ensure_target_filename_and_file_content_text_replaced import \
         ensure_target_filename_and_file_content_text_replaced
 
-    from pk_system_objects.pk_system_directories import D_DOWNLOADS, \
+    from pk_system_sources.pk_system_objects.pk_system_directories import D_DOWNLOADS, \
         D_PK_SYSTEM, \
         D_MOUSE_CLICK_HISTORY, D_HISTORY_CACHE, D_PK_SYSTEM_TESTS, D_PK_SYSTEM_OBJECTS, D_PK_SYSTEM_REFACTORS, \
         D_PK_SYSTEM_FUNCTIONS, D_PK_SYSTEM_OS_LAYER_RESOURCES, D_PK_SYSTEM_RESOURCES, D_PK_SYSTEM_SOURCES, \
         D_PK_SYSTEM_SENSITIVE
 
-    from assets.pk_system.pk_system_sources.pk_system_functions.ensure_target_filenames_and_file_content_texts_replaced import \
+    from pk_system_sources.pk_system_functions.ensure_target_filenames_and_file_content_texts_replaced import \
         ensure_target_filenames_and_file_content_texts_replaced
 
     # literal to replace
@@ -135,9 +129,8 @@ if __name__ == "__main__":
 
     # pk_option : default
     d_targets = [
-        #     D_PK_SYSTEM_PATH,  # not recomanded, too slow, for too many files, include system like .git
+        # D_PK_SYSTEM_PATH is no longer available as it's now a library
         D_PROJECT_ROOT_PATH,
-        D_PK_SYSTEM_PATH,
         D_FUNCTIONS_PATH,
     ]
 

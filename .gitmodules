@@ -1,3 +1,3 @@
 [submodule "assets/pk_system"]
-	path = assets/pk_system
-	url = https://github.com/PARK4139/pk_system.git
+path = assets/pk_system
+url = https://github.com/PARK4139/pk_system.git

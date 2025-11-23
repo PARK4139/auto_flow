@@ -1,23 +1,10 @@
-import sys
-from pathlib import Path
-import traceback
-
-
-from assets.pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-
 try:
-    from source.constants.directory_paths import D_PK_SYSTEM_PATH, D_PK_SYSTEM_SOURCES_PATH
+    import sys
+    import traceback
 
-    if str(D_PK_SYSTEM_PATH) not in sys.path:
-        sys.path.insert(0, str(D_PK_SYSTEM_PATH))
-        
-    if str(D_PK_SYSTEM_SOURCES_PATH) not in sys.path:
-        sys.path.insert(0, str(D_PK_SYSTEM_SOURCES_PATH))
+    from pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+    from pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
 
-    from assets.pk_system.pk_system_sources.pk_system_functions.ensure_pk_system_log_initialized import ensure_pk_system_log_initialized
-    from assets.pk_system.pk_system_sources.pk_system_functions.ensure_pk_system_wrapper_started import ensure_pk_system_wrapper_started
-    from assets.pk_system.pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
-    
     from source.functions.ensure_wrapper_started import ensure_wrapper_started
 
     if __name__ == '__main__':

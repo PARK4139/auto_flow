@@ -2,7 +2,9 @@
 .venv/
 .idea/
 resource/
-output
+output/
+assets/pk_system/
 
-# external files
+
+# files
 uv.exe
