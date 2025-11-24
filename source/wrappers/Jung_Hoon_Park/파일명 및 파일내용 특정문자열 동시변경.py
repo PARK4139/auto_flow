@@ -22,19 +22,19 @@ from source.constants.file_paths import (
 
 if __name__ == "__main__":
     import logging
-    from pk_system_sources.pk_system_objects.pk_system_operation_options import \
+    from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_operation_options import \
         SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced
 
-    from pk_system_sources.pk_system_functions.ensure_target_filename_and_file_content_text_replaced import \
+    from temp.pk_system.pk_system_sources.pk_system_functions.ensure_target_filename_and_file_content_text_replaced import \
         ensure_target_filename_and_file_content_text_replaced
 
-    from pk_system_sources.pk_system_objects.pk_system_directories import D_DOWNLOADS, \
+    from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import D_DOWNLOADS, \
         D_PK_SYSTEM, \
         D_MOUSE_CLICK_HISTORY, D_HISTORY_CACHE, D_PK_SYSTEM_TESTS, D_PK_SYSTEM_OBJECTS, D_PK_SYSTEM_REFACTORS, \
         D_PK_SYSTEM_FUNCTIONS, D_PK_SYSTEM_OS_LAYER_RESOURCES, D_PK_SYSTEM_RESOURCES, D_PK_SYSTEM_SOURCES, \
         D_PK_SYSTEM_SENSITIVE
 
-    from pk_system_sources.pk_system_functions.ensure_target_filenames_and_file_content_texts_replaced import \
+    from temp.pk_system.pk_system_sources.pk_system_functions.ensure_target_filenames_and_file_content_texts_replaced import \
         ensure_target_filenames_and_file_content_texts_replaced
 
     # literal to replace

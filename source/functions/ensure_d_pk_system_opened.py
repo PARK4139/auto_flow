@@ -1,16 +1,16 @@
-import os
-import platform
-import subprocess
-import traceback
-from pathlib import Path
-
-from pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root
 
 def ensure_d_pk_system_opened():
     """
     Ensures that the pk_system directory is opened in the file explorer.
     """
+    import os
+    import platform
+    import subprocess
+    import traceback
+    from pathlib import Path
+
+    from temp.pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+    from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root
     try:
         d_pk_system = get_pk_system_root()
 

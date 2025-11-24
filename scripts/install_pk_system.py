@@ -390,7 +390,7 @@ def is_pk_system_installed(project_root: Path) -> bool:
     python_exe = find_python_executable(project_root) or sys.executable
     try:
         result = subprocess.run(
-            [python_exe, '-c', 'from pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
+            [python_exe, '-c', 'from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
             capture_output=True,
             text=True,
             encoding='utf-8',
@@ -1582,6 +1582,14 @@ def install_pk_system_with_uv_add(
         if result.returncode == 0:
             logging.info("✅ pk_system 의존성 추가 완료 (uv add)")
             if result.stdout:
+                logging.info("--- uv add stdout ---")
+                for line in result.stdout.splitlines():
+                    logging.info(line)
+            if result.stderr:
+                logging.info("--- uv add stderr ---")
+                for line in result.stderr.splitlines():
+                    logging.info(line)
+            if result.stdout:
                 logging.debug(f"출력: {result.stdout}")
             
             # --frozen 플래그를 사용하지 않은 경우에만 uv sync 실행
@@ -1608,27 +1616,14 @@ def install_pk_system_with_uv_add(
                 
                 if sync_result.returncode == 0:
                     logging.info("✅ 의존성 설치 완료 (uv sync)")
-                    
-                    # 최신화 확인: upgrade=True일 때 실제 설치된 커밋 해시 확인
-                    if upgrade:
-                        _verify_upgrade_success(project_root, git_url)
-                    
                     if sync_result.stdout:
-                        # 중요한 메시지만 출력 (너무 길면 요약)
-                        output_lines = sync_result.stdout.strip().split('\n')
-                        if len(output_lines) <= 10:
-                            for line in output_lines:
-                                if line.strip():
-                                    logging.debug(f"   {line}")
-                        else:
-                            # 처음과 끝 몇 줄만 표시
-                            for line in output_lines[:5]:
-                                if line.strip():
-                                    logging.debug(f"   {line}")
-                            logging.debug(f"   ... ({len(output_lines) - 10} 줄 생략) ...")
-                            for line in output_lines[-5:]:
-                                if line.strip():
-                                    logging.debug(f"   {line}")
+                        logging.info("--- uv sync stdout ---")
+                        for line in sync_result.stdout.splitlines():
+                            logging.info(line)
+                    if sync_result.stderr:
+                        logging.info("--- uv sync stderr ---")
+                        for line in sync_result.stderr.splitlines():
+                            logging.info(line)
                 else:
                     logging.warning("⚠️ uv sync 실행 중 오류 발생")
                     if sync_result.stderr:
@@ -1884,7 +1879,7 @@ try:
     # Lazy import를 위한 함수 내부 import
     def _test_import():
         try:
-            from pk_system_sources.pk_system_objects.pk_system_directories import (
+            from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import (
                 get_pk_system_root,
                 D_PK_SYSTEM
             )
@@ -1955,7 +1950,7 @@ import sys
 try:
     def _test_env_setup():
         try:
-            from pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
+            from temp.pk_system.pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
                 ensure_pk_system_env_file_setup
             )
             return ensure_pk_system_env_file_setup()
@@ -2145,10 +2140,10 @@ def print_usage_guide(project_root: Path):
     print("_" * 66)
     print("# 1. 기본 사용")
     usage_code = dedent("""\
-from pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
+from temp.pk_system.pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
     ensure_pk_system_env_file_setup
 )
-from pk_system_sources.pk_system_objects.pk_system_directories import (
+from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import (
     get_pk_system_root
 )
 
