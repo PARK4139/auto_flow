@@ -6,6 +6,7 @@ resource/
 output/
 assets/pk_system/
 temp/
+__pycache__/
 
 # files
 uv.exe
