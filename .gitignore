@@ -1,4 +1,5 @@
 # directories
+.pk_system/
 .venv/
 .idea/
 resource/
@@ -6,6 +7,7 @@ output/
 assets/pk_system/
 temp/
 
-
 # files
 uv.exe
+.env
+.pk_system

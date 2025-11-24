@@ -47,13 +47,13 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     if pk_wrapper_files is None:
         t1 = time.time()
         wrapper_paths = [D_HUVITS_WRAPPERS_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH]
-        selected_wrapper_path = ensure_value_completed_2025_11_11(
-            key_name="selected_wrapper_path",
+        wrapper_path = ensure_value_completed_2025_11_11(
+            key_name="wrapper_path",
             func_n=func_n,
             guide_text="실행할 래퍼의 종류를 선택해주세요:",
             options=[str(p) for p in wrapper_paths]
         )
-        pk_wrapper_files = get_cached_pk_system_wrappers_path(selected_wrapper_path)
+        pk_wrapper_files = get_cached_pk_system_wrappers_path(wrapper_path)
         logging.debug(f"get_cached_pk_system_wrappers_path 실행 시간: {time.time() - t1:.3f}초")
         # pk_files = get_pnxs_from_d_working(D_PK_SYSTEM_WRAPPERS)
 

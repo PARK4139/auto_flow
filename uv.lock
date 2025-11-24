@@ -2006,8 +2006,8 @@ wheels = [
 
 [[package]]
 name = "pk-system"
-version = "2025.9.18.post1.dev369+gc3d3b408.d20251124"
-source = { git = "https://github.com/PARK4139/pk_system.git?rev=main#c3d3b408091da4d606b3475f44de408484d85bd9" }
+version = "2025.9.18.post1.dev372+g3c8afd5c.d20251124"
+source = { git = "https://github.com/PARK4139/pk_system.git?rev=main#3c8afd5c129c97b75cc2740dc39558bdf0c02d1b" }
 dependencies = [
     { name = "altair" },
     { name = "annotated-types" },
