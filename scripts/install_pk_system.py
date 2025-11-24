@@ -71,33 +71,33 @@ def find_uv_executable(project_root: Optional[Path] = None) -> Optional[str]:
         pk_system_uv = project_root / DEFAULT_INSTALL_PATH / uv_exe_name
         if pk_system_uv.exists():
             candidates.append((f"assets/pk_system/{uv_exe_name}", str(pk_system_uv)))
-            logging.debug(f"✅ pk_system 내부 {uv_exe_name} 발견: {pk_system_uv}")
+            logging.debug(f"# pk_system 내부 {uv_exe_name} 발견: {pk_system_uv}")
         # Linux/WSL에서는 uv 실행 파일이 여러 위치에 있을 수 있음
         if not is_windows:
             # assets/pk_system/.venv/bin/uv (가상환경 내부)
             pk_system_venv_uv = project_root / DEFAULT_INSTALL_PATH / ".venv" / "bin" / "uv"
             if pk_system_venv_uv.exists():
                 candidates.append((f"assets/pk_system/.venv/bin/uv", str(pk_system_venv_uv)))
-                logging.debug(f"✅ pk_system 가상환경 내부 uv 발견: {pk_system_venv_uv}")
+                logging.debug(f"# pk_system 가상환경 내부 uv 발견: {pk_system_venv_uv}")
     
     # 2. 프로젝트 루트/uv.exe 또는 프로젝트 루트/uv
     if project_root:
         root_uv = project_root / uv_exe_name
         if root_uv.exists():
             candidates.append((f"프로젝트 루트/{uv_exe_name}", str(root_uv)))
-            logging.debug(f"✅ 프로젝트 루트 {uv_exe_name} 발견: {root_uv}")
+            logging.debug(f"# 프로젝트 루트 {uv_exe_name} 발견: {root_uv}")
         # Linux/WSL에서는 .venv/bin/uv도 확인
         if not is_windows:
             root_venv_uv = project_root / ".venv" / "bin" / "uv"
             if root_venv_uv.exists():
                 candidates.append(("프로젝트 루트/.venv/bin/uv", str(root_venv_uv)))
-                logging.debug(f"✅ 프로젝트 가상환경 내부 uv 발견: {root_venv_uv}")
+                logging.debug(f"# 프로젝트 가상환경 내부 uv 발견: {root_venv_uv}")
     
     # 3. 현재 디렉토리/uv.exe 또는 현재 디렉토리/uv
     current_dir_uv = Path.cwd() / uv_exe_name
     if current_dir_uv.exists():
         candidates.append((f"현재 디렉토리/{uv_exe_name}", str(current_dir_uv)))
-        logging.debug(f"✅ 현재 디렉토리 {uv_exe_name} 발견: {current_dir_uv}")
+        logging.debug(f"# 현재 디렉토리 {uv_exe_name} 발견: {current_dir_uv}")
     
     # 4. 시스템 uv 명령어 (최후 수단)
     candidates.append(("시스템 uv", "uv"))
@@ -114,11 +114,11 @@ def find_uv_executable(project_root: Optional[Path] = None) -> Optional[str]:
                 timeout=5
             )
             if result.returncode == 0:
-                logging.debug(f"✅ uv 실행 파일 사용: {name} ({uv_path})")
-                logging.info(f"   uv 버전: {result.stdout.strip()}")
+                logging.debug(f"# uv 실행 파일 사용: {name} ({uv_path})")
+                logging.info(f"# uv 버전: {result.stdout.strip()}")
                 return uv_path
         except (FileNotFoundError, subprocess.TimeoutExpired) as e:
-            logging.debug(f"   {name} 테스트 실패: {e}")
+            logging.debug(f"# {name} 테스트 실패: {e}")
             continue
     
     return None
@@ -152,27 +152,27 @@ def find_python_executable(project_root: Optional[Path] = None) -> Optional[str]
         pk_system_python = project_root / DEFAULT_INSTALL_PATH / python_exe_name
         if pk_system_python.exists():
             candidates.append((f"assets/pk_system/{python_exe_name}", str(pk_system_python)))
-            logging.debug(f"✅ pk_system 내부 {python_exe_name} 발견: {pk_system_python}")
+            logging.debug(f" pk_system 내부 {python_exe_name} 발견: {pk_system_python}")
     
     # assets/pk_system/.venv/Scripts/python.exe 또는 .venv/bin/python (pk_system 가상환경)
     if project_root:
         pk_system_venv_python = project_root / DEFAULT_INSTALL_PATH / ".venv" / venv_scripts / python_exe_name
         if pk_system_venv_python.exists():
             candidates.append((f"assets/pk_system/.venv/{venv_scripts}/{python_exe_name}", str(pk_system_venv_python)))
-            logging.debug(f"✅ pk_system 가상환경 내부 {python_exe_name} 발견: {pk_system_venv_python}")
+            logging.debug(f" pk_system 가상환경 내부 {python_exe_name} 발견: {pk_system_venv_python}")
     
     # 2. 프로젝트 루트/.venv/Scripts/python.exe 또는 .venv/bin/python (프로젝트 가상환경)
     if project_root:
         root_venv_python = project_root / ".venv" / venv_scripts / python_exe_name
         if root_venv_python.exists():
             candidates.append((f"프로젝트 루트/.venv/{venv_scripts}/{python_exe_name}", str(root_venv_python)))
-            logging.debug(f"✅ 프로젝트 가상환경 내부 {python_exe_name} 발견: {root_venv_python}")
+            logging.debug(f" 프로젝트 가상환경 내부 {python_exe_name} 발견: {root_venv_python}")
     
     # 3. 현재 디렉토리/.venv/Scripts/python.exe 또는 .venv/bin/python
     current_dir_venv_python = Path.cwd() / ".venv" / venv_scripts / python_exe_name
     if current_dir_venv_python.exists():
         candidates.append((f"현재 디렉토리/.venv/{venv_scripts}/{python_exe_name}", str(current_dir_venv_python)))
-        logging.debug(f"✅ 현재 디렉토리 가상환경 내부 {python_exe_name} 발견: {current_dir_venv_python}")
+        logging.debug(f" 현재 디렉토리 가상환경 내부 {python_exe_name} 발견: {current_dir_venv_python}")
     
     # 4. 시스템 python 명령어 (최후 수단)
     # Windows에서는 python3, python 순서로 확인
@@ -197,11 +197,11 @@ def find_python_executable(project_root: Optional[Path] = None) -> Optional[str]
                 timeout=5
             )
             if result.returncode == 0:
-                logging.debug(f"✅ Python 실행 파일 사용: {name} ({python_path})")
-                logging.debug(f"   Python 버전: {result.stdout.strip()}")
+                logging.debug(f"# Python 실행 파일 사용: {name} ({python_path})")
+                logging.debug(f"## Python 버전: {result.stdout.strip()}")
                 return python_path
         except (FileNotFoundError, subprocess.TimeoutExpired) as e:
-            logging.debug(f"   {name} 테스트 실패: {e}")
+            logging.debug(f"# {name} 테스트 실패: {e}")
             continue
     
     return None
@@ -282,7 +282,7 @@ def find_project_root(start_dir: Optional[Path] = None) -> Optional[Path]:
     candidates = []
     
     # 시작 디렉토리부터 루트까지 상위로 검색
-    logging.debug(f"🔍 프로젝트 루트 탐색 시작: {start_dir}")
+    logging.debug(f" 프로젝트 루트 탐색 시작: {start_dir}")
     for idx, current in enumerate([start_dir] + list(start_dir.parents)):
         logging.debug(f"  [{idx+1}] 검사 중: {current}")
         
@@ -309,14 +309,14 @@ def find_project_root(start_dir: Optional[Path] = None) -> Optional[Path]:
             indicators.append(".venv")
         
         if indicators:
-            logging.debug(f"    ✅ 발견된 지표: {', '.join(indicators)}")
+            logging.debug(f"## 발견된 지표: {', '.join(indicators)}")
         else:
-            logging.debug(f"    ⚪ 지표 없음")
+            logging.debug(f"## 지표 없음")
         
         # 우선순위: .git + 프로젝트 메타데이터 파일 조합 (가장 확실함)
         if has_git and (has_pyproject or has_uv_lock):
-            logging.debug(f"✅ Git 저장소 + 프로젝트 메타데이터 발견: {current}")
-            logging.info(f"   발견된 지표: {', '.join(indicators)}")
+            logging.debug(f"# Git 저장소 + 프로젝트 메타데이터 발견: {current}")
+            logging.info(f"# 발견된 지표: {', '.join(indicators)}")
             return current
         
         # .git만 있는 경우 (서브모듈일 수 있으므로 후보로 보관)
@@ -341,7 +341,7 @@ def find_project_root(start_dir: Optional[Path] = None) -> Optional[Path]:
         
         # 루트 디렉토리에 도달하면 중단 (Windows: C:\, Linux: /)
         if current.parent == current:
-            logging.debug(f"  ⚠️ 파일 시스템 루트에 도달: {current}")
+            logging.debug(f"⚠️ 파일 시스템 루트에 도달: {current}")
             break
     
     # 후보가 있으면 가장 상위(가장 먼저 발견한) 것을 반환
@@ -351,14 +351,14 @@ def find_project_root(start_dir: Optional[Path] = None) -> Optional[Path]:
         git_candidates = [c for c in candidates if c[1] == "git"]
         if git_candidates:
             result = git_candidates[0][0]
-            logging.debug(f"✅ Git 저장소 루트 선택: {result}")
-            logging.info(f"   선택 기준: {git_candidates[0][1]}")
+            logging.debug(f"# Git 저장소 루트 선택: {result}")
+            logging.info(f"# 선택 기준: {git_candidates[0][1]}")
             return result
         
         # 그 외에는 가장 상위의 후보 반환
         result = candidates[0][0]
-        logging.debug(f"✅ 프로젝트 루트 선택: {result}")
-        logging.info(f"   선택 기준: {candidates[0][1]}")
+        logging.debug(f"# 프로젝트 루트 선택: {result}")
+        logging.info(f"# 선택 기준: {candidates[0][1]}")
         return result
     
     logging.debug("❌ 프로젝트 루트를 찾지 못했습니다.")
@@ -390,7 +390,7 @@ def is_pk_system_installed(project_root: Path) -> bool:
     python_exe = find_python_executable(project_root) or sys.executable
     try:
         result = subprocess.run(
-            [python_exe, '-c', 'from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
+            [python_exe, '-c', 'from pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
             capture_output=True,
             text=True,
             encoding='utf-8',
@@ -400,7 +400,7 @@ def is_pk_system_installed(project_root: Path) -> bool:
         if result.returncode == 0 and result.stdout.strip():
             logging.debug(f"pk_system import 성공: {result.stdout.strip()}")
             if python_exe != sys.executable:
-                logging.debug(f"   사용된 Python: {python_exe}")
+                logging.debug(f"## 사용된 Python: {python_exe}")
             return True
     except Exception as e:
         logging.debug(f"pk_system import 확인 실패: {e}")
@@ -536,20 +536,20 @@ def _verify_upgrade_success(project_root: Path, git_url: str) -> None:
                         _, _, latest_commit = check_if_newer_version_available(project_root, git_url)
                         
                         # 시스템 규칙에 따른 출력 형식
-                        print("")
-                        print("_" * 66)
-                        print("# 최신화 완료 확인")
-                        print("")
+                        logging.info("")
+                        logging.info("_" * 66)
+                        logging.info("# 최신화 완료 확인")
+                        logging.info("")
                         
                         if latest_commit:
                             if installed_rev == latest_commit:
-                                print("✅ 최신화 완료: 최신 버전으로 업데이트되었습니다.")
-                                print(f"설치된 커밋: {installed_rev[:7]}...")
+                                logging.info(" 최신화 완료: 최신 버전으로 업데이트되었습니다.")
+                                logging.info(f"설치된 커밋: {installed_rev[:7]}...")
                             else:
-                                print(f"✅ 업데이트 완료: {installed_rev[:7]}... (최신: {latest_commit[:7]}...)")
+                                logging.info(f" 업데이트 완료: {installed_rev[:7]}... (최신: {latest_commit[:7]}...)")
                         else:
-                            print(f"✅ 업데이트 완료: {installed_rev[:7]}...")
-                        print("")
+                            logging.info(f" 업데이트 완료: {installed_rev[:7]}...")
+                        logging.info("")
                         return
         
         logging.debug("uv.lock에서 pk-system 패키지를 찾을 수 없습니다.")
@@ -628,36 +628,36 @@ def fix_pyproject_toml_dependency(project_root: Path) -> bool:
                 if '"pk_system @ "' in line or '"pk-system @ "' in line:
                     # 뒤에 다른 패키지 이름이 나오는 경우 (잘못된 줄)
                     if re.search(r'["\']pk[_-]?system\s*@\s*["\']\s*["\']?[a-zA-Z]', line, re.IGNORECASE):
-                        logging.info(f"   잘못된 줄 제거 (줄 {i+1}): {line.strip()[:70]}")
+                        logging.info(f"## 잘못된 줄 제거 (줄 {i+1}): {line.strip()[:70]}")
                         modified = True
                         continue
                 # 이 줄이 닫히지 않은 경우 제거
                 if line.count('"') % 2 != 0 or line.count("'") % 2 != 0:
-                    logging.info(f"   닫히지 않은 줄 제거 (줄 {i+1}): {line.strip()[:70]}")
+                    logging.info(f"## 닫히지 않은 줄 제거 (줄 {i+1}): {line.strip()[:70]}")
                     modified = True
                     continue
                 # Git URL이 포함된 경우 제거
                 if 'git+https://github.com/PARK4139/pk_system.git' in line:
-                    logging.info(f"   Git URL 줄 제거 (줄 {i+1}): {line.strip()[:70]}")
+                    logging.info(f"## Git URL 줄 제거 (줄 {i+1}): {line.strip()[:70]}")
                     modified = True
                     continue
             
             # workspace = true 오류 수정
             # pk-system = { workspace = true } 형태 제거
             if re.search(r'pk[_-]?system\s*=\s*{\s*workspace\s*=\s*true\s*}', line, re.IGNORECASE):
-                logging.info(f"   workspace = true 의존성 제거 (줄 {i+1}): {line.strip()[:70]}")
+                logging.info(f"## workspace = true 의존성 제거 (줄 {i+1}): {line.strip()[:70]}")
                 modified = True
                 continue
             
             # asset/pk_system 루트경로를 assets/pk_system로 수정
             if 'asset/pk_system' in line and 'assets/pk_system' not in line:
                 line = line.replace('asset/pk_system', 'assets/pk_system')
-                logging.info(f"   경로 수정 (줄 {i+1}): asset/pk_system -> assets/pk_system")
+                logging.info(f"## 경로 수정 (줄 {i+1}): asset/pk_system -> assets/pk_system")
                 modified = True
             
             # 잘못된 경로 문자열 제거: "asset/pk_system" (따옴표로 감싼 경로)
             if re.search(r'["\']asset/pk_system["\']', line, re.IGNORECASE):
-                logging.info(f"   잘못된 경로 문자열 제거 (줄 {i+1}): {line.strip()[:70]}")
+                logging.info(f"## 잘못된 경로 문자열 제거 (줄 {i+1}): {line.strip()[:70]}")
                 modified = True
                 continue
             
@@ -687,7 +687,7 @@ def fix_pyproject_toml_dependency(project_root: Path) -> bool:
         # 중복된 [project.dependencies] 섹션 제거
         deps_section_count = content.count('[project.dependencies]')
         if deps_section_count > 1:
-            logging.info(f"   중복된 [project.dependencies] 섹션 발견 ({deps_section_count}개)")
+            logging.info(f"## 중복된 [project.dependencies] 섹션 발견 ({deps_section_count}개)")
             # 첫 번째 [project.dependencies] 섹션만 유지하고 나머지 제거
             lines = content.split('\n')
             new_lines = []
@@ -702,7 +702,7 @@ def fix_pyproject_toml_dependency(project_root: Path) -> bool:
                         new_lines.append(line)
                     else:
                         # 이후 섹션은 제거
-                        logging.info(f"   중복된 섹션 제거 (줄 {i+1})")
+                        logging.info(f"## 중복된 섹션 제거 (줄 {i+1})")
                         modified = True
                         skip_until_section = True
                         continue
@@ -738,8 +738,8 @@ def fix_pyproject_toml_dependency(project_root: Path) -> bool:
         # [project] 내부에 dependencies 키가 있고 [project.dependencies] 섹션도 있는 경우
         # [project.dependencies] 섹션을 제거
         if has_project_deps_key and '[project.dependencies]' in content:
-            logging.info("   [project] 내부에 dependencies 키와 [project.dependencies] 섹션이 모두 존재합니다.")
-            logging.info("   [project.dependencies] 섹션을 제거합니다...")
+            logging.info("## [project] 내부에 dependencies 키와 [project.dependencies] 섹션이 모두 존재합니다.")
+            logging.info("## [project.dependencies] 섹션을 제거합니다...")
             
             # [project.dependencies] 섹션 제거
             lines = content.split('\n')
@@ -748,7 +748,7 @@ def fix_pyproject_toml_dependency(project_root: Path) -> bool:
             
             for i, line in enumerate(lines):
                 if '[project.dependencies]' in line:
-                    logging.info(f"   [project.dependencies] 섹션 제거 (줄 {i+1})")
+                    logging.info(f"## [project.dependencies] 섹션 제거 (줄 {i+1})")
                     skip_deps_section = True
                     modified = True
                     continue
@@ -905,14 +905,14 @@ def fix_pyproject_toml_dependency(project_root: Path) -> bool:
             
             # 수정된 내용 저장
             pyproject_toml.write_text(content, encoding='utf-8')
-            logging.info(f"   백업 파일: {backup_path}")
+            logging.info(f"## 백업 파일: {backup_path}")
             return True
         else:
             logging.debug("pyproject.toml 수정 불필요 (변경 사항 없음)")
             return False
             
     except Exception as e:
-        logging.error(f"   pyproject.toml 수정 중 오류: {e}")
+        logging.error(f"## pyproject.toml 수정 중 오류: {e}")
         import traceback
         logging.debug(traceback.format_exc())
         return False
@@ -1019,9 +1019,9 @@ def add_environment_limit_to_pyproject(project_root: Path) -> bool:
         # 수정된 내용 저장
         pyproject_toml.write_text(content, encoding='utf-8')
         
-        logging.info("💡 pyproject.toml에 환경 제한 추가: tool.uv.environments = [\"default\"]")
-        logging.info("   (현재 환경만 사용하도록 제한하여 의존성 해결 실패 방지)")
-        logging.debug(f"   백업 파일: {backup_path}")
+        logging.info(" pyproject.toml에 환경 제한 추가: tool.uv.environments = [\"default\"]")
+        logging.info("## (현재 환경만 사용하도록 제한하여 의존성 해결 실패 방지)")
+        logging.debug(f"## 백업 파일: {backup_path}")
         return True
     except Exception as e:
         logging.warning(f"⚠️ pyproject.toml 환경 제한 추가 실패: {e}")
@@ -1045,7 +1045,7 @@ def detect_dependency_conflict(error_output: str) -> Optional[str]:
     
     # 디버깅: 충돌 지표 확인
     if has_conflict:
-        logging.debug(f"🔍 충돌 지표 감지됨")
+        logging.debug(f" 충돌 지표 감지됨")
     
     if not has_conflict:
         return None
@@ -1156,16 +1156,16 @@ def install_pk_system_interactive(
             return True, None
         
         # 실패한 경우 충돌 정보 확인
-        print("")
-        print("_" * 66)
+        logging.error("")
+        logging.error("_" * 66)
         
         if conflict_info:
-            print("# 의존성 충돌이 발생했습니다")
-            print("")
-            print(f"충돌 정보: {conflict_info}")
+            logging.error("# 의존성 충돌이 발생했습니다")
+            logging.error("")
+            logging.error(f"충돌 정보: {conflict_info}")
         else:
-            print("# 설치가 실패했습니다")
-            print("")
+            logging.error("# 설치가 실패했습니다")
+            logging.error("")
         
         logging.info("")
         logging.info("# 해결 방법을 선택하세요")
@@ -1197,7 +1197,7 @@ def install_pk_system_interactive(
             
             if response in ['', 'y', 'yes']:
                 frozen = True
-                logging.info("💡 --frozen 플래그로 재시도합니다...")
+                logging.info(" --frozen 플래그로 재시도합니다...")
                 logging.info("")
                 continue
         
@@ -1205,7 +1205,7 @@ def install_pk_system_interactive(
         
         if response == "1":
             frozen = True
-            logging.info("💡 --frozen 플래그로 재시도합니다...")
+            logging.info(" --frozen 플래그로 재시도합니다...")
             logging.info("")
             continue
         elif response == "2":
@@ -1217,7 +1217,7 @@ def install_pk_system_interactive(
                 use_ssh=use_ssh,
                 git_url=None
             )
-            logging.info(f"💡 {'SSH' if use_ssh else 'HTTPS'} URL로 변경: {git_url}")
+            logging.info(f" {'SSH' if use_ssh else 'HTTPS'} URL로 변경: {git_url}")
             logging.info("")
             continue
         elif response == "3":
@@ -1243,7 +1243,7 @@ def install_pk_system_interactive(
                         use_ssh=use_ssh,
                         git_url=None
                     )
-                logging.info(f"💡 Git URL 변경: {git_url}")
+                logging.info(f" Git URL 변경: {git_url}")
                 logging.info("")
                 continue
         else:
@@ -1291,7 +1291,7 @@ def clone_pk_system_repo(
                 )
                 
                 if pull_result.returncode == 0:
-                    logging.info("✅ pk_system 저장소 업데이트 완료")
+                    logging.info(" pk_system 저장소 업데이트 완료")
                     return True
                 else:
                     logging.warning("⚠️ git pull 실패, 새로 클론합니다...")
@@ -1353,7 +1353,7 @@ def clone_pk_system_repo(
                     logging.warning(f"⚠️ 커밋 {commit}으로 체크아웃 실패")
                     return False
             
-            logging.info("✅ pk_system 저장소 클론 완료")
+            logging.info(" pk_system 저장소 클론 완료")
             return True
         else:
             logging.error(f"❌ git clone 실패: {clone_result.stderr}")
@@ -1406,7 +1406,7 @@ def install_pk_system_with_uv_add(
     try:
         # pyproject.toml이 없으면 최소한의 pyproject.toml 생성
         if not pyproject_toml.exists():
-            logging.info("💡 pyproject.toml 파일이 없습니다. 최소한의 pyproject.toml을 생성합니다...")
+            logging.info(" pyproject.toml 파일이 없습니다. 최소한의 pyproject.toml을 생성합니다...")
             try:
                 from textwrap import dedent
                 # 최소한의 pyproject.toml 생성
@@ -1418,7 +1418,7 @@ def install_pk_system_with_uv_add(
                     dependencies = []
                     """)
                 pyproject_toml.write_text(minimal_pyproject, encoding='utf-8')
-                logging.info("✅ pyproject.toml 생성 완료")
+                logging.info(" pyproject.toml 생성 완료")
             except Exception as e:
                 logging.warning(f"⚠️ pyproject.toml 생성 실패: {e}")
                 logging.info("   uv init을 먼저 실행하거나 수동으로 pyproject.toml을 생성하세요.")
@@ -1453,15 +1453,15 @@ def install_pk_system_with_uv_add(
         
         # uv 명령어에 경로 사용
         if uv_exe != "uv":
-            logging.info(f"💡 uv 실행 파일 사용: {uv_exe}")
+            logging.info(f" uv 실행 파일 사용: {uv_exe}")
             cmd_with_uv = [uv_exe] + cmd[1:]
         else:
             cmd_with_uv = cmd
         
-        logging.info(f"📦 uv add 명령어 실행: {' '.join(cmd_with_uv)}")
+        logging.info(f" uv add 명령어 실행: {' '.join(cmd_with_uv)}")
         logging.info(f"프로젝트 경로: {project_root}")
         logging.info(f"Git URL: {git_url}")
-        logging.info("💡 참고: Git URL 직접 사용 방식으로 읽기 전용(비-editable) 설치합니다.")
+        logging.info(" 참고: Git URL 직접 사용 방식으로 읽기 전용(비-editable) 설치합니다.")
         logging.info("   uv add 후 자동으로 uv sync를 실행하여 의존성을 설치합니다.")
         
         result = subprocess.run(
@@ -1497,7 +1497,7 @@ def install_pk_system_with_uv_add(
                             content,
                             flags=re.IGNORECASE
                         )
-                        logging.info("   ✅ environments 형식 수정: [ \"default\",] -> [\"default\"]")
+                        logging.info("    environments 형식 수정: [ \"default\",] -> [\"default\"]")
                     
                     # 패턴 2: environments = [ "default" ,] -> environments = ["default"]
                     pattern2 = r'environments\s*=\s*\[\s*["\']default["\']\s*,?\s*\]'
@@ -1508,12 +1508,12 @@ def install_pk_system_with_uv_add(
                             content,
                             flags=re.IGNORECASE
                         )
-                        logging.info("   ✅ environments 형식 수정: [ \"default\" ,] -> [\"default\"]")
+                        logging.info("    environments 형식 수정: [ \"default\" ,] -> [\"default\"]")
                     
                     # 수정된 내용이 있으면 저장
                     if content != original_content:
                         pyproject_toml.write_text(content, encoding='utf-8')
-                        logging.info("   ✅ pyproject.toml 수정 완료")
+                        logging.info("    pyproject.toml 수정 완료")
                         logging.info("   다시 시도합니다...")
                         logging.info("")
                         
@@ -1562,7 +1562,7 @@ def install_pk_system_with_uv_add(
                                     
                                     # 수정된 백업 내용으로 복구
                                     pyproject_toml.write_text(backup_content, encoding='utf-8')
-                                    logging.info(f"   ✅ 백업 파일에서 복구 완료 (형식 수정): {backup_file.name}")
+                                    logging.info(f"    백업 파일에서 복구 완료 (형식 수정): {backup_file.name}")
                                     restored = True
                                     break
                                 except Exception as e:
@@ -1580,15 +1580,7 @@ def install_pk_system_with_uv_add(
                     logging.info("   수동으로 pyproject.toml을 수정해야 합니다.")
         
         if result.returncode == 0:
-            logging.info("✅ pk_system 의존성 추가 완료 (uv add)")
-            if result.stdout:
-                logging.info("--- uv add stdout ---")
-                for line in result.stdout.splitlines():
-                    logging.info(line)
-            if result.stderr:
-                logging.info("--- uv add stderr ---")
-                for line in result.stderr.splitlines():
-                    logging.info(line)
+            logging.info(" pk_system 의존성 추가 완료 (uv add)")
             if result.stdout:
                 logging.debug(f"출력: {result.stdout}")
             
@@ -1596,13 +1588,13 @@ def install_pk_system_with_uv_add(
             # (--frozen을 사용하면 의존성 해결을 건너뛰므로 sync도 건너뛰어야 함)
             if not frozen:
                 logging.info("")
-                logging.info("📦 의존성 설치 중 (uv sync)...")
+                logging.info(" 의존성 설치 중 (uv sync)...")
                 logging.info(f"   프로젝트 경로: {project_root}")
                 
                 # uv sync 실행
                 sync_cmd = [uv_exe, 'sync'] if uv_exe != "uv" else ['uv', 'sync']
                 if uv_exe != "uv":
-                    logging.info(f"💡 uv 실행 파일 사용: {uv_exe}")
+                    logging.info(f" uv 실행 파일 사용: {uv_exe}")
                 
                 sync_result = subprocess.run(
                     sync_cmd,
@@ -1615,15 +1607,28 @@ def install_pk_system_with_uv_add(
                 )
                 
                 if sync_result.returncode == 0:
-                    logging.info("✅ 의존성 설치 완료 (uv sync)")
+                    logging.info(" 의존성 설치 완료 (uv sync)")
+                    
+                    # 최신화 확인: upgrade=True일 때 실제 설치된 커밋 해시 확인
+                    if upgrade:
+                        _verify_upgrade_success(project_root, git_url)
+                    
                     if sync_result.stdout:
-                        logging.info("--- uv sync stdout ---")
-                        for line in sync_result.stdout.splitlines():
-                            logging.info(line)
-                    if sync_result.stderr:
-                        logging.info("--- uv sync stderr ---")
-                        for line in sync_result.stderr.splitlines():
-                            logging.info(line)
+                        # 중요한 메시지만 출력 (너무 길면 요약)
+                        output_lines = sync_result.stdout.strip().split('\n')
+                        if len(output_lines) <= 10:
+                            for line in output_lines:
+                                if line.strip():
+                                    logging.debug(f"   {line}")
+                        else:
+                            # 처음과 끝 몇 줄만 표시
+                            for line in output_lines[:5]:
+                                if line.strip():
+                                    logging.debug(f"   {line}")
+                            logging.debug(f"   ... ({len(output_lines) - 10} 줄 생략) ...")
+                            for line in output_lines[-5:]:
+                                if line.strip():
+                                    logging.debug(f"   {line}")
                 else:
                     logging.warning("⚠️ uv sync 실행 중 오류 발생")
                     if sync_result.stderr:
@@ -1632,12 +1637,12 @@ def install_pk_system_with_uv_add(
                     if sync_result.stdout:
                         logging.warning(f"   출력: {sync_result.stdout[:300]}")
                     logging.info("")
-                    logging.info("💡 수동으로 다음 명령어를 실행하여 의존성을 설치하세요:")
+                    logging.info(" 수동으로 다음 명령어를 실행하여 의존성을 설치하세요:")
                     logging.info(f"   cd {project_root}")
                     logging.info("   uv sync")
             else:
                 logging.info("")
-                logging.info("💡 --frozen 플래그 사용: 의존성 설치를 건너뜁니다.")
+                logging.info(" --frozen 플래그 사용: 의존성 설치를 건너뜁니다.")
                 logging.info("   수동으로 다음 명령어를 실행하여 의존성을 설치하세요:")
                 logging.info(f"   cd {project_root}")
                 logging.info("   uv sync")
@@ -1673,14 +1678,14 @@ def install_pk_system_with_uv_add(
             # 이 메시지가 있으면 무조건 충돌로 간주하고 재시도
             if "No solution found when resolving dependencies" in error_output:
                 logging.info("")
-                logging.info("🔍 의존성 충돌 감지: 'No solution found when resolving dependencies'")
+                logging.info(" 의존성 충돌 감지: 'No solution found when resolving dependencies'")
                 
                 # 환경 제한 힌트 확인 ("consider limiting the environments")
                 if "consider limiting the environments" in error_output.lower():
-                    logging.info("💡 환경 제한 힌트 감지: 다른 환경에서의 의존성 해결 실패")
+                    logging.info(" 환경 제한 힌트 감지: 다른 환경에서의 의존성 해결 실패")
                     logging.info("   pyproject.toml에 환경 제한을 추가합니다...")
                     if add_environment_limit_to_pyproject(project_root):
-                        logging.info("   ✅ 환경 제한 추가 완료")
+                        logging.info("    환경 제한 추가 완료")
                         logging.info("   다시 시도합니다...")
                         logging.info("")
                         # 환경 제한 추가 후 재시도
@@ -1725,7 +1730,7 @@ def install_pk_system_with_uv_add(
                 logging.warning("⚠️ 의존성 충돌 감지!")
                 logging.warning(f"   충돌 패키지: {conflict_info}")
                 logging.warning("")
-                logging.info("💡 --frozen 플래그로 자동 재시도 중...")
+                logging.info(" --frozen 플래그로 자동 재시도 중...")
                 logging.info("   (의존성 해결을 건너뛰고 설치를 진행합니다)")
                 logging.info("")
                 
@@ -1800,62 +1805,62 @@ def verify_installation(project_root: Optional[Path] = None, verbose: bool = Tru
         import sys
         
         if verbose:
-            print("")
-            print("_" * 66)
-            print("# 설치 검증 상세 정보")
-            print("")
+            logging.info("")
+            logging.info("_" * 66)
+            logging.info("# 설치 검증 상세 정보")
+            logging.info("")
             
             # 프로젝트 루트 확인
             if project_root:
-                logging.info(f"   프로젝트 루트: {project_root}")
+                logging.info(f"# 프로젝트 루트: {project_root}")
                 
                 # pyproject.toml 확인
                 pyproject_toml = project_root / "pyproject.toml"
                 if pyproject_toml.exists():
-                    logging.info(f"   ✅ pyproject.toml 존재: {pyproject_toml}")
+                    logging.info(f"## pyproject.toml 존재: {pyproject_toml}")
                     try:
                         content = pyproject_toml.read_text(encoding='utf-8')
                         if "pk-system" in content or "pk_system" in content:
-                            logging.info("   ✅ pyproject.toml에 pk-system 의존성 포함됨")
+                            logging.info("## pyproject.toml에 pk-system 의존성 포함됨")
                             # pk-system 의존성 라인 찾기
                             for line in content.split('\n'):
                                 if 'pk-system' in line or 'pk_system' in line:
-                                    logging.info(f"      의존성 라인: {line.strip()[:100]}")
+                                    logging.info(f"### 의존성 라인: {line.strip()[:100]}")
                         else:
-                            logging.warning("   ⚠️ pyproject.toml에 pk-system 의존성이 없습니다")
+                            logging.warning("⚠️ pyproject.toml에 pk-system 의존성이 없습니다")
                     except Exception as e:
-                        logging.warning(f"   ⚠️ pyproject.toml 읽기 실패: {e}")
+                        logging.warning(f"⚠️ pyproject.toml 읽기 실패: {e}")
                 else:
-                    logging.warning(f"   ⚠️ pyproject.toml 없음: {pyproject_toml}")
+                    logging.warning(f"⚠️ pyproject.toml 없음: {pyproject_toml}")
                 
                 # assets/pk_system 디렉토리 확인
                 pk_system_path = project_root / DEFAULT_INSTALL_PATH
                 if pk_system_path.exists():
-                    logging.info(f"   ✅ pk_system 디렉토리 존재: {pk_system_path}")
+                    logging.info(f"## pk_system 디렉토리 존재: {pk_system_path}")
                     # 주요 파일 확인
                     pyproject_in_pk = pk_system_path / "pyproject.toml"
                     if pyproject_in_pk.exists():
-                        logging.info(f"      ✅ pk_system/pyproject.toml 존재")
+                        logging.info(f"### pk_system/pyproject.toml 존재")
                     sources_dir = pk_system_path / "pk_system_sources"
                     if sources_dir.exists():
-                        logging.info(f"      ✅ pk_system_sources 디렉토리 존재")
+                        logging.info(f"### pk_system_sources 디렉토리 존재")
                         # 주요 모듈 확인
                         test_file = sources_dir / "pk_system_objects" / "pk_system_directories.py"
                         if test_file.exists():
-                            logging.info(f"      ✅ pk_system_directories.py 존재")
+                            logging.info(f"### pk_system_directories.py 존재")
                         else:
-                            logging.warning(f"      ⚠️ pk_system_directories.py 없음")
+                            logging.warning(f"⚠️ pk_system_directories.py 없음")
                     else:
-                        logging.warning(f"      ⚠️ pk_system_sources 디렉토리 없음")
+                        logging.warning(f"⚠️ pk_system_sources 디렉토리 없음")
                 else:
-                    logging.warning(f"   ⚠️ pk_system 디렉토리 없음: {pk_system_path}")
+                    logging.warning(f"⚠️ pk_system 디렉토리 없음: {pk_system_path}")
                 
                 # .venv 확인
                 venv_path = project_root / ".venv"
                 if venv_path.exists():
-                    logging.info(f"   ✅ 프로젝트 가상환경 존재: {venv_path}")
+                    logging.info(f"## 프로젝트 가상환경 존재: {venv_path}")
                 else:
-                    logging.info(f"   ℹ️ 프로젝트 가상환경 없음 (정상일 수 있음)")
+                    logging.info(f"## 프로젝트 가상환경 없음 (정상일 수 있음)")
             
             logging.info("")
         
@@ -1863,23 +1868,24 @@ def verify_installation(project_root: Optional[Path] = None, verbose: bool = Tru
         python_exe = find_python_executable(project_root) or sys.executable
         if verbose:
             if python_exe != sys.executable:
-                logging.info(f"   💡 클론된 pk_system 내부 Python 사용: {python_exe}")
+                logging.info(f"# 클론된 pk_system 내부 Python 사용: {python_exe}")
             else:
-                logging.info(f"   💡 시스템 Python 사용: {python_exe}")
+                logging.info(f"# 시스템 Python 사용: {python_exe}")
         
         if verbose:
             logging.info("")
-            logging.info("🔍 Python import 테스트 실행 중...")
+            logging.info("# Python import 테스트 실행 중...")
         
         # 서브프로세스로 import 테스트 (순환 import 회피)
         # 함수 내부에서 lazy import를 통해 import 시점을 지연
         test_code = """
 import sys
+import traceback
 try:
     # Lazy import를 위한 함수 내부 import
     def _test_import():
         try:
-            from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import (
+            from pk_system_sources.pk_system_objects.pk_system_directories import (
                 get_pk_system_root,
                 D_PK_SYSTEM
             )
@@ -1889,9 +1895,13 @@ try:
             else:
                 return None
         except ImportError as e:
-            raise ImportError(f"Import failed: {e}")
+            # 더 자세한 traceback 정보 포함
+            tb_str = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+            raise ImportError(f"Import failed: {e}\\nTraceback:\\n{tb_str}")
         except Exception as e:
-            raise RuntimeError(f"Unexpected error: {e}")
+            # 더 자세한 traceback 정보 포함
+            tb_str = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+            raise RuntimeError(f"Unexpected error: {e}\\nTraceback:\\n{tb_str}")
     
     pk_root = _test_import()
     if pk_root:
@@ -1924,24 +1934,40 @@ except Exception as e:
         )
         
         if verbose:
-            logging.info(f"   반환 코드: {result.returncode}")
+            logging.debug(f"# 반환 코드: {result.returncode}")
             if result.stdout:
-                logging.info(f"   표준 출력:")
+                logging.debug(f"# 표준 출력:")
                 for line in result.stdout.strip().split('\n'):
                     if line.strip():
-                        logging.info(f"      {line[:100]}")
+                        logging.debug(f"## {line[:200]}")
             if result.stderr:
-                logging.info(f"   표준 오류:")
+                logging.debug(f"# 표준 오류:")
                 for line in result.stderr.strip().split('\n'):
                     if line.strip():
-                        logging.info(f"      {line[:100]}")
-            logging.info("")
+                        logging.debug(f"## {line[:200]}")
+            
+            # 에러가 발생한 경우에만 상세 정보 출력
+            if result.returncode != 0:
+                logging.warning("⚠️ pk_system import 검증 실패")
+                if result.stderr:
+                    error_msg = result.stderr.strip()
+                elif result.stdout:
+                    error_msg = result.stdout.strip()
+                else:
+                    error_msg = "알 수 없는 오류"
+                
+                # 에러 메시지에서 중요한 부분 추출
+                if "ERROR:" in error_msg:
+                    error_lines = error_msg.split('\n')
+                    for line in error_lines:
+                        if "ERROR:" in line or "Traceback" in line or "File" in line:
+                            logging.warning(f"## {line[:200]}")
         
         if result.returncode == 0:
             if "SUCCESS:" in result.stdout:
                 pk_root = result.stdout.split("SUCCESS:")[-1].strip()
-                logging.info(f"pk_system import 성공: {pk_root}")
-                logging.info(f"   설치 경로: {pk_root}")
+                logging.info(f"# pk_system import 성공: {pk_root}")
+                logging.info(f"## 설치 경로: {pk_root}")
                 
                 # 추가 검증은 선택적으로 (순환 import 위험이 있으므로 서브프로세스로)
                 # .env 파일 경로 검증은 별도 서브프로세스로 처리
@@ -1950,7 +1976,7 @@ import sys
 try:
     def _test_env_setup():
         try:
-            from temp.pk_system.pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
+            from pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
                 ensure_pk_system_env_file_setup
             )
             return ensure_pk_system_env_file_setup()
@@ -1989,7 +2015,7 @@ except Exception:
             else:
                 logging.error("❌ pk_system import 검증 실패: 검증 결과를 확인할 수 없습니다.")
                 if result.stdout:
-                    logging.error(f"   출력: {result.stdout}")
+                    logging.error(f"# 출력: {result.stdout}")
                 return False
         else:
             error_msg = result.stderr.strip() if result.stderr else result.stdout.strip()
@@ -1997,12 +2023,36 @@ except Exception:
             # 의존성 누락 오류 확인 (No module named)
             if "No module named" in error_msg:
                 # 의존성 누락은 설치 문제이므로 False 반환 (uv sync 실행하도록)
-                logging.warning(f"⚠️ pk_system import 검증 중 의존성 누락 감지")
-                error_preview = error_msg[:300] if len(error_msg) > 300 else error_msg
-                logging.warning(f"   오류 메시지: {error_preview}")
+                logging.warning("⚠️ pk_system import 검증 중 의존성 누락 감지")
+                
+                # 더 자세한 디버깅 정보 출력
+                if verbose:
+                    # 전체 에러 메시지 출력 (traceback 포함)
+                    logging.debug("# 전체 에러 메시지:")
+                    for line in error_msg.split('\n'):
+                        if line.strip():
+                            logging.debug(f"## {line[:200]}")
+                    
+                    # 누락된 모듈 추출
+                    import re
+                    missing_module_match = re.search(r"No module named ['\"]([^'\"]+)['\"]", error_msg)
+                    if missing_module_match:
+                        missing_module = missing_module_match.group(1)
+                        logging.warning(f"# 누락된 모듈: {missing_module}")
+                        
+                        # 모듈이 pk_system 내부 모듈인지 확인
+                        if missing_module.startswith('pk_system'):
+                            logging.warning("## 이는 pk_system 내부 모듈입니다.")
+                            logging.warning("## pk_system 자체가 제대로 설치되지 않았을 수 있습니다.")
+                        elif missing_module in ['temp', 'toml', 'tomllib', 'tomli']:
+                            logging.warning(f"## 이는 외부 의존성 모듈입니다: {missing_module}")
+                            logging.warning("## uv sync를 실행하여 의존성을 설치해야 합니다.")
+                
+                error_preview = error_msg[:500] if len(error_msg) > 500 else error_msg
+                logging.warning(f"# 오류 메시지 (요약): {error_preview}")
                 logging.info("")
-                logging.info("💡 의존성 패키지가 설치되지 않았을 수 있습니다.")
-                logging.info("   'uv sync'를 실행하여 의존성을 설치하겠습니다.")
+                logging.info("# 의존성 패키지가 설치되지 않았을 수 있습니다.")
+                logging.info("## 'uv sync'를 실행하여 의존성을 설치하겠습니다.")
                 logging.info("")
                 return False  # 의존성 누락은 설치 문제이므로 False 반환
             
@@ -2014,27 +2064,27 @@ except Exception:
                 # 오류 메시지에서 중요한 부분만 추출
                 error_preview = error_msg[:300] if len(error_msg) > 300 else error_msg
                 if "LTA" in error_msg:
-                    logging.warning("   순환 import 발생: pk_lta 모듈")
-                    logging.warning("   이는 pk_system 내부의 순환 import 문제입니다.")
+                    logging.warning("## 순환 import 발생: pk_lta 모듈")
+                    logging.warning("## 이는 pk_system 내부의 순환 import 문제입니다.")
                 else:
-                    logging.warning(f"   오류 메시지: {error_preview}")
+                    logging.warning(f"# 오류 메시지: {error_preview}")
                 
                 logging.info("")
-                logging.info("💡 이것은 설치 문제가 아닐 수 있습니다.")
-                logging.info("   순환 import는 pk_system 내부 모듈 간 의존성 문제일 수 있습니다.")
+                logging.info("# 이것은 설치 문제가 아닐 수 있습니다.")
+                logging.info("## 순환 import는 pk_system 내부 모듈 간 의존성 문제일 수 있습니다.")
                 logging.info("")
                 logging.info("# 해결 방법")
-                logging.info("   1. Python 환경을 완전히 재시작 (인터프리터 재시작)")
-                logging.info("   2. 가상 환경을 다시 활성화")
-                logging.info("   3. pyproject.toml에 pk_system이 정상적으로 추가되었는지 확인")
-                logging.info("   4. 실제 사용 시에는 문제가 없을 수 있습니다 (런타임 import는 다르게 동작)")
+                logging.info("## 1. Python 환경을 완전히 재시작 (인터프리터 재시작)")
+                logging.info("## 2. 가상 환경을 다시 활성화")
+                logging.info("## 3. pyproject.toml에 pk_system이 정상적으로 추가되었는지 확인")
+                logging.info("## 4. 실제 사용 시에는 문제가 없을 수 있습니다 (런타임 import는 다르게 동작)")
                 logging.info("")
                 
                 # 순환 import만 감지된 경우
                 # 의존성 누락도 함께 있는지 확인
                 if "No module named" in error_msg:
                     # 의존성 누락이 함께 있는 경우 False 반환 (uv sync 실행)
-                    logging.info("   💡 의존성 누락도 감지되었습니다. 의존성 설치를 시도합니다.")
+                    logging.info("## 의존성 누락도 감지되었습니다. 의존성 설치를 시도합니다.")
                     return False
                 else:
                     # 순환 import만 있는 경우
@@ -2052,7 +2102,7 @@ except Exception:
                                     # 실제 의존성 설치 여부 확인
                                     if verbose:
                                         logging.info("")
-                                        logging.info("🔍 의존성 설치 확인 중...")
+                                        logging.info("# 의존성 설치 확인 중...")
                                         
                                         # 주요 의존성 모듈 테스트
                                         deps_check_code = """
@@ -2088,36 +2138,36 @@ else:
                                         )
                                         
                                         if deps_result.returncode == 0:
-                                            logging.info("   ✅ 주요 의존성 (toml, numpy, pandas) 설치 확인됨")
+                                            logging.info("## 주요 의존성 (toml, numpy, pandas) 설치 확인됨")
                                         else:
                                             if "MISSING:" in deps_result.stdout:
                                                 missing_deps = deps_result.stdout.split("MISSING:")[-1].strip()
-                                                logging.warning(f"   ⚠️ 누락된 의존성: {missing_deps}")
-                                                logging.info("   💡 uv sync를 실행하여 의존성을 설치합니다.")
+                                                logging.warning(f"⚠️ 누락된 의존성: {missing_deps}")
+                                                logging.info("## uv sync를 실행하여 의존성을 설치합니다.")
                                                 logging.info("")
                                                 return False
                                             else:
-                                                logging.warning("   ⚠️ 의존성 확인 실패")
-                                                logging.info("   💡 uv sync를 실행하여 의존성을 설치합니다.")
+                                                logging.warning("⚠️ 의존성 확인 실패")
+                                                logging.info("## uv sync를 실행하여 의존성을 설치합니다.")
                                                 logging.info("")
                                                 return False
                                     
                                     # 의존성 확인 없이 바로 uv sync 실행
-                                    logging.info("   💡 순환 import는 있지만, 의존성 설치를 확인하기 위해 uv sync를 실행합니다.")
+                                    logging.info("## 순환 import는 있지만, 의존성 설치를 확인하기 위해 uv sync를 실행합니다.")
                                     return False
                             except Exception as e:
                                 if verbose:
-                                    logging.warning(f"   ⚠️ 의존성 확인 중 오류: {e}")
+                                    logging.warning(f"⚠️ 의존성 확인 중 오류: {e}")
                     
                     # 순환 import만 있고 의존성 문제가 없어 보이는 경우 True 반환
                     if verbose:
-                        logging.info("   ✅ 순환 import만 감지됨 (설치 문제 아님)")
-                        logging.info("   💡 순환 import는 pk_system 내부 모듈 간 의존성 문제입니다.")
-                        logging.info("   실제 사용 시에는 문제가 없을 수 있습니다.")
+                        logging.info("## 순환 import만 감지됨 (설치 문제 아님)")
+                        logging.info("## 순환 import는 pk_system 내부 모듈 간 의존성 문제입니다.")
+                        logging.info("## 실제 사용 시에는 문제가 없을 수 있습니다.")
                     return True  # 순환 import는 설치 문제가 아니므로 True 반환
             else:
                 logging.error(f"❌ pk_system import 검증 실패: {error_msg[:200]}")
-                logging.error("   Python 환경을 다시 시작하거나 가상 환경을 활성화하세요.")
+                logging.error("# Python 환경을 다시 시작하거나 가상 환경을 활성화하세요.")
                 return False
     except subprocess.TimeoutExpired:
         logging.error("❌ 설치 검증 시간 초과")
@@ -2131,19 +2181,19 @@ def print_usage_guide(project_root: Path):
     """사용 가이드 출력"""
     from textwrap import dedent
     
-    print("")
-    print("_" * 66)
-    print("# pk_system 사용 가이드")
-    print("")
+    logging.info("")
+    logging.info("_" * 66)
+    logging.info("# pk_system 사용 가이드")
+    logging.info("")
     
     # 1. 기본 사용
-    print("_" * 66)
-    print("# 1. 기본 사용")
+    logging.info("_" * 66)
+    logging.info("# 1. 기본 사용")
     usage_code = dedent("""\
-from temp.pk_system.pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
+from pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
     ensure_pk_system_env_file_setup
 )
-from temp.pk_system.pk_system_sources.pk_system_objects.pk_system_directories import (
+from pk_system_sources.pk_system_objects.pk_system_directories import (
     get_pk_system_root
 )
 
@@ -2153,23 +2203,23 @@ ensure_pk_system_env_file_setup()
 # 사용
 pk_root = get_pk_system_root()
 """)
-    print(usage_code)
+    logging.info(usage_code)
     
     # 2. .env 파일 설정
-    print("_" * 66)
-    print("# 2. .env 파일 설정")
-    print(f"프로젝트 루트의 부모 디렉토리에 .env 파일을 생성하세요.")
-    print(f"예: {project_root.parent / '.env'}")
-    print("")
+    logging.info("_" * 66)
+    logging.info("# 2. .env 파일 설정")
+    logging.info(f"프로젝트 루트의 부모 디렉토리에 .env 파일을 생성하세요.")
+    logging.info(f"예: {project_root.parent / '.env'}")
+    logging.info("")
     
     # 3. 문서
-    print("_" * 66)
-    print("# 3. 문서")
-    print("- 설치 가이드: pk_system_docs/library/INSTALLATION_GUIDE.md")
-    print("- 사용 가이드: pk_system_docs/library/USAGE_GUIDE.md")
-    print("- API 레퍼런스: pk_system_docs/library/API_REFERENCE.md")
-    print("")
-    print("_" * 66)
+    logging.info("_" * 66)
+    logging.info("# 3. 문서")
+    logging.info("- 설치 가이드: pk_system_docs/library/INSTALLATION_GUIDE.md")
+    logging.info("- 사용 가이드: pk_system_docs/library/USAGE_GUIDE.md")
+    logging.info("- API 레퍼런스: pk_system_docs/library/API_REFERENCE.md")
+    logging.info("")
+    logging.info("_" * 66)
 
 
 def main():
@@ -2285,12 +2335,12 @@ def main():
         
         if found_root:
             project_root = found_root
-            logging.info("💡 프로젝트 루트를 자동으로 찾았습니다:")
+            logging.info(" 프로젝트 루트를 자동으로 찾았습니다:")
             logging.info(f"   현재 디렉토리: {current_dir}")
             logging.info(f"   프로젝트 루트: {project_root}")
             if project_root != current_dir:
                 logging.info("")
-                logging.info("💡 다른 디렉토리를 사용하려면 --project-root 옵션을 사용하세요:")
+                logging.info(" 다른 디렉토리를 사용하려면 --project-root 옵션을 사용하세요:")
                 logging.info(f"   python install_pk_system.py --project-root /path/to/project")
             logging.info("")
         else:
@@ -2299,13 +2349,13 @@ def main():
             logging.warning("⚠️ 프로젝트 루트를 자동으로 찾지 못했습니다.")
             logging.warning(f"   현재 디렉토리를 프로젝트 루트로 사용합니다: {project_root}")
             logging.info("")
-            logging.info("💡 프로젝트 루트를 명시적으로 지정하려면 --project-root 옵션을 사용하세요:")
+            logging.info(" 프로젝트 루트를 명시적으로 지정하려면 --project-root 옵션을 사용하세요:")
             logging.info(f"   python install_pk_system.py --project-root /path/to/project")
             logging.info("")
     
-    print("_" * 66)
-    print("# pk_system 자동 설치 시작")
-    print("")
+    logging.info("_" * 66)
+    logging.info("# pk_system 자동 설치 시작")
+    logging.info("")
     logging.info(f"프로젝트 루트: {project_root}")
     if project_root != Path.cwd().resolve():
         logging.info(f"실행 디렉토리: {Path.cwd().resolve()}")
@@ -2323,7 +2373,7 @@ def main():
     if uv_exe != "uv":
         logging.info(f"uv 실행 파일 확인됨: {uv_exe}")
     else:
-        logging.info("✅ uv 명령어 확인됨 (시스템)")
+        logging.info(" uv 명령어 확인됨 (시스템)")
     
     # uv 프로젝트 확인
     pyproject_toml = project_root / "pyproject.toml"
@@ -2332,7 +2382,7 @@ def main():
         if not pyproject_toml.exists():
             logging.warning("⚠️ pyproject.toml 파일이 없습니다.")
             logging.info("")
-            logging.info("💡 이 스크립트는 uv 프로젝트를 사용합니다.")
+            logging.info(" 이 스크립트는 uv 프로젝트를 사용합니다.")
             logging.info("   pyproject.toml을 자동으로 생성할 수 있습니다.")
             logging.info("")
             logging.info("# 옵션")
@@ -2357,7 +2407,7 @@ def main():
             
             # uv add가 자동으로 pyproject.toml을 생성하는지 확인
             # uv add는 pyproject.toml이 없으면 자동으로 생성합니다
-            logging.info("💡 uv add 명령어가 pyproject.toml을 자동으로 생성합니다.")
+            logging.info(" uv add 명령어가 pyproject.toml을 자동으로 생성합니다.")
             logging.info("   계속 진행합니다...")
             logging.info("")
         else:
@@ -2373,7 +2423,7 @@ def main():
     # 이미 설치되어 있는지 확인
     auto_upgrade = False  # 전역 변수로 초기화
     if is_pk_system_installed(project_root) and not args.force:
-        logging.info("✅ pk_system이 이미 설치되어 있습니다.")
+        logging.info(" pk_system이 이미 설치되어 있습니다.")
         
         # Git URL이 main 브랜치를 사용하는 경우 최신화 여부 묻기
         git_url = build_git_url(
@@ -2387,7 +2437,7 @@ def main():
         # main 브랜치를 사용하고 태그/커밋이 지정되지 않은 경우 최신 버전 확인 후 묻기
         if not args.upgrade and not args.tag and not args.commit:
             if args.branch == DEFAULT_BRANCH or (not args.branch and DEFAULT_BRANCH in git_url):
-                logging.info("💡 main 브랜치를 사용 중입니다. 최신 버전 확인 중...")
+                logging.info(" main 브랜치를 사용 중입니다. 최신 버전 확인 중...")
                 has_newer, current_commit, latest_commit = check_if_newer_version_available(project_root, git_url)
                 
                 if has_newer:
@@ -2423,15 +2473,15 @@ def main():
                     uv_exe = find_uv_executable(project_root)
                     if uv_exe:
                         # uv sync 전에 pyproject.toml 구문 오류 수정 시도
-                        logging.info("💡 pyproject.toml 파일 검사 중...")
+                        logging.info(" pyproject.toml 파일 검사 중...")
                         if fix_pyproject_toml_dependency(project_root):
-                            logging.info("✅ pyproject.toml 수정 완료")
+                            logging.info(" pyproject.toml 수정 완료")
                         logging.info("")
-                        logging.info("📦 의존성 설치 중 (uv sync)...")
+                        logging.info(" 의존성 설치 중 (uv sync)...")
                         logging.info(f"   프로젝트 경로: {project_root}")
                         
                         if uv_exe != "uv":
-                            logging.info(f"💡 pk_system 내부 uv.exe 사용: {uv_exe}")
+                            logging.info(f" pk_system 내부 uv.exe 사용: {uv_exe}")
                         
                         # uv sync 실행 (의존성 충돌 발생 시 --frozen 사용)
                         sync_cmd = [uv_exe, 'sync'] if uv_exe != "uv" else ['uv', 'sync']
@@ -2468,7 +2518,7 @@ def main():
                                 )
                         
                         if sync_result.returncode == 0:
-                            logging.info("✅ 의존성 설치 완료 (uv sync)")
+                            logging.info(" 의존성 설치 완료 (uv sync)")
                             
                             # 최신화 확인: uv.lock에서 실제 설치된 커밋 해시 확인
                             if auto_upgrade:
@@ -2478,14 +2528,14 @@ def main():
                             
                             # 다시 검증
                             if verify_installation(project_root):
-                                logging.info("✅ 검증 성공!")
+                                logging.info(" 검증 성공!")
                                 print_usage_guide(project_root)
                                 sys.exit(0)
                             else:
                                 # 검증 실패 시 순환 import만 있는지 확인
                                 # 순환 import만 있고 의존성은 설치되었으므로 성공으로 간주
                                 logging.info("")
-                                logging.info("💡 의존성은 설치되었지만 순환 import가 감지되었습니다.")
+                                logging.info(" 의존성은 설치되었지만 순환 import가 감지되었습니다.")
                                 logging.info("   이것은 설치 문제가 아닐 수 있습니다.")
                                 logging.info("   실제 사용 시에는 문제가 없을 수 있습니다.")
                                 logging.info("")
@@ -2510,7 +2560,7 @@ def main():
                                 
                                 # pyproject.toml 수정 시도
                                 if fix_pyproject_toml_dependency(project_root):
-                                    logging.info("✅ pyproject.toml 수정 완료 - 다시 uv sync 시도 중...")
+                                    logging.info(" pyproject.toml 수정 완료 - 다시 uv sync 시도 중...")
                                     logging.info("")
                                     
                                     # 다시 uv sync 실행
@@ -2525,13 +2575,13 @@ def main():
                                     )
                                     
                                     if sync_result.returncode == 0:
-                                        logging.info("✅ 의존성 설치 완료 (uv sync)")
+                                        logging.info(" 의존성 설치 완료 (uv sync)")
                                         logging.info("")
                                         logging.info("설치 검증 재시도 중...")
                                         
                                         # 다시 검증
                                         if verify_installation(project_root):
-                                            logging.info("✅ 검증 성공!")
+                                            logging.info(" 검증 성공!")
                                             print_usage_guide(project_root)
                                             sys.exit(0)
                                         else:
@@ -2594,13 +2644,13 @@ def main():
     )
     
     if not success:
-        print("")
-        print("_" * 66)
-        print("# pk_system 설치 실패")
-        print("")
+        logging.error("")
+        logging.error("_" * 66)
+        logging.error("# pk_system 설치 실패")
+        logging.error("")
         
         if conflict_info:
-            logging.error("🔍 의존성 충돌 발견:")
+            logging.error(" 의존성 충돌 발견:")
             logging.error(f"   {conflict_info}")
             logging.error("")
             logging.error("# 해결 방법")
@@ -2650,10 +2700,10 @@ def main():
             sys.exit(1)
     
     # 성공 메시지 (시스템 규칙에 따른 출력 형식)
-    print("")
-    print("_" * 66)
-    print("# pk_system 설치 완료")
-    print("")
+    logging.info("")
+    logging.info("_" * 66)
+    logging.info("# pk_system 설치 완료")
+    logging.info("")
     
     # 최신화 여부 확인 (upgrade가 True인 경우)
     if was_upgraded:
@@ -2695,10 +2745,10 @@ if __name__ == "__main__":
         error_msg = str(e)
         # pyvenv.cfg 오류 특별 처리
         if "pyvenv.cfg" in error_msg or "failed to locate" in error_msg.lower():
-            print("")
-            print("_" * 66)
-            print("# Python 가상 환경 오류")
-            print("")
+            logging.error("")
+            logging.error("_" * 66)
+            logging.error("# Python 가상 환경 오류")
+            logging.error("")
             logging.error("가상 환경이 손상되었거나 경로 문제가 있습니다.")
             logging.error("")
             logging.error("# 해결 방법")
@@ -2708,10 +2758,10 @@ if __name__ == "__main__":
             logging.error("3. 또는 py launcher 사용:")
             logging.error("   py install_pk_system.py")
         else:
-            print("")
-            print("_" * 66)
-            print("# 예상치 못한 오류가 발생했습니다")
-            print("")
+            logging.error("")
+            logging.error("_" * 66)
+            logging.error("# 예상치 못한 오류가 발생했습니다")
+            logging.error("")
             logging.error(f"오류 타입: {type(e).__name__}")
             logging.error(f"오류 메시지: {error_msg}")
             logging.error("")
