@@ -1,14 +1,9 @@
-import sys
 from pathlib import Path
 
 from pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-
-# When running a script directly, its parent directory is added to sys.path.
-# To allow imports from the 'source' package, we need to add the project root.
-# This script is at 'source/functions/', so the project root is three levels up.
-_project_root = Path(__file__).resolve().parent.parent.parent
-if str(_project_root) not in sys.path:
-    sys.path.insert(0, str(_project_root))
+# _project_root = Path(__file__).resolve().parent.parent.parent
+# if str(_project_root) not in sys.path:
+#     sys.path.insert(0, str(_project_root))
 from pk_system.pk_system_sources.pk_system_functions.ensure_seconds_measured import ensure_seconds_measured
 
 
@@ -77,20 +72,82 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
 
     if fzf_cmd and os.path.exists(fzf_cmd):
         try:
-            last_choice = get_nx(last_choice).removeprefix(pk_)
-            processor = PkFzf(fzf_cmd=fzf_cmd, files=pk_wrapper_files, last_choice=last_choice)
-            returncode, selected_name, err = processor.run_ultra_fast_fzf()
+            # 1단계: 디렉토리명만 표시하기 위해 파일 경로에서 디렉토리명 추출
+            # 디렉토리별로 파일들을 그룹화
+            dir_to_files_map = {}
+            dir_names_for_fzf = []
 
-            if returncode == 0 and selected_name:
-                logging.debug(f"selected_name='{selected_name}'")
-                for pk_file in pk_wrapper_files:
-                    prefix = pk_
-                    if get_nx(pk_file).removeprefix(prefix) == selected_name.removeprefix(prefix):
-                        file_to_execute = pk_file
-                if file_to_execute:
-                    logging.debug(f"matched: {selected_name}")
+            for pk_file in pk_wrapper_files:
+                pk_file_path = Path(pk_file)
+                # 부모 디렉토리명 추출 (예: "Huvitz", "Jung_Hoon_Park")
+                dir_name = pk_file_path.parent.name
+                if dir_name not in dir_to_files_map:
+                    dir_to_files_map[dir_name] = []
+                    dir_names_for_fzf.append(dir_name)
+                dir_to_files_map[dir_name].append(pk_file)
+
+            # 중복 제거 (순서 유지)
+            unique_dir_names = list(dict.fromkeys(dir_names_for_fzf))
+
+            # last_choice도 디렉토리명으로 변환
+            last_choice_dir = None
+            last_choice_file = None
+            if last_choice:
+                try:
+                    last_choice_path = Path(last_choice)
+                    if last_choice_path.exists():
+                        last_choice_dir = last_choice_path.parent.name
+                        last_choice_file = get_nx(last_choice_path).removeprefix(pk_)
+                except:
+                    pass
+
+            # 1단계: 디렉토리 선택
+            processor = PkFzf(fzf_cmd=fzf_cmd, files=unique_dir_names, last_choice=last_choice_dir)
+            returncode, selected_dir_name, err = processor.run_ultra_fast_fzf()
+
+            if returncode == 0 and selected_dir_name:
+                logging.debug(f"selected_dir_name='{selected_dir_name}'")
+
+                # 선택된 디렉토리의 파일들 가져오기
+                files_in_dir = dir_to_files_map.get(selected_dir_name, [])
+
+                if len(files_in_dir) == 1:
+                    # 파일이 하나만 있으면 바로 선택
+                    file_to_execute = files_in_dir[0]
+                    logging.debug(f"single file in directory: {file_to_execute}")
+                elif len(files_in_dir) > 1:
+                    # 파일이 여러 개면 2단계: 파일 선택
+                    file_names_for_fzf = []
+                    for f in files_in_dir:
+                        file_name = get_nx(f).removeprefix(pk_)
+                        file_names_for_fzf.append(file_name)
+
+                    processor2 = PkFzf(fzf_cmd=fzf_cmd, files=file_names_for_fzf, last_choice=last_choice_file)
+                    returncode2, selected_file_name, err2 = processor2.run_ultra_fast_fzf()
+
+                    if returncode2 == 0 and selected_file_name:
+                        logging.debug(f"selected_file_name='{selected_file_name}'")
+                        # 선택된 파일명으로 파일 찾기
+                        for f in files_in_dir:
+                            file_name = get_nx(f).removeprefix(pk_)
+                            if file_name == selected_file_name or file_name.removeprefix(pk_) == selected_file_name.removeprefix(pk_):
+                                file_to_execute = f
+                                logging.debug(f"matched: {selected_file_name} -> {file_to_execute}")
+                                break
+                        if not file_to_execute:
+                            logging.debug(f"not matched: {selected_file_name}")
+                            file_to_execute = None
+                    elif returncode2 == 130:  # Ctrl+C
+                        logging.info(f"사용자가 Ctrl+C로 취소했습니다.")
+                        file_to_execute = None
+                    elif returncode2 != 0:
+                        logging.debug(f"fzf 오류 (code {returncode2}): {err2}")
+                        file_to_execute = None
+                    else:
+                        logging.info(f"사용자가 파일 선택을 취소했습니다.")
+                        file_to_execute = None
                 else:
-                    logging.debug(f"not matched: {selected_name}")
+                    logging.debug(f"선택된 디렉토리에 파일이 없습니다: {selected_dir_name}")
                     file_to_execute = None
             elif returncode == 130:  # Ctrl+C
                 logging.info(f"사용자가 Ctrl+C로 취소했습니다.")
@@ -99,7 +156,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
                 logging.debug(f"fzf 오류 (code {returncode}): {err}")
                 file_to_execute = None
             else:
-                logging.info(f"사용자가 선택을 취소했습니다.")
+                logging.info(f"사용자가 디렉토리 선택을 취소했습니다.")
                 file_to_execute = None
 
         except Exception as e:

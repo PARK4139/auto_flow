@@ -62,3 +62,4 @@ def ensure_f_LM_100_spindle_reliability_test_report_opened(file_path=None):
         ensure_debug_loged_verbose(traceback)
         return False
 
+

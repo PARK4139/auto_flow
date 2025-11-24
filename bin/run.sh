@@ -15,3 +15,4 @@ fi
 # 메인 스크립트 실행
 "$VENV_PYTHON" __main__.py
 
+
