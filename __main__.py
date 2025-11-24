@@ -1,5 +1,5 @@
-from pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
+from pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_system.pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
 
 try:
     import sys
