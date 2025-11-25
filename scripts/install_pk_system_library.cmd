@@ -94,13 +94,13 @@ if defined PIP_REQUIRE_VENV (
 
 REM Find script directory
 set "SCRIPT_DIR=%~dp0"
-set "PYTHON_SCRIPT=!SCRIPT_DIR!install_pk_system.py"
+set "PYTHON_SCRIPT=!SCRIPT_DIR!install_pk_system_library.py"
 
 REM Check if Python script exists
 if not exist "!PYTHON_SCRIPT!" (
     echo.
     echo __________________________________________________________________
-    echo # install_pk_system.py 파일을 찾을 수 없습니다
+    echo # install_pk_system_library.py 파일을 찾을 수 없습니다
     echo __________________________________________________________________
     echo.
     echo 경로: !PYTHON_SCRIPT!

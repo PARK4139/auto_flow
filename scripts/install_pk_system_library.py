@@ -2708,11 +2708,13 @@ def main():
                 sys.exit(0)
     
     # Determine Git URL
-    current_git_url = None
+    base_git_url = None
     if args.git_url:
-        current_git_url = args.git_url
+        base_git_url = args.git_url
     else:
-        current_git_url = DEFAULT_GIT_REPO
+        base_git_url = DEFAULT_GIT_REPO
+    
+    current_git_url = base_git_url
     
     # Git URL에 불필요한 '__main__.py'와 같은 문자열이 붙는 것을 방지하는 더 강력한 클린업
     if current_git_url and '__main__.py' in current_git_url:
@@ -2722,6 +2724,7 @@ def main():
         current_git_url = current_git_url.replace('__main__.py', '').strip()
         # 여러 공백으로 나뉜 경우 첫 부분만 사용 (가장 안전한 방법)
         current_git_url = current_git_url.split(' ')[0].strip()
+        base_git_url = current_git_url
     
     # Check if a specific branch/tag/commit is provided via arguments
     if args.branch:
@@ -2730,16 +2733,17 @@ def main():
         current_git_url = build_git_url(tag=args.tag, use_ssh=args.ssh, git_url=current_git_url)
     elif args.commit:
         current_git_url = build_git_url(commit=args.commit, use_ssh=args.ssh, git_url=current_git_url)
-        else:
-            current_git_url = build_git_url(use_ssh=args.ssh, git_url=current_git_url)
+    else:
+        current_git_url = build_git_url(use_ssh=args.ssh, git_url=current_git_url)
     
-        logging.info(f"Git URL: {current_git_url}")    logging.info("")
+    logging.info(f"Git URL: {current_git_url}")
+    logging.info("")
     
     # 설치 수행 (대화형 모드)
     was_upgraded = args.upgrade or args.force or auto_upgrade
     success, conflict_info = install_pk_system_interactive(
         project_root=project_root,
-        git_url=git_url,
+        git_url=current_git_url,
         dev=args.dev,
         upgrade=was_upgraded,
         frozen=args.frozen,
@@ -2819,7 +2823,7 @@ def main():
             tag=args.tag,
             commit=args.commit,
             use_ssh=args.ssh,
-            git_url=args.git_url
+            git_url=base_git_url
         )
         _verify_upgrade_success(project_root, git_url)
     
