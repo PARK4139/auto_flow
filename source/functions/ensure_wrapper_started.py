@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from pk_system.pk_system_sources.pk_system_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_system.pk_sources.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
 # _project_root = Path(__file__).resolve().parent.parent.parent
 # if str(_project_root) not in sys.path:
 #     sys.path.insert(0, str(_project_root))
-from pk_system.pk_system_sources.pk_system_functions.ensure_seconds_measured import ensure_seconds_measured
+from pk_system.pk_sources.pk_functions.ensure_seconds_measured import ensure_seconds_measured
 
 
 @ensure_seconds_measured
@@ -14,24 +14,24 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     import subprocess
     import time
     import traceback
-    from pk_system.pk_system_sources.pk_system_functions.ensure_slept import ensure_slept
-    from pk_system.pk_system_sources.pk_system_functions.ensure_value_completed_2025_11_11 import \
+    from pk_system.pk_sources.pk_functions.ensure_slept import ensure_slept
+    from pk_system.pk_sources.pk_functions.ensure_value_completed_2025_11_11 import \
         ensure_value_completed_2025_11_11
-    from pk_system.pk_system_sources.pk_system_functions.ensure_window_to_front import ensure_window_to_front
-    from pk_system.pk_system_sources.pk_system_functions.get_cached_files import get_cached_pk_system_wrappers_path
-    from pk_system.pk_system_sources.pk_system_functions.get_caller_name import get_caller_name
-    from pk_system.pk_system_sources.pk_system_functions.get_f_historical import get_history_file_path
-    from pk_system.pk_system_sources.pk_system_functions.get_file_id import get_file_id
-    from pk_system.pk_system_sources.pk_system_functions.get_fzf_command import get_fzf_command
-    from pk_system.pk_system_sources.pk_system_functions.get_last_choice_from_history_file import \
+    from pk_system.pk_sources.pk_functions.ensure_window_to_front import ensure_window_to_front
+    from pk_system.pk_sources.pk_functions.get_cached_files import get_cached_pk_system_wrappers_path
+    from pk_system.pk_sources.pk_functions.get_caller_name import get_caller_name
+    from pk_system.pk_sources.pk_functions.get_f_historical import get_history_file_path
+    from pk_system.pk_sources.pk_functions.get_file_id import get_file_id
+    from pk_system.pk_sources.pk_functions.get_fzf_command import get_fzf_command
+    from pk_system.pk_sources.pk_functions.get_last_choice_from_history_file import \
         get_last_choice_from_history_file
-    from pk_system.pk_system_sources.pk_system_functions.get_nx import get_nx
-    from pk_system.pk_system_sources.pk_system_functions.get_smart_file_selection_fast import \
+    from pk_system.pk_sources.pk_functions.get_nx import get_nx
+    from pk_system.pk_sources.pk_functions.get_smart_file_selection_fast import \
         get_smart_file_selection_fast
-    from pk_system.pk_system_sources.pk_system_functions.save_to_history import save_to_history
-    from pk_system.pk_system_sources.pk_system_objects.pk_fzf import PkFzf
-    from pk_system.pk_system_sources.pk_system_objects.pk_system_files import F_VENV_PYTHON_EXE
-    from pk_system.pk_system_sources.pk_system_objects.pk_system_not_organized import pk_
+    from pk_system.pk_sources.pk_functions.save_to_history import save_to_history
+    from pk_system.pk_sources.pk_objects.pk_fzf import PkFzf
+    from pk_system.pk_sources.pk_objects.pk_system_files import F_VENV_PYTHON_EXE
+    from pk_system.pk_sources.pk_objects.pk_system_not_organized import pk_
     from source.constants.directory_paths import D_HUVITS_WRAPPERS_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH
 
     func_n = get_caller_name()

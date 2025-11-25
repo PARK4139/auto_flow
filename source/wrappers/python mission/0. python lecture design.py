@@ -1,4 +1,4 @@
-from pk_system.pk_system_sources.pk_system_functions.ensure_spoken import ensure_spoken
+from pk_system.pk_sources.pk_functions.ensure_spoken import ensure_spoken
 
 step = 1  # 이거는 어디에 넣어둘까?
 total_step = 100

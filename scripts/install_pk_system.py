@@ -389,8 +389,9 @@ def is_pk_system_installed(project_root: Path) -> bool:
     # Python에서 import 확인 (클론된 pk_system 내부 python 우선 사용)
     python_exe = find_python_executable(project_root) or sys.executable
     try:
+        # 'pk_sources.pk_objects'를 사용하여 import 테스트
         result = subprocess.run(
-            [python_exe, '-c', 'from pk_system_sources.pk_system_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
+            [python_exe, '-c', 'from pk_sources.pk_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
             capture_output=True,
             text=True,
             encoding='utf-8',
@@ -1731,11 +1732,23 @@ def install_pk_system_with_uv_add(
                                     logging.debug(f"   {line}")
                 else:
                     logging.warning("⚠️ uv sync 실행 중 오류 발생")
-                    if sync_result.stderr:
-                        error_msg = sync_result.stderr.strip()
-                        logging.warning(f"   오류: {error_msg[:300]}")
+                    # 디버깅 강화: 오류 발생 시 항상 전체 stdout과 stderr 출력
                     if sync_result.stdout:
-                        logging.warning(f"   출력: {sync_result.stdout[:300]}")
+                        logging.error("")
+                        logging.error("__________________________________________________________________")
+                        logging.error("# uv sync stdout 전체 내용")
+                        logging.error("__________________________________________________________________")
+                        for line in sync_result.stdout.strip().split('\n'):
+                            logging.error(f"     ❌ {line}")
+                    
+                    if sync_result.stderr:
+                        logging.error("")
+                        logging.error("__________________________________________________________________")
+                        logging.error("# uv sync stderr 전체 내용")
+                        logging.error("__________________________________________________________________")
+                        for line in sync_result.stderr.strip().split('\n'):
+                            logging.error(f"     ❌ {line}")
+
                     logging.info("")
                     logging.info("수동으로 다음 명령어를 실행하여 의존성을 설치하세요:")
                     logging.info(f"cd {project_root}")
@@ -1933,28 +1946,6 @@ def verify_installation(project_root: Optional[Path] = None, verbose: bool = Tru
                 else:
                     logging.warning(f"⚠️ pyproject.toml 없음: {pyproject_toml}")
                 
-                # assets/pk_system 디렉토리 확인
-                pk_system_path = project_root / DEFAULT_INSTALL_PATH
-                if pk_system_path.exists():
-                    logging.info(f"## pk_system 디렉토리 존재: {pk_system_path}")
-                    # 주요 파일 확인
-                    pyproject_in_pk = pk_system_path / "pyproject.toml"
-                    if pyproject_in_pk.exists():
-                        logging.info(f"### pk_system/pyproject.toml 존재")
-                    sources_dir = pk_system_path / "pk_system_sources"
-                    if sources_dir.exists():
-                        logging.info(f"### pk_system_sources 디렉토리 존재")
-                        # 주요 모듈 확인
-                        test_file = sources_dir / "pk_system_objects" / "pk_system_directories.py"
-                        if test_file.exists():
-                            logging.info(f"### pk_system_directories.py 존재")
-                        else:
-                            logging.warning(f"⚠️ pk_system_directories.py 없음")
-                    else:
-                        logging.warning(f"⚠️ pk_system_sources 디렉토리 없음")
-                else:
-                    logging.warning(f"⚠️ pk_system 디렉토리 없음: {pk_system_path}")
-                
                 # .venv 확인
                 venv_path = project_root / ".venv"
                 if venv_path.exists():
@@ -1985,7 +1976,7 @@ try:
     # Lazy import를 위한 함수 내부 import
     def _test_import():
         try:
-            from pk_system_sources.pk_system_objects.pk_system_directories import (
+            from pk_sources.pk_objects.pk_system_directories import (
                 get_pk_system_root,
                 D_PK_SYSTEM
             )
@@ -2076,7 +2067,7 @@ import sys
 try:
     def _test_env_setup():
         try:
-            from pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
+            from pk_sources.pk_functions.ensure_pk_system_env_file_setup import (
                 ensure_pk_system_env_file_setup
             )
             return ensure_pk_system_env_file_setup()
@@ -2290,10 +2281,10 @@ def print_usage_guide(project_root: Path):
     logging.info("_" * 66)
     logging.info("# 1. 기본 사용")
     usage_code = dedent("""\
-from pk_system_sources.pk_system_functions.ensure_pk_system_env_file_setup import (
+from pk_sources.pk_functions.ensure_pk_system_env_file_setup import (
     ensure_pk_system_env_file_setup
 )
-from pk_system_sources.pk_system_objects.pk_system_directories import (
+from pk_sources.pk_objects.pk_system_directories import (
     get_pk_system_root
 )
 
@@ -2716,17 +2707,33 @@ def main():
             else:
                 sys.exit(0)
     
-    # Git URL 구성
-    git_url = build_git_url(
-        branch=args.branch or DEFAULT_BRANCH,
-        tag=args.tag,
-        commit=args.commit,
-        use_ssh=args.ssh,
-        git_url=args.git_url
-    )
+    # Determine Git URL
+    current_git_url = None
+    if args.git_url:
+        current_git_url = args.git_url
+    else:
+        current_git_url = DEFAULT_GIT_REPO
     
-    logging.info(f"Git URL: {git_url}")
-    logging.info("")
+    # Git URL에 불필요한 '__main__.py'와 같은 문자열이 붙는 것을 방지하는 더 강력한 클린업
+    if current_git_url and '__main__.py' in current_git_url:
+        # ' @__main__.py' 제거 (공백 포함)
+        current_git_url = current_git_url.replace(' @__main__.py', '').strip()
+        # '__main__.py'만 제거 (공백 없는 경우)
+        current_git_url = current_git_url.replace('__main__.py', '').strip()
+        # 여러 공백으로 나뉜 경우 첫 부분만 사용 (가장 안전한 방법)
+        current_git_url = current_git_url.split(' ')[0].strip()
+    
+    # Check if a specific branch/tag/commit is provided via arguments
+    if args.branch:
+        current_git_url = build_git_url(branch=args.branch, use_ssh=args.ssh, git_url=current_git_url)
+    elif args.tag:
+        current_git_url = build_git_url(tag=args.tag, use_ssh=args.ssh, git_url=current_git_url)
+    elif args.commit:
+        current_git_url = build_git_url(commit=args.commit, use_ssh=args.ssh, git_url=current_git_url)
+        else:
+            current_git_url = build_git_url(use_ssh=args.ssh, git_url=current_git_url)
+    
+        logging.info(f"Git URL: {current_git_url}")    logging.info("")
     
     # 설치 수행 (대화형 모드)
     was_upgraded = args.upgrade or args.force or auto_upgrade
