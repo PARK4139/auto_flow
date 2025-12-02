@@ -49,7 +49,7 @@ This will:
 source .venv/bin/activate
 
 # Test import
-python -c "from pk_system.pk_sources.pk_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())"
+python -c "from pk_system.pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())"
 ```
 
 ### Method 2: Manual Installation

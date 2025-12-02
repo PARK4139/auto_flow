@@ -5,10 +5,10 @@ import platform
 import subprocess
 from pathlib import Path
 
-from pk_system.pk_sources.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system.pk_sources.pk_objects.pk_system_directories import get_pk_system_root
-from pk_system.pk_sources.pk_functions.get_caller_name import get_caller_name
-from pk_system.pk_sources.pk_functions.ensure_slept import ensure_slept
+from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_system.pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root
+from pk_system.pk_internal_tools.pk_functions.get_caller_name import get_caller_name
+from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
 
 
 def ensure_d_pk_system_opened():

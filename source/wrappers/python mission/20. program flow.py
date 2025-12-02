@@ -1,9 +1,9 @@
 import logging
 
-from pk_sources.pk_functions.ensure_spoken import ensure_spoken
-from pk_sources.pk_functions.get_text_cyan import get_text_cyan
-from pk_sources.pk_functions.get_text_white import get_text_white
-from pk_sources.pk_objects.pk_system_not_organized import PK_UNDERLINE_SHORT, PK_UNDERLINE_HALF
+from pk_internal_tools.pk_functions.ensure_spoken import ensure_spoken
+from pk_internal_tools.pk_functions.get_text_cyan import get_text_cyan
+from pk_internal_tools.pk_functions.get_text_white import get_text_white
+from pk_internal_tools.pk_objects.pk_system_not_organized import PK_UNDERLINE_SHORT, PK_UNDERLINE_HALF
 
 step = 1     # 이거는 어디에 넣어둘까?
 total_step = 100

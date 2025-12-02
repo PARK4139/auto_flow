@@ -87,7 +87,7 @@
 - **그래도 안되면**: Cursor 터미널 재실행
 - **Windows PowerShell 인코딩**: PowerShell 환경에서 한글 깨짐 방지를 위해 `chcp 65001` 명령어를 실행하여 UTF-8 인코딩을 설정합니다.
 - **Gemini 작업 완료 알림**: Gemini 작업이 완료될 때마다 (반복적으로) `pk_ensure_gemini_cli_worked_done.py`를 실행하여 음성으로 알림.
-  - **실행 방법**: `.venv_windows\Scripts\activate`를 실행하여 가상 환경을 활성화한 후, `python C:\Users\wjdgn\Downloads\pk_system\pk_sources\pk_system_wrappers\pk_ensure_gemini_cli_worked_done.py` 명령을 실행합니다.
+  - **실행 방법**: `.venv_windows\Scripts\activate`를 실행하여 가상 환경을 활성화한 후, `python C:\Users\wjdgn\Downloads\pk_system\pk_internal_tools\pk_system_wrappers\pk_ensure_gemini_cli_worked_done.py` 명령을 실행합니다.
 - **Gemini 작업 완료 알림 예외**: `pk_ensure_gemini_cli_worked_done.py` 스크립트는 사용자의 사전 동의를 얻었으므로, 작업 완료 후 별도의 확인 없이 즉시 실행합니다.
 
 ### **규칙 동기화 규칙**
@@ -103,7 +103,7 @@
 - **자동 생성 파일**: `run_python_direct.py` 같은 자동 생성 파일은 **필요시 언제든 재생성 가능**
 
 ### **프로젝트 구조 이해**
-- **메인 함수**: `pk_sources/pk_functions/`이 **메인 함수들**이 위치한 핵심 디렉토리 (functions_split 대신)
+- **메인 함수**: `pk_internal_tools/pk_functions/`이 **메인 함수들**이 위치한 핵심 디렉토리 (functions_split 대신)
 - **실행 스크립트**: `pk_system_resources/pk_ensure_*.py` 파일들이 **직접 실행 가능한 스크립트**들
     - **시스템 시작 우선순위**: UV → Shell 스크립트 → Python 직접 실행 → 백업용 순서로 실행
 
@@ -151,7 +151,7 @@
 
 ### **LTA (Local Test Activate) 규칙**
 - **테스트 모드 플래그**: `LTA` 변수를 통해 테스트 모드와 일반 모드 구분
-- **테스트 환경 감지**: `pk_sources/pk_objects/pk_local_test_activate.py`에서 LTA 상태 확인
+- **테스트 환경 감지**: `pk_internal_tools/pk_objects/pk_local_test_activate.py`에서 LTA 상태 확인
 - **하드 코딩 테스트**: LTA 모드에서만 테스트용 하드 코딩된 값 사용 (URL, 설정 등)
 - **일반 모드 보호**: LTA가 False일 때는 사용자 입력이나 동적 값 사용
 - **테스트 코드 분리**: LTA 모드와 일반 모드의 로직을 명확하게 분리하여 작성
@@ -170,26 +170,26 @@
 - **레거시 변환**: str path 사용 시 Path 객체로 변환 (예: `D_PKG_WINDOWS` → `Path(D_PKG_WINDOWS)`)
 
 ### **코드 구조 규칙**
-- **클래스 작성**: `pk_sources/pk_objects`에 작성
-- **함수 작성**: `pk_sources/pk_functions`에 작성 (function_split 대신)
-- **래퍼 패턴**: pk_sources에 래퍼 작성 시 주변 래퍼의 패턴을 비교하여 재생성
+- **클래스 작성**: `pk_internal_tools/pk_objects`에 작성
+- **함수 작성**: `pk_internal_tools/pk_functions`에 작성 (function_split 대신)
+- **래퍼 패턴**: pk_internal_tools에 래퍼 작성 시 주변 래퍼의 패턴을 비교하여 재생성
 
 ### **함수 저장 위치 규칙**
-- **기본 저장 위치**: 모든 함수는 `pk_sources/pk_functions/` 디렉토리에 저장
-- **function_split 대체**: 기존 `pk_system_resources/function_split/` 대신 `pk_sources/pk_functions/` 사용
+- **기본 저장 위치**: 모든 함수는 `pk_internal_tools/pk_functions/` 디렉토리에 저장
+- **function_split 대체**: 기존 `pk_system_resources/function_split/` 대신 `pk_internal_tools/pk_functions/` 사용
 - **일관성 유지**: 프로젝트 전체에서 함수 저장 위치 통일
 - **파일명 규칙**: 함수 파일명은 `ensure_` 접두사 사용 (예: `ensure_cmd_exe_killed.py`). (단, `is_` 또는 `get_`으로 시작하는 파일은 예외)
 - **디렉토리 구조**: 함수별로 독립적인 파일로 분리하여 유지보수성 향상
 
 ### 객체 저장 위치 규칙
-- **기본 저장 위치**: 모든 클래스와 객체는 `pk_sources/pk_objects/` 디렉토리에 저장
+- **기본 저장 위치**: 모든 클래스와 객체는 `pk_internal_tools/pk_objects/` 디렉토리에 저장
 - **객체 분류**: State, Event, Handler, System, Machine 등 객체 관련 클래스는 pk_objects에 저장
 - **일관성 유지**: 프로젝트 전체에서 객체 저장 위치 통일
 - **파일명 규칙**: 객체 파일명은 기능별로 명확하게 구분 (예: `jarvis_state.py`, `losslesscut_pk_system_event.py`)
 - **디렉토리 구조**: 객체별로 독립적인 파일로 분리하여 유지보수성 향상
 
 ### 객체 직렬화 규칙 (to_json)
-- **`to_json()` 메서드 구현**: `pk_sources/pk_objects/`에 작성되는 모든 시스템 객체(데이터 클래스 등)는 `to_json()` 메서드를 반드시 포함해야 합니다.
+- **`to_json()` 메서드 구현**: `pk_internal_tools/pk_objects/`에 작성되는 모든 시스템 객체(데이터 클래스 등)는 `to_json()` 메서드를 반드시 포함해야 합니다.
 - **역할**: 이 메서드는 객체의 데이터를 외부 시스템과 연동하기 위한 표준 JSON 문자열로 변환하는 책임을 집니다.
 - **구현 방식**: `dataclasses.asdict()`나 유사한 방법을 통해 객체를 딕셔너리로 변환한 후, `json.dumps(..., ensure_ascii=False, indent=4)`를 사용하여 JSON 문자열을 생성합니다.
 
@@ -212,20 +212,20 @@
 - **적용 디자인패턴**: DDD 아키텍처 적용, MSA 적용, Docker-container는 MSA 단위로 구성
 - **환경구성요소**: 서버운영환경(AWS EC2), 도커환경(docker-compose, docker-compose.dev, docker-compose.prod), 파이썬virtual environment (python1.13 이상, uv.lock, pyproject.toml)
 - **서버구조**: vercel/page 서버(Next.js + TypeScript + Tailwind CSS + Zustand + NextAuth.js / React Native OAuth), AWS EC2/api서버(fastapi), AWS EC2/DB서버(postrege, Database 테이블 개수는 최소화하여 운영)
-- **함수 저장 표준**: 모든 함수는 `pk_sources/pk_functions/` 디렉토리에 저장하여 일관성 유지
+- **함수 저장 표준**: 모든 함수는 `pk_internal_tools/pk_functions/` 디렉토리에 저장하여 일관성 유지
 
 ### **프로젝트 구조 규칙**
 - **트리구조**:
   - `pk_system_resources/`: 정적 파일 및 외부 소스 리소스 디렉토리.
-  - `pk_sources/`: 파이썬 소스 코드의 최상위 루트 디렉토리.
+  - `pk_internal_tools/`: 파이썬 소스 코드의 최상위 루트 디렉토리.
   - `pk_system_tests/`: 테스트용 스크립트, 파일명에 `test_` prefix 패턴적용.
   - `pk_system_prompts/`: AI 기반 코드생성 명령용 프롬프트 모음.
   - `pk_system_logs/`: 프로그램 실행 결과를 저장하는 로그 디렉토리.
   - `pk_system_docs/`: 프로젝트 관련 문서.
   - `pk_system_cache/`: 시스템 캐시 파일.
   - `pk_system_sensitive/`: 민감한 정보 및 사용자별 설정 파일.
-- **함수 저장 위치**: 모든 함수는 `pk_sources/pk_functions/` 디렉토리에 저장.
-- **객체 저장 위치**: 모든 클래스는 `pk_sources/pk_objects/` 디렉토리에 저장.
+- **함수 저장 위치**: 모든 함수는 `pk_internal_tools/pk_functions/` 디렉토리에 저장.
+- **객체 저장 위치**: 모든 클래스는 `pk_internal_tools/pk_objects/` 디렉토리에 저장.
 
 ### **URLs 패턴 규칙**
 - **page 서버, api 서버 url 라우터에 적용**:
@@ -248,8 +248,8 @@
 - **Event Handler 분리**: 각 기능별로 독립적인 핸들러 구현
 
 ### **Event 시스템 구조**
-- **핵심 클래스**: `pk_sources/pk_objects/pk_system_event.py`에 기본 Event 시스템 클래스들 배치
-- **실행 스크립트**: `pk_sources/pk_functions/`에 Event 기반 실행 스크립트 배치 (functions_split 대신)
+- **핵심 클래스**: `pk_internal_tools/pk_objects/pk_system_event.py`에 기본 Event 시스템 클래스들 배치
+- **실행 스크립트**: `pk_internal_tools/pk_functions/`에 Event 기반 실행 스크립트 배치 (functions_split 대신)
 
 ### **Event 타입 정의**
 - **기본 이벤트**: `STATE_CHANGED`, `VIDEO_LOADED`, `EXPORT_STARTED`, `EXPORT_COMPLETED`
@@ -351,7 +351,7 @@
 
 ### **로깅 통일 규칙**
 - **F_PK_LOG 사용**: 모든 로깅은 `F_PK_LOG` 파일로 통일하여 작성
-- **로깅 위치**: `pk_sources/pk_objects/pk_system_files.py`에 정의된 `F_PK_LOG` 경로 사용
+- **로깅 위치**: `pk_internal_tools/pk_objects/pk_system_files.py`에 정의된 `F_PK_LOG` 경로 사용
 - **로깅 초기화**: `ensure_pk_system_log_initialized()` 함수로 로깅 시스템 초기화
 - ensure_pk_system_log_initialized(__file__) 이걸 호출하고 테스트하면 로깅이 될거
 - **일관성 유지**: 프로젝트 전체에서 동일한 로그 파일 사용으로 로그 통합 관리
@@ -375,7 +375,7 @@ def ensure_example_function():
     """함수 설명"""
     # lazy import로 순환 import 문제 해결
     try:
-        from assets.pk_system.pk_sources.pk_objects.pk_system_directories import D_PROJECT, D_PK_SYSTEM_TESTS
+        from assets.pk_system.pk_internal_tools.pk_objects.pk_system_directories import D_PROJECT, D_PK_SYSTEM_TESTS
     except ImportError:
         # fallback: 직접 경로 계산
         from pathlib import Path
@@ -430,7 +430,7 @@ def ensure_user_logged_in():
 ```
 
 ### **함수 파일 작성 규칙**
-- **`if __name__ == '__main__'` 금지**: `pk_sources/pk_functions/` 디렉토리에 생성되는 개별 함수 파일에는 `if __name__ == '__main__':` 블록을 작성하지 않습니다. 함수는 다른 모듈에서 호출하여 사용하는 것을 전제로 합니다.
+- **`if __name__ == '__main__'` 금지**: `pk_internal_tools/pk_functions/` 디렉토리에 생성되는 개별 함수 파일에는 `if __name__ == '__main__':` 블록을 작성하지 않습니다. 함수는 다른 모듈에서 호출하여 사용하는 것을 전제로 합니다.
 
 ### **예외 처리 규칙**
 - **`try...except` 구조**: 모든 주요 로직은 `try...except` 블록으로 감싸 예외 발생에 대비합니다.
@@ -546,7 +546,7 @@ def process_images_in_downloads():
 def process_images_in_directory(directory_path, allowed_extensions=None):
     """지정된 디렉토리의 이미지 파일을 처리"""
     if allowed_extensions is None:
-        from assets.pk_system.pk_sources.pk_objects.pk_file_extensions import IMAGE_EXTENSIONS
+        from assets.pk_system.pk_internal_tools.pk_objects.pk_file_extensions import IMAGE_EXTENSIONS
         allowed_extensions = IMAGE_EXTENSIONS
     
     # ... 유연한 로직
@@ -634,9 +634,9 @@ def ensure_target_files_classified_by_ngram(
 
 ### **핵심 디렉토리 구조**
 - **`pk_system_resources/`**: 정적 파일 및 외부 소스 리소스 디렉토리입니다.
-- **`pk_sources/`**: 파이썬 소스 코드의 최상위 루트 디렉토리입니다.
-- **`pk_sources/pk_objects/`**: 시스템 객체, 클래스, 상태 관리 등 공유 객체를 저장합니다.
-- **`pk_sources/pk_functions/`**: 프로젝트의 핵심 기능 함수들을 저장합니다.
+- **`pk_internal_tools/`**: 파이썬 소스 코드의 최상위 루트 디렉토리입니다.
+- **`pk_internal_tools/pk_objects/`**: 시스템 객체, 클래스, 상태 관리 등 공유 객체를 저장합니다.
+- **`pk_internal_tools/pk_functions/`**: 프로젝트의 핵심 기능 함수들을 저장합니다.
 - **`pk_system_tests/`**: 테스트 코드를 저장하며, 파일명에 `test_` 접두사를 사용합니다.
 
 ### **명명 규칙 원칙**

@@ -12,7 +12,7 @@ if str(_project_root) not in sys.path:
 # which handles the rest of the paths (like the submodule).
 import source.internal_setup
 
-from pk_system.pk_sources.pk_objects.pk_system_operation_options import \
+from pk_system.pk_internal_tools.pk_objects.pk_system_operation_options import \
     SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced
 
 
@@ -32,12 +32,12 @@ from source.constants.file_paths import (
 if __name__ == "__main__":
     import logging
 
-    from pk_system.pk_sources.pk_functions.ensure_target_filename_and_file_content_text_replaced import \
+    from pk_system.pk_internal_tools.pk_functions.ensure_target_filename_and_file_content_text_replaced import \
         ensure_target_filename_and_file_content_text_replaced
 
 
 
-    from pk_system.pk_sources.pk_functions.ensure_target_filenames_and_file_content_texts_replaced import \
+    from pk_system.pk_internal_tools.pk_functions.ensure_target_filenames_and_file_content_texts_replaced import \
         ensure_target_filenames_and_file_content_texts_replaced
 
     # pk_option : simple

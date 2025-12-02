@@ -6,14 +6,14 @@ Pathlib를 사용하여 크로스 플랫폼 호환성을 보장합니다.
 
 Note: pk_system is now installed as a library via pip/uv.
 To get pk_system paths, use:
-    from pk_system.pk_sources.pk_objects.pk_system_directories import get_pk_system_root
+    from pk_system.pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root
 """
 from pathlib import Path
 import os
 
 D_PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent # 프로젝트의 최상위 루트 디렉토리
-# D_PK_SYSTEM_PATH and D_pk_sources_PATH are deprecated.
-# pk_system is now installed as a library. Use get_pk_system_root() from pk_system.pk_sources instead.
+# D_PK_SYSTEM_PATH and D_pk_internal_tools_PATH are deprecated.
+# pk_system is now installed as a library. Use get_pk_system_root() from pk_system.pk_internal_tools instead.
 
 D_SOURCE_PATH =  Path(__file__).parent.parent # 현재 파일이 속한 'source' 디렉토리
 D_FUNCTIONS_PATH = D_SOURCE_PATH / "functions" # 'source' 디렉토리 내 'functions' 디렉토리

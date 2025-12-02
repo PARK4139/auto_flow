@@ -6,6 +6,9 @@ resource/
 output/
 temp/
 __pycache__/
+source/constants/__pycache__/
+source/functions/__pycache__/
+
 
 # files
 uv.exe

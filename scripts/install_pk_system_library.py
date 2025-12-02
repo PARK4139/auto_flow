@@ -389,9 +389,9 @@ def is_pk_system_installed(project_root: Path) -> bool:
     # Python에서 import 확인 (클론된 pk_system 내부 python 우선 사용)
     python_exe = find_python_executable(project_root) or sys.executable
     try:
-        # 'pk_sources.pk_objects'를 사용하여 import 테스트
+        # 'pk_internal_tools.pk_objects'를 사용하여 import 테스트
         result = subprocess.run(
-            [python_exe, '-c', 'from pk_sources.pk_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
+            [python_exe, '-c', 'from pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root; print(get_pk_system_root())'],
             capture_output=True,
             text=True,
             encoding='utf-8',
@@ -1976,7 +1976,7 @@ try:
     # Lazy import를 위한 함수 내부 import
     def _test_import():
         try:
-            from pk_sources.pk_objects.pk_system_directories import (
+            from pk_internal_tools.pk_objects.pk_system_directories import (
                 get_pk_system_root,
                 D_PK_SYSTEM
             )
@@ -2067,7 +2067,7 @@ import sys
 try:
     def _test_env_setup():
         try:
-            from pk_sources.pk_functions.ensure_pk_system_env_file_setup import (
+            from pk_internal_tools.pk_functions.ensure_pk_system_env_file_setup import (
                 ensure_pk_system_env_file_setup
             )
             return ensure_pk_system_env_file_setup()
@@ -2281,10 +2281,10 @@ def print_usage_guide(project_root: Path):
     logging.info("_" * 66)
     logging.info("# 1. 기본 사용")
     usage_code = dedent("""\
-from pk_sources.pk_functions.ensure_pk_system_env_file_setup import (
+from pk_internal_tools.pk_functions.ensure_pk_system_env_file_setup import (
     ensure_pk_system_env_file_setup
 )
-from pk_sources.pk_objects.pk_system_directories import (
+from pk_internal_tools.pk_objects.pk_system_directories import (
     get_pk_system_root
 )
 
