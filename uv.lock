@@ -131,10 +131,18 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pk-system" },
+    { name = "pluggy" },
+    { name = "pytest" },
+    { name = "pytest-ordering" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pk-system", git = "https://github.com/PARK4139/pk_system.git" }]
+requires-dist = [
+    { name = "pk-system", git = "https://github.com/PARK4139/pk_system.git" },
+    { name = "pluggy" },
+    { name = "pytest" },
+    { name = "pytest-ordering" },
+]
 
 [[package]]
 name = "bcrypt"
