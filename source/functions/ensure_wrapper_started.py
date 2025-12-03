@@ -15,6 +15,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     import time
     import traceback
     import glob
+    import shutil
     from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
     from pk_system.pk_internal_tools.pk_functions.ensure_value_completed_2025_11_11 import \
         ensure_value_completed_2025_11_11
@@ -69,6 +70,8 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     t3 = time.time()
     file_to_execute = None
     fzf_cmd = get_fzf_command()
+    if not fzf_cmd or not os.path.exists(fzf_cmd):
+        fzf_cmd = shutil.which('fzf')
 
     if fzf_cmd and os.path.exists(fzf_cmd):
         try:

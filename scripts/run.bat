@@ -1,19 +1,21 @@
 @echo off
 REM 프로젝트 루트 디렉토리로 이동
 cd /d "%~dp0\.."
-title auto_flow_setup
+title auto_flow_run
 
-echo Running setup script...
-REM run.py를 실행하기 위해 시스템 Python을 사용합니다.
-REM run.py가 가상환경을 생성하고 관리합니다.
-python scripts/run.py
+echo Running application...
 
-REM 오류 발생 시 일시 정지
-if errorlevel 1 (
-    echo.
-    echo Script failed with an error.
+REM 가상 환경을 활성화하고 메인 스크립트를 실행합니다.
+set "VENV_PATH=%~dp0\..\.venv"
+
+if not exist "%VENV_PATH%\Scripts\activate.bat" (
+    echo Virtual environment not found. Please run setup.bat first.
     pause
-) else (
-    echo.
-    echo Script completed successfully.
+    exit /b 1
 )
+
+call "%VENV_PATH%\Scripts\activate.bat"
+python __main__.py
+
+REM 스크립트가 종료되므로 비활성화가 필수는 아니지만, 좋은 습관입니다.
+call deactivate
