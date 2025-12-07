@@ -1,0 +1,14 @@
+if __name__ == "__main__":
+    import traceback
+    from pk_internal_tools.pk_functions.ensure_gemini_cli_worked_done import ensure_gemini_cli_worked_done
+    from pk_internal_tools.pk_functions.ensure_exception_routine_done import ensure_exception_routine_done
+    from pk_internal_tools.pk_functions.ensure_finally_routine_done import ensure_finally_routine_done
+    from pk_internal_tools.pk_objects.pk_directories import d_pk_root
+    from pk_internal_tools.pk_functions.ensure_pk_starting_routine_done import ensure_pk_starting_routine_done
+    ensure_pk_starting_routine_done(traced_file=__file__, traceback=traceback, window_relocate_mode=False)
+    try:
+        ensure_gemini_cli_worked_done()
+    except Exception as exception:
+        ensure_exception_routine_done(traced_file=__file__, traceback=traceback, exception=exception)
+    finally:
+        ensure_finally_routine_done(traced_file=__file__, d_pk_root=d_pk_root, console_log_block_mode=False)

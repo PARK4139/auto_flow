@@ -2,12 +2,12 @@ import sys
 import traceback
 from pathlib import Path
 
-from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system.pk_internal_tools.pk_functions.ensure_pnx_opened_by_ext import ensure_pnx_opened_by_ext
-from pk_system.pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
-from pk_system.pk_internal_tools.pk_functions.get_windows_opened import get_windows_opened
-from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
-from pk_system.pk_internal_tools.pk_functions.get_nx import get_nx
+from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_internal_tools.pk_functions.ensure_pnx_opened_by_ext import ensure_pnx_opened_by_ext
+from pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
+from pk_internal_tools.pk_functions.get_windows_opened import get_windows_opened
+from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+from pk_internal_tools.pk_functions.get_nx import get_nx
 
 
 def ensure_f_LM_100_spindle_reliability_test_report_opened(file_path=None):

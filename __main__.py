@@ -1,8 +1,8 @@
 try:
     import sys
     import traceback
-    from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
-    from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+    from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+    from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
     from source.functions.ensure_wrapper_started import ensure_wrapper_started
 
     if __name__ == '__main__':

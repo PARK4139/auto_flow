@@ -8,6 +8,7 @@ temp/
 __pycache__/
 source/constants/__pycache__/
 source/functions/__pycache__/
+pk_external_tools_lager_than_4MB/
 
 
 # files

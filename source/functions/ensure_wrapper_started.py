@@ -1,38 +1,39 @@
 from pathlib import Path
 
-from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
 # _project_root = Path(__file__).resolve().parent.parent.parent
 # if str(_project_root) not in sys.path:
 #     sys.path.insert(0, str(_project_root))
-from pk_system.pk_internal_tools.pk_functions.ensure_seconds_measured import ensure_seconds_measured
+from pk_internal_tools.pk_functions.ensure_seconds_measured import ensure_seconds_measured
 
 
 @ensure_seconds_measured
 def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     import logging
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
     import os
     import subprocess
     import time
     import traceback
     import glob
     import shutil
-    from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
-    from pk_system.pk_internal_tools.pk_functions.ensure_value_completed_2025_11_11 import \
+    from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+    from pk_internal_tools.pk_functions.ensure_value_completed_2025_11_11 import \
         ensure_value_completed_2025_11_11
-    from pk_system.pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
-    from pk_system.pk_internal_tools.pk_functions.get_caller_name import get_caller_name
-    from pk_system.pk_internal_tools.pk_functions.get_f_historical import get_history_file_path
-    from pk_system.pk_internal_tools.pk_functions.get_file_id import get_file_id
-    from pk_system.pk_internal_tools.pk_functions.get_fzf_command import get_fzf_command
-    from pk_system.pk_internal_tools.pk_functions.get_last_choice_from_history_file import \
+    from pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
+    from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
+    from pk_internal_tools.pk_functions.get_f_historical import get_history_file_path
+    from pk_internal_tools.pk_functions.get_file_id import get_file_id
+    from pk_internal_tools.pk_functions.get_fzf_command import get_fzf_command
+    from pk_internal_tools.pk_functions.get_last_choice_from_history_file import \
         get_last_choice_from_history_file
-    from pk_system.pk_internal_tools.pk_functions.get_nx import get_nx
-    from pk_system.pk_internal_tools.pk_functions.get_smart_file_selection_fast import \
+    from pk_internal_tools.pk_functions.get_nx import get_nx
+    from pk_internal_tools.pk_functions.get_smart_file_selection_fast import \
         get_smart_file_selection_fast
-    from pk_system.pk_internal_tools.pk_functions.save_to_history import save_to_history
-    from pk_system.pk_internal_tools.pk_objects.pk_fzf import PkFzf
-    from pk_system.pk_internal_tools.pk_objects.pk_files import F_VENV_PYTHON_EXE
-    from pk_system.pk_internal_tools.pk_objects.pk_not_organized import pk_
+    from pk_internal_tools.pk_functions.save_to_history import save_to_history
+    from pk_internal_tools.pk_objects.pk_fzf import PkFzf
+    from pk_internal_tools.pk_objects.pk_files import F_VENV_PYTHON_EXE
+    from pk_internal_tools.pk_objects.pk_files import PK_UNDERSCORE
     from source.constants.directory_paths import D_HUVITS_WRAPPERS_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH
 
     func_n = get_caller_name()
@@ -100,7 +101,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
                     last_choice_path = Path(last_choice)
                     if last_choice_path.exists():
                         last_choice_dir = last_choice_path.parent.name
-                        last_choice_file = get_nx(last_choice_path).removeprefix(pk_)
+                        last_choice_file = get_nx(last_choice_path).removeprefix(PK_UNDERSCORE)
                 except:
                     pass
 
@@ -122,7 +123,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
                     # 파일이 여러 개면 2단계: 파일 선택
                     file_names_for_fzf = []
                     for f in files_in_dir:
-                        file_name = get_nx(f).removeprefix(pk_)
+                        file_name = get_nx(f).removeprefix(PK_UNDERSCORE)
                         file_names_for_fzf.append(file_name)
 
                     processor2 = PkFzf(fzf_cmd=fzf_cmd, files=file_names_for_fzf, last_choice=last_choice_file)
@@ -132,8 +133,8 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
                         logging.debug(f"selected_file_name='{selected_file_name}'")
                         # 선택된 파일명으로 파일 찾기
                         for f in files_in_dir:
-                            file_name = get_nx(f).removeprefix(pk_)
-                            if file_name == selected_file_name or file_name.removeprefix(pk_) == selected_file_name.removeprefix(pk_):
+                            file_name = get_nx(f).removeprefix(PK_UNDERSCORE)
+                            if file_name == selected_file_name or file_name.removeprefix(PK_UNDERSCORE) == selected_file_name.removeprefix(PK_UNDERSCORE):
                                 file_to_execute = f
                                 logging.debug(f"matched: {selected_file_name} -> {file_to_execute}")
                                 break
@@ -188,8 +189,8 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     #  성능 최적화 실행
     file_to_execute = os.path.normpath(file_to_execute)
     filename_to_display = get_nx(file_to_execute)
-    if filename_to_display.startswith(pk_):
-        filename_to_display = filename_to_display.removeprefix(pk_)
+    if filename_to_display.startswith(PK_UNDERSCORE):
+        filename_to_display = filename_to_display.removeprefix(PK_UNDERSCORE)
     os_name = os.name
     logging.info(f'os_name={os_name}')
     logging.info(f"실행 중: {filename_to_display}")
@@ -209,6 +210,7 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     # cmd = rf'start "" "{F_VENV_PYTHON_EXE}" "{file_to_execute}"'
     # cmd = rf'"{F_VENV_PYTHON_EXE}" "{file_to_execute}"'
     # ensure_command_executed(cmd, mode='a')
+    logging.debug(f"Attempting to run: {F_VENV_PYTHON_EXE} {file_to_execute}")
     subprocess.Popen([F_VENV_PYTHON_EXE, file_to_execute], creationflags=subprocess.CREATE_NEW_CONSOLE)
     logging.debug(f"pk system wrapper 실행 완료")
 

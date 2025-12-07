@@ -4,8 +4,8 @@ import subprocess
 import traceback
 from pathlib import Path
 
-from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system.pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root
+from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root
 
 def ensure_d_pk_system_opened():
     """

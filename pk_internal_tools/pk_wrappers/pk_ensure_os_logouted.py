@@ -1,0 +1,108 @@
+# # from pk_internal_tools.pk_objects.500_live_logic import ensure_process_killed, get_process_name_list, get_list_sorted_element, ensure_command_executed
+# from pk_internal_tools.pk_objects.500_live_logic import ensure_command_executed
+
+# process_name_list = get_process_name_list()
+# process_name_list = get_list_sorted_element(working_list=process_name_list, mode_asc=1)
+# for process_name in process_name_list:
+#     print(process_name)
+
+# INCLUDE_PROCESSES = {
+#     "chrome.exe",
+#     # "AggregatorHost.exe",
+#     # "AYCAgent.ayc",
+#     # "AYCRTSrv.ayc",
+#     # "AYCUpdSrv.ayc",
+#     # "AYCWSSrv.ayc",
+#     # "AYIA.exe",
+#     # "AYIASrv.exe",
+#     # "cmd.exe",
+#     # "conhost.exe",
+#     # "CrossDeviceService.exe",
+#     # "csrss.exe",
+#     # "ctfmon.exe",
+#     # "DAX3API.exe",
+#     # "dllhost.exe",
+#     # "dwm.exe",
+#     # "eausvc.exe",
+#     "Everything.exe",
+#     # "explorer.exe",
+#     # "fontdrvhost.exe",
+#     # "fsnotifier.exe",
+#     # "GoodixWOTService_0.0.0.4.exe",
+#     # "IDBWM.exe",
+#     # "IDBWMService.exe",
+#     # "Intel_PIE_Service.exe",
+#     # "IntelAnalyticsService.exe",
+#     # "IntelAudioService.exe",
+#     # "IntelConnect.exe",
+#     # "IntelConnectivityNetworkService.exe",
+#     # "IntelConnectService.exe",
+#     # "ipf_uf.exe",
+#     # "ipfsvc.exe",
+#     # "LsaIso.exe",
+#     # "lsass.exe",
+#     # "MaximServiceShell64.exe",
+#     # "MemCompression",
+#     # "MoUsoCoreWorker.exe",
+#     # "NgcIso.exe",
+#     # "OfficeClickToRun.exe",
+#     # "OffloadItemService.exe",
+#     # "OneApp.IGCC.WinService.exe",
+#     # "OpenConsole.exe",
+#     # "PhoneExperienceHost.exe",
+#     # "pycharm64.exe",
+#     "python.exe",
+#     # "python3.12.exe",
+#     # "Registry",
+#     # "remoting_host.exe",
+#     # "RtkAudUService64.exe",
+#     # "rundll32.exe",
+#     # "RuntimeBroker.exe",
+#     # "SamsungMultiControlService.exe",
+#     # "SamsungSettingsHost.exe",
+#     # "SamsungSystemSupportEngine.exe",
+#     # "SamsungSystemSupportService.exe",
+#     # "SamsungWiFi_UHB_Setting_Service.exe",
+#     # "SearchHost.exe",
+#     # "SearchIndexer.exe",
+#     # "SearchProtocolHost.exe",
+#     # "SecurityHealthService.exe",
+#     # "services.exe",
+#     # "ShellExperienceHost.exe",
+#     # "sihost.exe",
+#     # "smartscreen.exe",
+#     # "smss.exe",
+#     # "spoolsv.exe",
+#     # "StartMenuExperienceHost.exe",
+#     # "svchost.exe",
+#     # "System Idle Process",
+#     # "System",
+#     # "SystemPlatformEngine.exe",
+#     # "TabTip.exe",
+#     "TeamViewer_Service.exe",
+#     # "TextInputHost.exe",
+#     # "tvnserver.exe",
+#     # "usbipd.exe",
+#     # "vcxsrv.exe",
+#     # "vmcompute.exe",
+#     # "WidgetService.exe",
+#     # "WindowsTerminal.exe",
+#     # "wininit.exe",
+#     # "winlogon.exe",
+#     # "wlanext.exe",
+#     # "WmiPrvSE.exe",
+#     # "WMIRegistrationService.exe",
+#     # "wslservice.exe",
+#     # "WUDFHost.exe",
+# }
+#
+# for img_name in INCLUDE_PROCESSES:
+#     ensure_process_killed(img_name=img_name)
+
+
+cmd_list = [
+    'logoff',
+]
+
+for cmd in cmd_list:
+    ensure_command_executed(cmd=cmd)

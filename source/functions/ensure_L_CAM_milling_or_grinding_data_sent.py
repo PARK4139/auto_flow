@@ -4,9 +4,9 @@ import os
 import logging
 from pathlib import Path
 
-from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
-from pk_system.pk_internal_tools.pk_functions.get_caller_name import get_caller_name
+from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
 
 
 def ensure_L_CAM_milling_or_grinding_data_sent(
@@ -60,7 +60,7 @@ def ensure_L_CAM_milling_or_grinding_data_sent(
         ensure_slept(milliseconds=1000)
         
         # 파일을 첨부하기 위해 클립보드에 파일 경로 복사 (수동 첨부 필요)
-        from pk_system.pk_internal_tools.pk_functions.ensure_text_saved_to_clipboard import ensure_text_saved_to_clipboard
+        from pk_internal_tools.pk_functions.ensure_text_saved_to_clipboard import ensure_text_saved_to_clipboard
         ensure_text_saved_to_clipboard(str(data_file_path))
         
         logging.info(f"{func_n}: 이메일 클라이언트가 열렸습니다. 파일 경로가 클립보드에 복사되었습니다.")

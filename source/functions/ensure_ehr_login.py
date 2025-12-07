@@ -4,10 +4,10 @@ import os
 import webbrowser
 from pathlib import Path
 
-from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system.pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
-from pk_system.pk_internal_tools.pk_functions.get_windows_opened import get_windows_opened
-from pk_system.pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
+from pk_internal_tools.pk_functions.get_windows_opened import get_windows_opened
+from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
 
 
 def ensure_ehr_login(ehr_url=None):

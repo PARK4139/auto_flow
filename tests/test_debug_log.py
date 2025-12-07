@@ -11,9 +11,9 @@ if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
 
 # Now, imports from pk_system should work (pk_system is installed as a library)
-from pk_system.pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-from pk_system.pk_internal_tools.pk_functions.ensure_pk_system_log_initialized import ensure_pk_system_log_initialized
-from pk_system.pk_internal_tools.pk_objects.pk_system_files import F_PK_SYSTEM_ERROR_ISOLATED_LOG
+from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
+from pk_internal_tools.pk_functions.ensure_pk_system_log_initialized import ensure_pk_system_log_initialized
+from pk_internal_tools.pk_objects.pk_system_files import F_PK_SYSTEM_ERROR_ISOLATED_LOG
 
 @pytest.mark.order(1)
 def test_ensure_debug_loged_verbose_creates_and_writes_to_log():
