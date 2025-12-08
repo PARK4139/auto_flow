@@ -1,14 +1,30 @@
 Traceback (most recent call last):
-  File "C:\Users\wjdgn\Downloads\auto_flow\__main__.py", line 11, in <module>
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\__main__.py", line 13, in <module>
     ensure_wrapper_started()
-  File "C:\Users\wjdgn\Downloads\auto_flow\pk_internal_tools\pk_functions\ensure_seconds_measured.py", line 15, in wrapper
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_seconds_measured.py", line 15, in wrapper
     result = func(*args, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\wjdgn\Downloads\auto_flow\source\functions\ensure_wrapper_started.py", line 214, in ensure_wrapper_started
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\functions\execute_auto_flow.py", line 210, in ensure_wrapper_started
     subprocess.Popen([F_VENV_PYTHON_EXE, file_to_execute], creationflags=subprocess.CREATE_NEW_CONSOLE)
-  File "C:\Users\wjdgn\AppData\Roaming\uv\python\cpython-3.12.11-windows-x86_64-none\Lib\subprocess.py", line 1026, in __init__
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py", line 1039, in __init__
     self._execute_child(args, executable, preexec_fn, close_fds,
-  File "C:\Users\wjdgn\AppData\Roaming\uv\python\cpython-3.12.11-windows-x86_64-none\Lib\subprocess.py", line 1538, in _execute_child
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py", line 1554, in _execute_child
     hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
-                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                             # no special security
+                             ^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                             cwd,
+                             ^^^^
+                             startupinfo)
+                             ^^^^^^^^^^^^
 FileNotFoundError: [WinError 2] 지정된 파일을 찾을 수 없습니다

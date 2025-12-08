@@ -5,7 +5,7 @@ from pathlib import Path
 # 현재 파일의 부모 디렉토리 (pk_objects)
 D_PK_OBJECTS_PATH = Path(__file__).parent
 # 프로젝트 루트 디렉토리 (pk_objects -> pk_internal_tools -> auto_flow)
-D_PROJECT_ROOT_PATH = D_PK_OBJECTS_PATH.parent.parent.parent
+D_PROJECT_ROOT_PATH = D_PK_OBJECTS_PATH.parent.parent
 
 # .venv/Scripts/python.exe 경로
 F_VENV_PYTHON_EXE = D_PROJECT_ROOT_PATH / ".venv" / "Scripts" / "python.exe"

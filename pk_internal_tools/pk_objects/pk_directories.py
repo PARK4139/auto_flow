@@ -78,7 +78,6 @@ if platform.system().lower() == "windows":
     D_ARCHIVED = D_PK_WORKING / "pk_archived"
 
     # external_repo
-    D_AUTO_FLOW_REPO = D_DOWNLOADS / "auto_flow"  # TODO : APPLY RELATIVE PATH FOR EXTERNAL REPO
     D_PK_MEMO_REPO = D_DOWNLOADS / "pk_memo"  # TODO : DEPRECATE
     D_BUSINESS_FLOW_REPO = D_DOWNLOADS / "business_flow"
 

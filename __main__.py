@@ -3,10 +3,12 @@ try:
     import traceback
     from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
     from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
-    from source.functions.ensure_wrapper_started import ensure_wrapper_started
+    from pk_internal_tools.pk_functions.ensure_pk_log_initialized import ensure_pk_log_initialized
+    from business_logic.functions.execute_auto_flow import ensure_wrapper_started
 
     if __name__ == '__main__':
         try:
+            ensure_pk_log_initialized(__file__)
             while True:
                 ensure_wrapper_started()
                 ensure_slept(milliseconds=50)

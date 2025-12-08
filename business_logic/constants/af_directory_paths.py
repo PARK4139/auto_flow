@@ -11,6 +11,8 @@ To get pk_system paths, use:
 from pathlib import Path
 import os
 
+from pk_internal_tools.pk_objects.pk_directories import D_DESKTOP
+
 D_PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent # 프로젝트의 최상위 루트 디렉토리
 # D_PK_SYSTEM_PATH and D_pk_internal_tools_PATH are deprecated.
 # pk_system is now installed as a library. Use get_pk_system_root() from pk_internal_tools instead.
@@ -20,6 +22,7 @@ D_FUNCTIONS_PATH = D_SOURCE_PATH / "functions" # 'source' 디렉토리 내 'func
 D_WRAPPERS_PATH = D_SOURCE_PATH / "wrappers" # 'source' 디렉토리 내 'wrappers' 디렉토리
 D_HUVITS_WRAPPERS_PATH = D_WRAPPERS_PATH / "Huvitz" # Huvitz 관련 래퍼 파일들이 위치한 디렉토리
 D_JUNG_HOON_PARK_WRAPPERS_PATH = D_WRAPPERS_PATH / "Jung_Hoon_Park" # 박정훈 관련 래퍼 파일들이 위치한 디렉토리
+D_AUTO_FLOW_REPO = D_DESKTOP / "박정훈" / "auto_flow"  # TODO : APPLY RELATIVE PATH FOR EXTERNAL REPO
 
 
 # Define D_DOWNLOADS_PATH based on user's home directory
@@ -30,3 +33,6 @@ if D_USER_PROFILE_PATH:
 else:
     # Fallback to a default, though this is unlikely to be correct
     D_DOWNLOADS_PATH = Path.home() / 'Downloads'
+
+
+

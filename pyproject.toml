@@ -6,4 +6,5 @@ dependencies = [
     "pytest",
     "pytest-ordering",
     "pluggy",
+    "clipboard>=0.0.4",
 ]

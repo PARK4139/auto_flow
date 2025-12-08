@@ -27,10 +27,7 @@ def get_pk_root() -> Path:
                 try:
                     import toml
                     config = toml.load(pyproject_toml)
-                    if config.get('project', {}).get('name') == 'pk_system':
-                        # 프로젝트 루트를 반환 (pk_system가 아닌 실제 루트)
-                        # pyproject.toml이 있는 디렉토리가 프로젝트 루트
-
+                    if "project" in config:
                         return current
                 except Exception:
                     pass

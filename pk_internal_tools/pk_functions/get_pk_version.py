@@ -15,7 +15,7 @@ def get_pk_version(project_info=None):
         # 설치 안 되어 있으면 pyproject 파싱으로 폴백
         from pk_internal_tools.pk_functions.get_project_info_from_pyproject import get_project_info_from_pyproject
         project_info = project_info or get_project_info_from_pyproject()
-        v = project_info.get("version", "unknown")
+        v = project_info.data.get("version", "unknown")
 
     # 메타데이터에 로컬 버전(+gHASH…)이 없으면, 가능한 경우 git 해시 추가
     if '+' not in v:

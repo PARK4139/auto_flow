@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from business_logic.constants.af_directory_paths import D_JUNG_HOON_PARK_WRAPPERS_PATH, D_HUVITS_WRAPPERS_PATH
 from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
 # _project_root = Path(__file__).resolve().parent.parent.parent
 # if str(_project_root) not in sys.path:
@@ -33,7 +34,6 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     from pk_internal_tools.pk_objects.pk_fzf import PkFzf
     from pk_internal_tools.pk_objects.pk_files import F_VENV_PYTHON_EXE
     from pk_internal_tools.pk_objects.pk_not_organized import pk_
-    from source.constants.directory_paths import D_HUVITS_WRAPPERS_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH
 
     func_n = get_caller_name()
 
@@ -188,6 +188,8 @@ def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
     os_name = os.name
     logging.info(f'os_name={os_name}')
     logging.info(f"실행 중: {filename_to_display}")
+    logging.debug(f"F_VENV_PYTHON_EXE = {F_VENV_PYTHON_EXE}")
+    logging.debug(f"file_to_execute = {file_to_execute}")
     if os_name == 'nt':  # Windows
         # cmd = f'start "" cmd.exe /k "python "{file_to_execute}""'
         cmd = f'start "" {F_VENV_PYTHON_EXE} "{file_to_execute}"'
