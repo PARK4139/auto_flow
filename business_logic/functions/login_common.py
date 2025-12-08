@@ -107,13 +107,17 @@ def common_login(
         WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.ID, login_check_element_id))
         )
-        actual_text = driver.find_element(By.ID, login_check_element_id).text
-        if actual_text == login_check_element_text:
-            logging.info(f"로그인이 성공적으로 완료되었습니다. '{login_check_element_text}' 객체 확인.")
+        if login_check_element_text: # Only check text if it's provided
+            actual_text = driver.find_element(By.ID, login_check_element_id).text
+            if actual_text == login_check_element_text:
+                logging.info(f"로그인이 성공적으로 완료되었습니다. '{login_check_element_text}' 객체 확인.")
+                return True
+            else:
+                logging.warning(f"로그인 완료 객체는 찾았으나 텍스트가 '{login_check_element_text}'이 아닙니다. 실제 텍스트: '{actual_text}'")
+                return False
+        else: # If no specific text is provided, just check for element presence
+            logging.info(f"로그인이 성공적으로 완료되었습니다. '{login_check_element_id}' 객체 확인 (텍스트 검증 제외).")
             return True
-        else:
-            logging.warning(f"로그인 완료 객체는 찾았으나 텍스트가 '{login_check_element_text}'이 아닙니다. 실제 텍스트: '{actual_text}'")
-            return False
     except:
         logging.error(f"로그인 완료 객체 ('{login_check_element_id}')를 찾을 수 없습니다.")
         debug_html_func(driver, "로그인 실패 시")
@@ -156,8 +160,8 @@ if __name__ == "__main__":
             id_field_id="txtId", # Example for common fields
             password_field_id="txtPwd", # Example for common fields
             login_button_id="btnLogin", # Example for common fields
-            login_check_element_id="S_WORK_STA_BTN", # Example for common fields
-            login_check_element_text="업무시작", # Example for common fields
+            login_check_element_id="Left_Navigator_lblMail", # Example for common fields
+            login_check_element_text="", # Check only for presence, not specific text
             initial_check_element_id="txtId", # Example: check for ID field on login page
             func_n=get_nx(__file__),
             debug_html_func=_debug_html,
@@ -173,6 +177,7 @@ if __name__ == "__main__":
         ensure_exception_routine_done(traced_file=__file__, traceback=traceback, exception=exception)
     finally:
         if driver:
+            input("continue:enter") # Pause before quitting the browser
             logging.info("브라우저 종료 중...")
             driver.quit()
         ensure_finally_routine_done(traced_file=__file__, d_pk_root=d_pk_root)

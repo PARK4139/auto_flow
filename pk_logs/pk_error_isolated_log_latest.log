@@ -1,15 +1,33 @@
 Traceback (most recent call last):
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\functions\get_auto_flow_path.py", line 10, in get_auto_flow_path
-    auto_flow_path = ensure_env_var_completed(
-        key_name="auto_flow_path",
-        func_n=func_n,
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\wrappers\Huvitz\Huvitz mail 열기.py", line 138, in <module>
+    mail_button = WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.XPATH, "//a[contains(@onclick, 'go_email()') and .//img[contains(@src, '/Images/common/icon_mail.png')]]"))
     )
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_seconds_measured.py", line 15, in wrapper
-    result = func(*args, **kwargs)
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_env_var_completed.py", line 17, in ensure_env_var_completed
-    return ensure_env_var_completed_2025_11_24(key_name=key_name, func_n=func_n, mask_log=mask_log, sensitive_masking_mode=sensitive_masking_mode, options=options, history_reset=history_reset, guide_text=guide_text)
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_seconds_measured.py", line 15, in wrapper
-    result = func(*args, **kwargs)
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_env_var_completed_2025_11_24.py", line 24, in ensure_env_var_completed_2025_11_24
-    from dotenv import set_key
-ModuleNotFoundError: No module named 'dotenv'
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\.venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 122, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x9f4103
+	0x9f4144
+	0x7fe71d
+	0x84a03d
+	0x84a41b
+	0x8917f2
+	0x86c954
+	0x88ee17
+	0x86c706
+	0x83da30
+	0x83ed54
+	0xc657b4
+	0xc6098a
+	0xa1c392
+	0xa0c4c8
+	0xa1324d
+	0x9fc478
+	0x9fc63c
+	0x9e67ca
+	0x76145d49
+	0x7757d6db
+	0x7757d661
+
