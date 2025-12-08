@@ -10,14 +10,14 @@ if str(_project_root) not in sys.path:
 
 # Now that the project root is on the path, we can import the setup script
 # which handles the rest of the paths (like the submodule).
-import source.internal_setup
+# import source.internal_setup # Removed as 'source' directory no longer exists
 
 from pk_internal_tools.pk_objects.pk_system_operation_options import \
-    SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced
+    SetupOpsForPnxReplacement
 
 
-from source.constants.directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
-from source.constants.file_paths import (
+from business_logic.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
+from business_logic.constants.af_file_paths import (
     F_GITIGNORE_PATH,
     F_GITIGNORE_PUBLIC_PATH,
     F_GEMINI_MD_PATH,
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # pk_option : simple
     # old_text = '업무자동화'
     # new_text = 'auto_flow'
-    old_text = 'ensure_wrapper_started'
+    old_text = 'ensure_custom_cli_started'
     new_text = 'ensure_custom_cli_started'
     # pk_ensure_target_filenames_and_file_content_texts_replaced
 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     # pk_option : keep cases
     for d_target in d_targets:
         logging.debug(f'''d_target={d_target} ''')
-        ensure_target_filenames_and_file_content_texts_replaced(d_target=d_target, old_text=old_text, new_text=new_text, target_extensions=target_extensions, ignored_directory_names=ignored_directory_names, operation_mode=SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced.BOTH)
+        ensure_target_filenames_and_file_content_texts_replaced(d_target=d_target, old_text=old_text, new_text=new_text, target_extensions=target_extensions, ignored_directory_names=ignored_directory_names, operation_mode=SetupOpsForPnxReplacement.FILE_NAMES_AND_CONTENTS_ONLY)
 
 
     f_targets = [
@@ -173,4 +173,7 @@ if __name__ == "__main__":
         F_ENV_PATH,
     ]
     for f_target in f_targets:
-        ensure_target_filename_and_file_content_text_replaced(f_target=f_target, old_text=old_text, new_text=new_text,operation_mode=SetupOpsForEnsureTargetFilenameAndFileContentTextReplacedAdvanced.BOTH)
+        if f_target.exists():
+            ensure_target_filename_and_file_content_text_replaced(f_target=f_target, old_text=old_text, new_text=new_text,operation_mode=SetupOpsForPnxReplacement.FILE_NAMES_AND_CONTENTS_ONLY)
+        else:
+            logging.debug(f"[SKIP] 파일이 존재하지 않습니다: {f_target}")

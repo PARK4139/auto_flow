@@ -2,7 +2,7 @@
 
 ## Core Functions
 
-### `ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False)`
+### `ensure_custom_cli_started(pk_wrapper_files=None, mode_window_front=False)`
 
 Main wrapper launcher function that provides interactive selection and execution of wrapper scripts.
 
@@ -15,14 +15,14 @@ Main wrapper launcher function that provides interactive selection and execution
 
 **Example**:
 ```python
-from source.functions.ensure_wrapper_started import ensure_wrapper_started
+from source.functions.ensure_custom_cli_started import ensure_custom_cli_started
 
 # Interactive selection
-ensure_wrapper_started()
+ensure_custom_cli_started()
 
 # With specific files
 files = ["path/to/wrapper1.py", "path/to/wrapper2.py"]
-ensure_wrapper_started(pk_wrapper_files=files)
+ensure_custom_cli_started(pk_wrapper_files=files)
 ```
 
 ---

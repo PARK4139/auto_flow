@@ -8,12 +8,12 @@ def ensure_target_filename_and_file_content_text_replaced(f_target, old_text, ne
 
         from pk_internal_tools.pk_functions.get_nx import get_nx
         from pk_internal_tools.pk_functions.get_p import get_p
-        from pk_internal_tools.pk_objects.pk_operation_options import SetupOpsForEnsureTargetFilenameAndFileContentTextReplaced
+        from pk_internal_tools.pk_objects.pk_system_operation_options import SetupOpsForPnxReplacement
 
         modified = False
 
         # 파일 내용 수정
-        if operation_mode in [SetupOpsForEnsureTargetFilenameAndFileContentTextReplaced.ONLY_FILE_CONTENT_TEXT, SetupOpsForEnsureTargetFilenameAndFileContentTextReplaced.FILENAME_AND_FILECONTENT]:
+        if operation_mode in [SetupOpsForPnxReplacement.FILE_CONTENTS_ONLY, SetupOpsForPnxReplacement.FILE_NAMES_AND_CONTENTS_ONLY]:
             try:
                 with open(f_target, "r", encoding="utf-8") as f:
                     content = f.read()
@@ -28,7 +28,7 @@ def ensure_target_filename_and_file_content_text_replaced(f_target, old_text, ne
                 modified = True
 
         # 파일명 변경
-        if operation_mode in [SetupOpsForEnsureTargetFilenameAndFileContentTextReplaced.ONLY_FILENAME, SetupOpsForEnsureTargetFilenameAndFileContentTextReplaced.FILENAME_AND_FILECONTENT]:
+        if operation_mode in [SetupOpsForPnxReplacement.FILE_NAMES_ONLY, SetupOpsForPnxReplacement.FILE_NAMES_AND_CONTENTS_ONLY]:
             filename = get_nx(f_target)
             root = get_p(f_target)
             if old_text in filename:

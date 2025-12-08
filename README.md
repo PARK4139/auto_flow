@@ -135,7 +135,7 @@ auto_flow/
 │   │   ├── directory_paths.py
 │   │   └── file_paths.py
 │   ├── functions/             # Core automation functions
-│   │   ├── ensure_wrapper_started.py  # Main wrapper launcher
+│   │   ├── ensure_custom_cli_started.py  # Main wrapper launcher
 │   │   ├── ensure_ehr_login.py
 │   │   ├── ensure_ekiss_login.py
 │   │   ├── ensure_huvitz_mail_opened.py
@@ -210,7 +210,7 @@ L_CAM_RECIPIENT_EMAIL=recipient@example.com
 
 The project includes several core automation functions in `source/functions/`:
 
-- `ensure_wrapper_started.py`: Main wrapper launcher with fzf integration
+- `ensure_custom_cli_started.py`: Main wrapper launcher with fzf integration
 - `ensure_ehr_login.py`: EHR login automation
 - `ensure_ekiss_login.py`: eKiss login automation
 - `ensure_huvitz_mail_opened.py`: Huvitz mail automation
@@ -222,7 +222,7 @@ The project includes several core automation functions in `source/functions/`:
 ### Main Loop
 
 The application runs in an infinite loop:
-1. `__main__.py` calls `ensure_wrapper_started()`
+1. `__main__.py` calls `ensure_custom_cli_started()`
 2. User selects wrapper through interactive menu
 3. Wrapper executes in new console window
 4. Loop continues after 50ms delay

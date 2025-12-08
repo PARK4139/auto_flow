@@ -22,7 +22,7 @@ from pk_internal_tools.pk_objects.pk_directories import (
 from pk_internal_tools.pk_objects.pk_qc_mode import QC_MODE
 
 
-# F_UV_ACTIVATE_BAT = D_PROJECT_ROOT_PATH / ".venv" / "Scripts" / "activate.bat" # Removed
+F_UV_ACTIVATE_BAT = D_PROJECT_ROOT_PATH / ".venv" / "Scripts" / "activate.bat"
 # F_UV_PYTHON = D_PROJECT_ROOT_PATH / ".venv" / "Scripts" / "python3" # Removed
 # F_UV_ACTIVATE = D_PROJECT_ROOT_PATH / ".venv" / "Scripts" / "activate" # Removed
 

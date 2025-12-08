@@ -12,7 +12,7 @@ The application entry point that runs an infinite loop:
 
 ```python
 while True:
-    ensure_wrapper_started()
+    ensure_custom_cli_started()
     ensure_slept(milliseconds=50)
 ```
 
@@ -21,7 +21,7 @@ while True:
 - Handle keyboard interrupts (Ctrl+C)
 - Error handling and logging
 
-### 2. Wrapper Launcher (`ensure_wrapper_started.py`)
+### 2. Wrapper Launcher (`ensure_custom_cli_started.py`)
 
 The core function that manages wrapper selection and execution.
 
@@ -60,7 +60,7 @@ Reusable automation functions that wrappers can utilize:
 ```
 User Input
     ↓
-ensure_wrapper_started()
+ensure_custom_cli_started()
     ↓
 Category Selection (fzf)
     ↓
@@ -128,7 +128,7 @@ Sensitive configuration stored in `.env`:
 
 1. Create directory in `source/wrappers/`
 2. Add path constant in `directory_paths.py`
-3. Update `ensure_wrapper_started.py` to include new path
+3. Update `ensure_custom_cli_started.py` to include new path
 
 ### Adding New Functions
 

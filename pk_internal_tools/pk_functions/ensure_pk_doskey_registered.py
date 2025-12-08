@@ -27,7 +27,7 @@ from pk_internal_tools.pk_objects.pk_files import (
     f_pycharm64_exe,
     F_ENSURE_CMD_EXE_RAN_AS_ADMIN,
 )
-from pk_internal_tools.pk_objects.pk_files import F_UV_PYTHON_EXE, F_PK_ENSURE_PK_WRAPPER_STARTED_PY
+from pk_internal_tools.pk_objects.pk_files import F_VENV_PYTHON_EXE, F_PK_ENSURE_PK_WRAPPER_STARTED_PY
 
 
 def _get_pk_doskey_commands() -> dict[str, str]:
@@ -55,8 +55,8 @@ def _get_pk_doskey_commands() -> dict[str, str]:
         # 프로젝트 루트로 이동 후 .venv Python을 사용하여 실행
         # uv run 대신 직접 .venv Python 사용하여 더 안정적
         # f'pk: PK wrapper 시작': f'{f_ensure_pk_wrapper_executed_cmd}',
-        f'pk: PK wrapper 실행': f'doskey pk="{F_UV_PYTHON_EXE}" "{F_PK_ENSURE_PK_WRAPPER_STARTED_PY}"',
-        f'pkt: PK Commander 실행': f'doskey pkt="{F_UV_PYTHON_EXE}" "{F_PK_ENSURE_PK_COMMANDER_EXECUTED_PY}"',
+        f'pk: PK wrapper 실행': f'doskey pk="{F_VENV_PYTHON_EXE}" "{F_PK_ENSURE_PK_WRAPPER_STARTED_PY}"',
+        f'pkt: PK Commander 실행': f'doskey pkt="{F_VENV_PYTHON_EXE}" "{F_PK_ENSURE_PK_COMMANDER_EXECUTED_PY}"',
 
         # 개발 환경
         f'venv: Virtual Environment 활성화': f'doskey venv="{F_UV_ACTIVATE_BAT}"',

@@ -9,7 +9,7 @@ from pk_internal_tools.pk_functions.ensure_seconds_measured import ensure_second
 
 
 @ensure_seconds_measured
-def ensure_wrapper_started(pk_wrapper_files=None, mode_window_front=False):
+def ensure_custom_cli_started(pk_wrapper_files=None, mode_window_front=False):
     import logging
     import os
     import subprocess
