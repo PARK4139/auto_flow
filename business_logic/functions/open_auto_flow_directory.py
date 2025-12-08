@@ -44,7 +44,7 @@ def open_auto_flow_directory():
         else:  # Linux
             subprocess.run(["xdg-open", str(project_root)])
         
-        ensure_slept(milliseconds=500)  # 파일 탐색기가 열릴 때까지 대기
+        ensure_slept(milliseconds=2000)  # 파일 탐색기가 열릴 때까지 충분히 대기
         return True
         
     except Exception:

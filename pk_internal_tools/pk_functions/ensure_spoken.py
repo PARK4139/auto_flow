@@ -22,6 +22,8 @@ def ensure_spoken(text="", voice_config=None, verbose=False, wait: bool = False)
     """텍스트를 음성으로 변환하여 재생합니다. 쉼표(,)가 있으면 분리하여 순차적으로 재생합니다."""
     from pk_internal_tools.pk_objects.pk_spoken_manager import VoiceConfig
 
+    return # 의도적 return, 기능필요시 해당 줄 삭제.
+
     # 예외적으로 출력
     if text != "":
         # logging.debug(rf"text={text}")

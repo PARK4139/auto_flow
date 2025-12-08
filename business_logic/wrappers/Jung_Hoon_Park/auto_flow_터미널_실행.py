@@ -1,6 +1,6 @@
 import sys
-from pathlib import Path
 import traceback
+from pathlib import Path
 
 # Add project root to sys.path to resolve ModuleNotFoundError
 try:
