@@ -30,6 +30,7 @@ def open_auto_flow_directory():
         func_n = get_caller_name()
         project_root = get_auto_flow_path()
 
+
         if not project_root.exists() or not project_root.is_dir():
             print(f"오류: 디렉토리를 찾을 수 없습니다: {project_root}")
             return False
@@ -38,7 +39,7 @@ def open_auto_flow_directory():
 
         system = platform.system()
         if system == "Windows":
-            os.startfile(project_root)
+            subprocess.run(['explorer', str(project_root)], check=True)
         elif system == "Darwin":  # macOS
             subprocess.run(["open", str(project_root)])
         else:  # Linux

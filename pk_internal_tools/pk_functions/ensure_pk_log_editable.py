@@ -1,4 +1,18 @@
-from pk_functions.get_window_title_temp_identified import get_window_title_temp_identified
+import sys
+from pathlib import Path
+import logging
+
+# Add project root to sys.path to resolve ModuleNotFoundError
+try:
+    project_root_path_for_import = Path(__file__).resolve().parents[2]
+    if str(project_root_path_for_import) not in sys.path:
+        sys.path.insert(0, str(project_root_path_for_import))
+except IndexError:
+    # Fallback for when the script is not deep enough
+    logging.error("Error: Could not determine project root. Please check script location.")
+    sys.exit(1)
+
+from pk_internal_tools.pk_functions.get_window_title_temp_identified import get_window_title_temp_identified
 from pk_internal_tools.pk_functions.ensure_seconds_measured import ensure_seconds_measured
 
 

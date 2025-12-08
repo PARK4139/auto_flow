@@ -1,30 +1,15 @@
 Traceback (most recent call last):
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\__main__.py", line 13, in <module>
-    ensure_wrapper_started()
-    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\functions\get_auto_flow_path.py", line 10, in get_auto_flow_path
+    auto_flow_path = ensure_env_var_completed(
+        key_name="auto_flow_path",
+        func_n=func_n,
+    )
   File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_seconds_measured.py", line 15, in wrapper
     result = func(*args, **kwargs)
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\functions\execute_auto_flow.py", line 210, in ensure_wrapper_started
-    subprocess.Popen([F_VENV_PYTHON_EXE, file_to_execute], creationflags=subprocess.CREATE_NEW_CONSOLE)
-    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py", line 1039, in __init__
-    self._execute_child(args, executable, preexec_fn, close_fds,
-    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                        pass_fds, cwd, env,
-                        ^^^^^^^^^^^^^^^^^^^
-    ...<5 lines>...
-                        gid, gids, uid, umask,
-                        ^^^^^^^^^^^^^^^^^^^^^^
-                        start_new_session, process_group)
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2544.0_x64__qbz5n2kfra8p0\Lib\subprocess.py", line 1554, in _execute_child
-    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
-                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
-                             # no special security
-                             ^^^^^^^^^^^^^^^^^^^^^
-    ...<4 lines>...
-                             cwd,
-                             ^^^^
-                             startupinfo)
-                             ^^^^^^^^^^^^
-FileNotFoundError: [WinError 2] 지정된 파일을 찾을 수 없습니다
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_env_var_completed.py", line 17, in ensure_env_var_completed
+    return ensure_env_var_completed_2025_11_24(key_name=key_name, func_n=func_n, mask_log=mask_log, sensitive_masking_mode=sensitive_masking_mode, options=options, history_reset=history_reset, guide_text=guide_text)
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_seconds_measured.py", line 15, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_env_var_completed_2025_11_24.py", line 24, in ensure_env_var_completed_2025_11_24
+    from dotenv import set_key
+ModuleNotFoundError: No module named 'dotenv'

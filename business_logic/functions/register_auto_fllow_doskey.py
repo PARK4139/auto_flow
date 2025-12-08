@@ -4,7 +4,7 @@ Windows doskey 등록 함수
 fzf를 사용하여 등록할 doskey를 선택하고 등록하는 함수
 Library로 사용할 때 setup.cmd 없이 doskey만 등록할 수 있습니다.
 """
-
+from business_logic.constants.af_file_paths import F_AUTO_FLOW_터미널_실행_PY
 from pk_internal_tools.pk_functions.ensure_pk_autorun_registered import ensure_pk_autorun_registered
 from pk_internal_tools.pk_functions.ensure_pk_doskey_bat_created_with_selected_doskeys import ensure_pk_doskey_bat_created_with_selected_doskeys
 from pk_internal_tools.pk_functions.ensure_values_completed_2025_11_23 import ensure_values_completed_2025_11_23
@@ -30,7 +30,7 @@ from pk_internal_tools.pk_objects.pk_files import (
 from pk_internal_tools.pk_objects.pk_files import F_VENV_PYTHON_EXE, F_PK_ENSURE_PK_WRAPPER_STARTED_PY
 
 
-def _get_pk_doskey_commands() -> dict[str, str]:
+def _get_auto_fllow_doskey_commands() -> dict[str, str]:
     """
     등록 가능한 doskey 명령어 딕셔너리를 반환합니다.
     
@@ -57,7 +57,7 @@ def _get_pk_doskey_commands() -> dict[str, str]:
         # f'pk: PK wrapper 시작': f'{f_ensure_pk_wrapper_executed_cmd}',
         f'pk: PK wrapper 실행': f'doskey pk="{F_VENV_PYTHON_EXE}" "{F_PK_ENSURE_PK_WRAPPER_STARTED_PY}"',
         f'pkt: PK Commander 실행': f'doskey pkt="{F_VENV_PYTHON_EXE}" "{F_PK_ENSURE_PK_COMMANDER_EXECUTED_PY}"',
-        f'aft: PK Commander 실행': f'doskey pkt="{F_VENV_PYTHON_EXE}" "{F_PK_ENSURE_PK_COMMANDER_EXECUTED_PY}"',
+        f'aft: PK Commander 실행': f'doskey pkt="{F_VENV_PYTHON_EXE}" "{F_AUTO_FLOW_터미널_실행_PY}"',
 
         # 개발 환경
         f'venv: Virtual Environment 활성화': f'doskey venv="{F_UV_ACTIVATE_BAT}"',
@@ -107,7 +107,7 @@ def ensure_pk_doskey_registered():
         import logging
 
         # doskey 명령어 딕셔너리 가져오기
-        pk_doskey_commands = _get_pk_doskey_commands()
+        pk_doskey_commands = _get_auto_fllow_doskey_commands()
 
         # fzf 옵션 목록 생성 (표시 이름)
         doskey_options = list(pk_doskey_commands.keys())

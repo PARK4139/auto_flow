@@ -1,60 +1,82 @@
-import subprocess
 import sys
 from pathlib import Path
+import traceback
+import subprocess # Moved up as it's used in main logic
 
-# 프로젝트 루트 경로를 동적으로 계산합니다.
-# 현재 파일 (ensure_pk_system_update.py) -> Jung_Hoon_Park -> wrappers -> source -> 프로젝트 루트
-D_PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent.parent
+# Add project root to sys.path to resolve ModuleNotFoundError
+try:
+    project_root_path_for_import = Path(__file__).resolve().parents[3]
+    if str(project_root_path_for_import) not in sys.path:
+        sys.path.insert(0, str(project_root_path_for_import))
+except IndexError:
+    # Fallback for when the script is not deep enough
+    print("Error: Could not determine project root. Please check script location.")
+    sys.exit(1)
+
+from pk_internal_tools.pk_functions.ensure_exception_routine_done import ensure_exception_routine_done
+from pk_internal_tools.pk_functions.ensure_finally_routine_done import ensure_finally_routine_done
+from pk_internal_tools.pk_functions.ensure_pk_starting_routine_done import ensure_pk_starting_routine_done
+from pk_internal_tools.pk_functions.ensure_window_title_replaced import ensure_window_title_replaced
+from pk_internal_tools.pk_functions.get_nx import get_nx
+from pk_internal_tools.pk_objects.pk_directories import d_pk_root
+
+# 프로젝트 루트 경로를 동적으로 계산합니다. (이제 sys.path에 있으므로 직접 Path를 사용)
+# D_PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent.parent # No longer needed, as d_pk_root is project root
 
 def ensure_pk_system_update():
     """
     scripts/install_pk_system.cmd 스크립트를 실행하여 pk_system을 업데이트합니다.
     """
-    install_script_path = D_PROJECT_ROOT_PATH / "scripts" / "install_pk_system.cmd"
+    import logging
+    install_script_path = d_pk_root / "scripts" / "install_pk_system.cmd"
 
     if not install_script_path.is_file():
-        print(f"오류: 설치 스크립트를 찾을 수 없습니다: {install_script_path}", file=sys.stderr)
+        logging.error(f"오류: 설치 스크립트를 찾을 수 없습니다: {install_script_path}")
         sys.exit(1)
 
-    print(f"pk_system 업데이트 스크립트를 실행합니다: {install_script_path}")
-    print("-" * 50)
+    logging.info(f"pk_system 업데이트 스크립트를 실행합니다: {install_script_path}")
+    logging.info("-" * 50)
 
     try:
-        # .cmd 파일을 직접 실행합니다.
-        # shell=True를 사용하면 Windows에서 .cmd 파일을 직접 실행할 수 있습니다.
-        # 하지만 보안상의 이유로 shell=True는 지양되므로, 명시적으로 powershell을 호출합니다.
         result = subprocess.run(
             ['powershell.exe', '-NoProfile', '-Command', f'"{install_script_path}"'],
             capture_output=True,
             text=True,
-            check=True,  # 오류 발생 시 CalledProcessError 발생
+            check=True,
             encoding='utf-8',
             errors='replace'
         )
-        print("스크립트 실행 결과:")
-        print(result.stdout)
+        logging.info("스크립트 실행 결과:")
+        logging.info(result.stdout)
         if result.stderr:
-            print("오류 출력:", file=sys.stderr)
-            print(result.stderr, file=sys.stderr)
+            logging.error("오류 출력:")
+            logging.error(result.stderr)
         
-        print("-" * 50)
-        print("pk_system 업데이트 스크립트 실행 완료.")
+        logging.info("-" * 50)
+        logging.info("pk_system 업데이트 스크립트 실행 완료.")
 
     except subprocess.CalledProcessError as e:
-        print(f"오류: 스크립트 실행 중 문제가 발생했습니다. 종료 코드: {e.returncode}", file=sys.stderr)
+        logging.error(f"오류: 스크립트 실행 중 문제가 발생했습니다. 종료 코드: {e.returncode}")
         if e.stdout:
-            print("표준 출력:", file=sys.stderr)
-            print(e.stdout, file=sys.stderr)
+            logging.error("표준 출력:")
+            logging.error(e.stdout)
         if e.stderr:
-            print("오류 출력:", file=sys.stderr)
-            print(e.stderr, file=sys.stderr)
+            logging.error("오류 출력:")
+            logging.error(e.stderr)
         sys.exit(e.returncode)
     except FileNotFoundError:
-        print("오류: powershell.exe를 찾을 수 없습니다. PATH 설정을 확인해주세요.", file=sys.stderr)
+        logging.error("오류: powershell.exe를 찾을 수 없습니다. PATH 설정을 확인해주세요.")
         sys.exit(1)
     except Exception as e:
-        print(f"예상치 못한 오류 발생: {e}", file=sys.stderr)
+        logging.error(f"예상치 못한 오류 발생: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
-    ensure_pk_system_update()
+    ensure_pk_starting_routine_done(traced_file=__file__, traceback=traceback)
+    try:
+        ensure_window_title_replaced(get_nx(__file__))
+        ensure_pk_system_update()
+    except Exception as exception:
+        ensure_exception_routine_done(traced_file=__file__, traceback=traceback, exception=exception)
+    finally:
+        ensure_finally_routine_done(traced_file=__file__, d_pk_root=d_pk_root)

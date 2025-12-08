@@ -12,6 +12,7 @@ chcp 65001 >NUL
     doskey 0=cd "C:\Users\USER\Desktop\휴지통"
     doskey pk="C:\Users\USER\Desktop\박정훈\auto_flow\.venv\Scripts\python.exe" "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_wrappers\pk_ensure_pk_wrapper_starter_executed.py"
     doskey pkt="C:\Users\USER\Desktop\박정훈\auto_flow\.venv\Scripts\python.exe" "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_wrappers\pk_ensure_pk_terminal_executed.py"
+    doskey pkt="C:\Users\USER\Desktop\박정훈\auto_flow\.venv\Scripts\python.exe" "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_wrappers\pk_ensure_pk_terminal_executed.py"
     doskey venv="C:\Users\USER\Desktop\박정훈\auto_flow\.venv\Scripts\activate.bat"
     doskey vscode="C:\Users\USER\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk" $*
     doskey claude="C:\Users\USER\AppData\Local\AnthropicClaude\claude.exe" $*
