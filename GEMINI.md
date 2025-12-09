@@ -231,15 +231,18 @@
 
 ### **프로젝트 구조 규칙**
 - **트리구조**:
+  - `af_internal_tools/`: **autoflow** 프로젝트의 핵심 비즈니스 로직을 포함하는 디렉토리. `login_ehr.py`와 같이 autoflow에 특화된 기능들이 여기에 위치합니다.
   - `pk_system_resources/`: 정적 파일 및 외부 소스 리소스 디렉토리.
-  - `pk_internal_tools/`: 파이썬 소스 코드의 최상위 루트 디렉토리.
+  - `pk_internal_tools/`: `pk_system`의 핵심 기능을 담고 있는 공유 가능한 파이썬 소스 코드의 최상위 루트 디렉토리.
   - `pk_system_tests/`: 테스트용 스크립트, 파일명에 `test_` prefix 패턴적용.
   - `pk_system_prompts/`: AI 기반 코드생성 명령용 프롬프트 모음.
   - `pk_system_logs/`: 프로그램 실행 결과를 저장하는 로그 디렉토리.
   - `pk_system_docs/`: 프로젝트 관련 문서.
   - `pk_system_cache/`: 시스템 캐시 파일.
   - `pk_system_sensitive/`: 민감한 정보 및 사용자별 설정 파일.
-- **함수 저장 위치**: 모든 함수는 `pk_internal_tools/pk_functions/` 디렉토리에 저장.
+- **함수 저장 위치**:
+  - **autoflow 전용 함수**: `af_internal_tools/functions/`에 저장.
+  - **공용 함수**: `pk_internal_tools/pk_functions/` 디렉토리에 저장.
 - **객체 저장 위치**: 모든 클래스는 `pk_internal_tools/pk_objects/` 디렉토리에 저장.
 
 ### **URLs 패턴 규칙**

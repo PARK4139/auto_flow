@@ -18,6 +18,7 @@ from pk_internal_tools.pk_functions.ensure_finally_routine_done import ensure_fi
 from pk_internal_tools.pk_functions.ensure_pk_starting_routine_done import ensure_pk_starting_routine_done
 from pk_internal_tools.pk_functions.ensure_window_title_replaced import ensure_window_title_replaced
 from pk_internal_tools.pk_functions.get_nx import get_nx
+from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
 from pk_internal_tools.pk_objects.pk_directories import d_pk_root
 
 # --- New Imports for EHR Login ---
@@ -79,9 +80,10 @@ if __name__ == "__main__":
         logging.info("EHR 로그인 스크립트 실행 시작.")
 
         # 1. Private Information Handling
-        ehr_login_url = ensure_env_var_completed(key_name="EHR_LOGIN_URL", func_n=get_nx(__file__), guide_text="EHR 로그인 URL을 입력하세요:")
-        ehr_user_id = ensure_env_var_completed(key_name="EHR_USER_ID", func_n=get_nx(__file__), guide_text="EHR 사용자 ID를 입력하세요:")
-        ehr_password = ensure_env_var_completed(key_name="EHR_PASSWORD", func_n=get_nx(__file__), guide_text="EHR 비밀번호를 입력하세요:", mask_log=True)
+        func_n = get_caller_name()
+        ehr_login_url = ensure_env_var_completed(key_name="EHR_LOGIN_URL", func_n=func_n, guide_text="EHR 로그인 URL을 입력하세요:")
+        ehr_user_id = ensure_env_var_completed(key_name="EHR_USER_ID", func_n=func_n, guide_text="EHR 사용자 ID를 입력하세요:")
+        ehr_password = ensure_env_var_completed(key_name="EHR_PASSWORD", func_n=func_n, guide_text="EHR 비밀번호를 입력하세요:", mask_log=True)
 
         if not all([ehr_login_url, ehr_user_id, ehr_password]):
             logging.error("필수 로그인 정보가 부족합니다. 스크립트를 종료합니다.")
@@ -135,6 +137,6 @@ if __name__ == "__main__":
         ensure_exception_routine_done(traced_file=__file__, traceback=traceback, exception=exception)
     finally:
         if 'driver' in locals() and driver: # Ensure driver is closed even on error
-            logging.info("브라우저 종료 중...")
-            driver.quit()
+            logging.info("스크립트 완료. 브라우저를 열어둡니다.")
+            # driver.quit()
         ensure_finally_routine_done(traced_file=__file__, d_pk_root=d_pk_root)

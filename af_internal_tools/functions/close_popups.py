@@ -30,7 +30,7 @@ from pk_internal_tools.pk_functions.get_nx import get_nx
 from pk_internal_tools.pk_objects.pk_directories import d_pk_root
 
 # Specific import for common_login (since it's a peer module)
-from business_logic.functions.login_common import common_login
+from af_internal_tools.functions.login_common import common_login
 
 from pk_internal_tools.pk_functions.get_pretty_html_string import get_pretty_html_string
 
@@ -119,9 +119,9 @@ def close_known_popups(driver: webdriver.Chrome):
 
             # For testing, we need to log into EKISS first
             # Re-using common_login function's test variables for simplicity
-            ekiss_login_url = ensure_env_var_completed(key_name="TEST_LOGIN_URL", func_n=get_nx(__file__), guide_text="EKISS 로그인 URL을 입력하세요:")
-            ekiss_user_id = ensure_env_var_completed(key_name="TEST_USER_ID", func_n=get_nx(__file__), guide_text="EKISS 사용자 ID를 입력하세요:")
-            ekiss_password = ensure_env_var_completed(key_name="TEST_PASSWORD", func_n=get_nx(__file__), guide_text="EKISS 비밀번호를 입력하세요:", mask_log=True)
+            ekiss_login_url = ensure_env_var_completed(key_name="TEST_LOGIN_URL", func_n=func_n, guide_text="EKISS 로그인 URL을 입력하세요:")
+            ekiss_user_id = ensure_env_var_completed(key_name="TEST_USER_ID", func_n=func_n, guide_text="EKISS 사용자 ID를 입력하세요:")
+            ekiss_password = ensure_env_var_completed(key_name="TEST_PASSWORD", func_n=func_n, guide_text="EKISS 비밀번호를 입력하세요:", mask_log=True)
 
             if not all([ekiss_login_url, ekiss_user_id, ekiss_password]):
                 logging.error("EKISS 로그인 정보가 부족합니다. 스크립트를 종료합니다.")
@@ -144,7 +144,7 @@ def close_known_popups(driver: webdriver.Chrome):
                 login_check_element_id="Left_Navigator_lblMail",
                 login_check_element_text="", # Only check for presence
                 initial_check_element_id="txtId",
-                func_n=get_nx(__file__),
+                func_n=func_n,
                 debug_html_func=_debug_html,
             )
 

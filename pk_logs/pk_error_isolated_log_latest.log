@@ -1,5 +1,5 @@
 Traceback (most recent call last):
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\wrappers\Huvitz\Huvitz mail 열기.py", line 138, in <module>
+  File "C:\Users\USER\Desktop\박정훈\auto_flow\af_internal_tools\wrappers\Huvitz\Huvitz mail 열기.py", line 138, in <module>
     mail_button = WebDriverWait(driver, 20).until(
         EC.element_to_be_clickable((By.XPATH, "//a[contains(@onclick, 'go_email()') and .//img[contains(@src, '/Images/common/icon_mail.png')]]"))
     )

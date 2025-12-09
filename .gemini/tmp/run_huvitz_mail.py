@@ -4,7 +4,7 @@ import os
 
 # Define paths using raw strings for Windows paths
 python_exe = r"C:\Users\USER\Desktop\박정훈\auto_flow\.venv\Scripts\python.exe"
-target_script = r"C:\Users\USER\Desktop\박정훈\auto_flow\business_logic\wrappers\Huvitz\Huvitz mail 열기.py"
+target_script = r"C:\Users\USER\Desktop\박정훈\auto_flow\af_internal_tools\wrappers\Huvitz\Huvitz mail 열기.py"
 
 if not os.path.exists(target_script):
     print(f"Error: Target script not found at {target_script}", file=sys.stderr)

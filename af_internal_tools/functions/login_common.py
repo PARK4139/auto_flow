@@ -140,9 +140,9 @@ if __name__ == "__main__":
         ensure_window_title_replaced(get_nx(__file__))
         logging.info("common_login 함수 테스트 시작.")
 
-        test_login_url = ensure_env_var_completed(key_name="TEST_LOGIN_URL", func_n=get_nx(__file__), guide_text="테스트 로그인 URL을 입력하세요:")
-        test_user_id = ensure_env_var_completed(key_name="TEST_USER_ID", func_n=get_nx(__file__), guide_text="테스트 사용자 ID를 입력하세요:")
-        test_password = ensure_env_var_completed(key_name="TEST_PASSWORD", func_n=get_nx(__file__), guide_text="테스트 비밀번호를 입력하세요:", mask_log=True)
+        test_login_url = ensure_env_var_completed(key_name="TEST_LOGIN_URL", func_n=func_n, guide_text="테스트 로그인 URL을 입력하세요:")
+        test_user_id = ensure_env_var_completed(key_name="TEST_USER_ID", func_n=func_n, guide_text="테스트 사용자 ID를 입력하세요:")
+        test_password = ensure_env_var_completed(key_name="TEST_PASSWORD", func_n=func_n, guide_text="테스트 비밀번호를 입력하세요:", mask_log=True)
 
         if not all([test_login_url, test_user_id, test_password]):
             logging.error("필수 테스트 로그인 정보가 부족합니다. 스크립트를 종료합니다.")
@@ -163,7 +163,7 @@ if __name__ == "__main__":
             login_check_element_id="Left_Navigator_lblMail", # Example for common fields
             login_check_element_text="", # Check only for presence, not specific text
             initial_check_element_id="txtId", # Example: check for ID field on login page
-            func_n=get_nx(__file__),
+            func_n=func_n,
             debug_html_func=_debug_html,
         )
 

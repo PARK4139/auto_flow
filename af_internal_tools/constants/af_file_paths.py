@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from business_logic.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH
+from af_internal_tools.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_JUNG_HOON_PARK_WRAPPERS_PATH
 
 F_GITIGNORE_PATH = D_PROJECT_ROOT_PATH / ".gitignore"
 F_GITIGNORE_PUBLIC_PATH = D_PROJECT_ROOT_PATH / ".gitignore_for_public"

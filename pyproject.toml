@@ -8,4 +8,5 @@ dependencies = [
     "pluggy",
     "clipboard>=0.0.4",
     "beautifulsoup4>=4.14.3",
+    "selenium>=4.39.0",
 ]

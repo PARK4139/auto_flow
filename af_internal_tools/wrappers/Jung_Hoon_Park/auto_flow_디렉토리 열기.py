@@ -22,7 +22,7 @@ from pk_internal_tools.pk_functions.ensure_window_title_replaced import ensure_w
 from pk_internal_tools.pk_functions.get_nx import get_nx
 from pk_internal_tools.pk_objects.pk_directories import d_pk_root
 
-from business_logic.functions.get_auto_flow_path import get_auto_flow_path
+from af_internal_tools.functions.get_auto_flow_path import get_auto_flow_path
 from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
 from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
 

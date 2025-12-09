@@ -16,8 +16,8 @@ from pk_internal_tools.pk_objects.pk_system_operation_options import \
     SetupOpsForPnxReplacement
 
 
-from business_logic.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
-from business_logic.constants.af_file_paths import (
+from af_internal_tools.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
+from af_internal_tools.constants.af_file_paths import (
     F_GITIGNORE_PATH,
     F_GITIGNORE_PUBLIC_PATH,
     F_GEMINI_MD_PATH,

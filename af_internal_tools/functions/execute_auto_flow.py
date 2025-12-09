@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from business_logic.constants.af_directory_paths import D_JUNG_HOON_PARK_WRAPPERS_PATH, D_HUVITS_WRAPPERS_PATH
+from af_internal_tools.constants.af_directory_paths import D_JUNG_HOON_PARK_WRAPPERS_PATH, D_HUVITS_WRAPPERS_PATH
 from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
 # _project_root = Path(__file__).resolve().parent.parent.parent
 # if str(_project_root) not in sys.path:

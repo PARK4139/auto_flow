@@ -18,7 +18,7 @@ def get_auto_flow_path():
         if auto_flow_path is None:
             # If ensure_env_var_completed couldn't get a value, default to current project root
             # The project root is assumed to be the directory containing this script, 3 levels up from here.
-            # get_auto_flow_path is in business_logic/functions/
+            # get_auto_flow_path is in af_internal_tools/functions/
             # So, parent[2] would be the project root.
             current_script_path = Path(__file__).resolve()
             project_root_default = current_script_path.parents[2]

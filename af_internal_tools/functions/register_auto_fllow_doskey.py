@@ -4,7 +4,7 @@ Windows doskey 등록 함수
 fzf를 사용하여 등록할 doskey를 선택하고 등록하는 함수
 Library로 사용할 때 setup.cmd 없이 doskey만 등록할 수 있습니다.
 """
-from business_logic.constants.af_file_paths import F_AUTO_FLOW_터미널_실행_PY
+from af_internal_tools.constants.af_file_paths import F_AUTO_FLOW_터미널_실행_PY
 from pk_internal_tools.pk_functions.ensure_pk_autorun_registered import ensure_pk_autorun_registered
 from pk_internal_tools.pk_functions.ensure_pk_doskey_bat_created_with_selected_doskeys import ensure_pk_doskey_bat_created_with_selected_doskeys
 from pk_internal_tools.pk_functions.ensure_values_completed_2025_11_23 import ensure_values_completed_2025_11_23

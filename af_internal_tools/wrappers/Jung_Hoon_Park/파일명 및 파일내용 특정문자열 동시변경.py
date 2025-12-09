@@ -24,8 +24,8 @@ from pk_internal_tools.pk_functions.ensure_target_filename_and_file_content_text
     ensure_target_filename_and_file_content_text_replaced
 from pk_internal_tools.pk_functions.ensure_target_filenames_and_file_content_texts_replaced import \
     ensure_target_filenames_and_file_content_texts_replaced
-from business_logic.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
-from business_logic.constants.af_file_paths import (
+from af_internal_tools.constants.af_directory_paths import D_PROJECT_ROOT_PATH, D_FUNCTIONS_PATH
+from af_internal_tools.constants.af_file_paths import (
     F_GITIGNORE_PATH,
     F_GITIGNORE_PUBLIC_PATH,
     F_GEMINI_MD_PATH,

@@ -15,7 +15,7 @@ except IndexError:
     print("Error: Could not determine project root. Please check script location.")
     sys.exit(1)
 
-from business_logic.functions.get_auto_flow_path import get_auto_flow_path
+from af_internal_tools.functions.get_auto_flow_path import get_auto_flow_path
 from pk_internal_tools.pk_functions.ensure_debug_loged_verbose import ensure_debug_loged_verbose
 from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
 from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
