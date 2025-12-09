@@ -1,38 +1,60 @@
 """
 프로젝트 내 주요 디렉토리들의 절대 경로를 정의합니다.
 
-이 모듈은 다양한 환경에서 일관된 경로 참조를 제공하며,
+이 모듈은 프로젝트의 루트 디렉토리를 자동으로 찾아 시스템 경로에 추가하며,
+다양한 환경에서 일관된 경로 참조를 제공합니다.
 Pathlib를 사용하여 크로스 플랫폼 호환성을 보장합니다.
 
-Note: pk_system is now installed as a library via pip/uv.
-To get pk_system paths, use:
-    from pk_internal_tools.pk_objects.pk_system_directories import get_pk_system_root
+중요: 이 모듈은 프로젝트의 다른 모듈에 대한 의존성이 없어야 합니다.
 """
+import sys
 from pathlib import Path
 import os
 
-from pk_internal_tools.pk_objects.pk_directories import D_DESKTOP
+def _find_project_root_and_add_to_path(start_path: str) -> Path:
+    """
+    Finds the project root from a start path and adds it to sys.path.
+    The project root is identified by the presence of 'pyproject.toml' or '.git'.
+    """
+    current_path = Path(start_path).resolve()
+    if current_path.is_file():
+        current_path = current_path.parent
 
-D_PROJECT_ROOT_PATH = Path(__file__).resolve().parent.parent.parent # 프로젝트의 최상위 루트 디렉토리
-# D_PK_SYSTEM_PATH and D_pk_internal_tools_PATH are deprecated.
-# pk_system is now installed as a library. Use get_pk_system_root() from pk_internal_tools instead.
+    for parent in [current_path] + list(current_path.parents):
+        if (parent / 'pyproject.toml').exists() or (parent / '.git').exists():
+            project_root = parent
+            if str(project_root) not in sys.path:
+                sys.path.insert(0, str(project_root))
+            return project_root
+    raise FileNotFoundError(f"Project root not found starting from {start_path}")
 
-D_SOURCE_PATH =  Path(__file__).parent.parent # 현재 파일이 속한 'source' 디렉토리
-D_FUNCTIONS_PATH = D_SOURCE_PATH / "functions" # 'source' 디렉토리 내 'functions' 디렉토리
-D_WRAPPERS_PATH = D_SOURCE_PATH / "wrappers" # 'source' 디렉토리 내 'wrappers' 디렉토리
-D_HUVITS_WRAPPERS_PATH = D_WRAPPERS_PATH / "Huvitz" # Huvitz 관련 래퍼 파일들이 위치한 디렉토리
-D_JUNG_HOON_PARK_WRAPPERS_PATH = D_WRAPPERS_PATH / "Jung_Hoon_Park" # 박정훈 관련 래퍼 파일들이 위치한 디렉토리
-D_AUTO_FLOW_REPO = D_DESKTOP / "박정훈" / "auto_flow"  # TODO : APPLY RELATIVE PATH FOR EXTERNAL REPO
+# --- Core Path Definitions ---
+# This is the single source of truth for the project root.
+# Importing this module will have the side-effect of setting up sys.path.
+D_PROJECT_ROOT_PATH = _find_project_root_and_add_to_path(__file__)
 
+# --- User-Specific and System Paths ---
+D_HOME_PATH = Path.home()
+D_DOWNLOADS_PATH = D_HOME_PATH / 'Downloads'
+D_DESKTOP_PATH = D_HOME_PATH / 'Desktop'
 
-# Define D_DOWNLOADS_PATH based on user's home directory
-# 사용자의 다운로드 디렉토리를 정의합니다. 환경 변수를 우선 사용하고, 없을 경우 기본 홈 디렉토리를 사용합니다.
-D_USER_PROFILE_PATH = os.environ.get('USERPROFILE')
-if D_USER_PROFILE_PATH:
-    D_DOWNLOADS_PATH = Path(D_USER_PROFILE_PATH) / 'Downloads'
-else:
-    # Fallback to a default, though this is unlikely to be correct
-    D_DOWNLOADS_PATH = Path.home() / 'Downloads'
+# This path seems user-specific, constructing it based on Desktop path.
+# TODO: This should be configured externally if it differs between users.
+D_AUTO_FLOW_REPO = D_DESKTOP_PATH / "박정훈" / "auto_flow"
 
+# --- Project-Internal Paths (relative to D_PROJECT_ROOT_PATH) ---
+D_SOURCE_PATH = D_PROJECT_ROOT_PATH / "af_internal_tools"
+D_FUNCTIONS_PATH = D_SOURCE_PATH / "functions"
+D_WRAPPERS_PATH = D_SOURCE_PATH / "wrappers"
+D_HUVITS_WRAPPERS_PATH = D_WRAPPERS_PATH / "Huvitz"
+D_JUNG_HOON_PARK_WRAPPERS_PATH = D_WRAPPERS_PATH / "Jung_Hoon_Park"
 
+# For backwards compatibility, if other modules still use the old name
+D_DESKTOP = D_DESKTOP_PATH
 
+# Note on pk_system:
+# The old comment said: "pk_system is now installed as a library."
+# If pk_system paths are needed, they should be retrieved from the library's own mechanisms,
+# for example:
+# import pk_system
+# d_pk_system = Path(pk_system.__file__).parent
