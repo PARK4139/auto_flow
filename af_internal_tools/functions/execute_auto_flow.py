@@ -17,7 +17,9 @@ def ensure_custom_cli_started(pk_wrapper_files=None, mode_window_front=False):
     import traceback
     import glob
     import shutil
+    from datetime import datetime # Added for unique log file naming
     from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+    from pk_internal_tools.pk_objects.pk_directories import d_pk_logs
     from pk_internal_tools.pk_functions.ensure_value_completed_2025_11_11 import \
         ensure_value_completed_2025_11_11
     from pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
@@ -207,7 +209,40 @@ def ensure_custom_cli_started(pk_wrapper_files=None, mode_window_front=False):
     # cmd = rf'start "" "{F_VENV_PYTHON_EXE}" "{file_to_execute}"'
     # cmd = rf'"{F_VENV_PYTHON_EXE}" "{file_to_execute}"'
     # ensure_command_executed(cmd, mode='a')
-    subprocess.Popen([F_VENV_PYTHON_EXE, file_to_execute], creationflags=subprocess.CREATE_NEW_CONSOLE)
+    # Generate a unique temporary log file for the subprocess
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    sub_process_log_file = d_pk_logs / f"subprocess_{filename_to_display}_{timestamp}.log"
+
+    # Set environment variable for the child process to use for its logging
+    env = os.environ.copy()
+    env['PK_SUBPROCESS_LOG_FILE'] = str(sub_process_log_file)
+
+    # Launch the subprocess in a new console
+    logging.debug(f"Launching subprocess: {F_VENV_PYTHON_EXE} {file_to_execute}")
+    logging.debug(f"Subprocess logs will be written to: {sub_process_log_file}")
+    
+    # Use Popen to allow background execution, but store the process object
+    process = subprocess.Popen(
+        [F_VENV_PYTHON_EXE, file_to_execute],
+        creationflags=subprocess.CREATE_NEW_CONSOLE,
+        env=env, # Pass the modified environment variables
+    )
+    
+    # Wait for the subprocess to complete
+    process.wait() 
+    
+    # Read and append subprocess logs to the main log
+    if sub_process_log_file.exists():
+        try:
+            with open(sub_process_log_file, 'r', encoding='utf-8') as f:
+                subprocess_logs = f.read()
+            if subprocess_logs:
+                logging.info(f"\n--- Subprocess Logs from {filename_to_display} ---\n{subprocess_logs}\n--- End Subprocess Logs ---")
+            # Optionally, remove the temporary log file after reading
+            os.remove(sub_process_log_file)
+        except Exception as e:
+            logging.error(f"Failed to read/append subprocess log file {sub_process_log_file}: {e}", exc_info=True)
+            
     logging.debug(f"pk system wrapper 실행 완료")
 
     #  실행 후 대기 (최소화)

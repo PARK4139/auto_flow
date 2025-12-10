@@ -9,6 +9,7 @@ D_PROJECT_ROOT_PATH = D_PK_OBJECTS_PATH.parent.parent
 
 # .venv/Scripts/python.exe 경로
 F_VENV_PYTHON_EXE = D_PROJECT_ROOT_PATH / ".venv" / "Scripts" / "python.exe"
+F_UV_PYTHON_EXE = F_VENV_PYTHON_EXE  # Define F_UV_PYTHON_EXE using the virtual environment's python.exe
 logging.debug(f"D_PROJECT_ROOT_PATH: {D_PROJECT_ROOT_PATH}")
 logging.debug(f"F_VENV_PYTHON_EXE (computed): {F_VENV_PYTHON_EXE}")
 

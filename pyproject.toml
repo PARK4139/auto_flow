@@ -9,4 +9,12 @@ dependencies = [
     "clipboard>=0.0.4",
     "beautifulsoup4>=4.14.3",
     "selenium>=4.39.0",
+    "python-dotenv",
+    "webdriver-manager",
+    "rich>=14.2.0",
+    "pyautogui>=0.9.54",
+    "pywin32",
+    "pygame>=2.6.1",
+    "toml>=0.10.2",
+    "dotenv>=0.9.9",
 ]

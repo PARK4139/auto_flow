@@ -1,4 +1,11 @@
 if __name__ == "__main__":
+    import sys
+    import os
+    # Add project root to sys.path
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+        
     import traceback
     from pk_internal_tools.pk_functions.ensure_gemini_cli_worked_done import ensure_gemini_cli_worked_done
     from pk_internal_tools.pk_functions.ensure_exception_routine_done import ensure_exception_routine_done

@@ -10,7 +10,7 @@ try:
     from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
     from pk_internal_tools.pk_objects.pk_qc_mode import QC_MODE
 except ImportError as e:
-    print(f"오류: pk_system 모듈을 가져오는 데 실패했습니다. 경로 설정을 확인해주세요.")
+    print(f"오류: 모듈을 가져오는 데 실패했습니다. 경로 설정을 확인해주세요.")
     print(f"sys.path: {sys.path}")
     traceback.print_exc()
 
@@ -18,8 +18,8 @@ if __name__ == '__main__':
     try:
         ensure_pk_log_initialized(__file__)
         func_n = get_caller_name()
-        auto_flow_mode = "auto_flow_mode",
-        pk_mode = "pk_mode",
+        auto_flow_mode = "auto_flow_mode"
+        pk_mode = "pk_mode"
 
         if QC_MODE:
             wrapper_mode = ensure_value_completed(

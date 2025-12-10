@@ -7,7 +7,7 @@ from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
 
 # Add project root to sys.path to resolve ModuleNotFoundError
 try:
-    project_root_path_for_import = Path(__file__).resolve().parents[3]
+    project_root_path_for_import = Path(__file__).resolve().parents[2]
     if str(project_root_path_for_import) not in sys.path:
         sys.path.insert(0, str(project_root_path_for_import))
 except IndexError:
@@ -146,22 +146,37 @@ if __name__ == "__main__":
             sys.exit(1)
 
         # 5. Click Mail Button
-        logging.info("메일 버튼 클릭 중...")
-        mail_button = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH,
-                                        "//a[contains(@onclick, 'go_email()') and .//img[contains(@src, '/Images/common/icon_mail.png')]]"))
-        )
-        mail_button.click()
+        logging.info("메일 버튼 클릭 시도 중...")
+        _debug_html(driver, "메일 버튼 클릭 시도 전") # Debug before click attempt
+        try:
+            mail_button = WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.XPATH,
+                                            "//a[contains(@onclick, 'go_email()') and .//img[contains(@src, '/Images/common/icon_mail.png')]]"))
+            )
+            mail_button.click()
+            logging.info("메일 버튼 클릭 성공.")
+        except Exception as e:
+            logging.error(f"메일 버튼 클릭 실패: {e}", exc_info=True)
+            _debug_html(driver, "메일 버튼 클릭 실패 후") # Debug after click failure
+            logging.error(f"현재 URL: {driver.current_url}")
+            sys.exit(1)
 
         # 6. Check Mail Window
         logging.info("메일 창 진입 확인 중...")
-        WebDriverWait(driver, 30).until(EC.url_to_be(mail_window_url))  # Wait until URL matches mail window
-        _debug_html(driver, "메일 창 진입 후")
+        try:
+            WebDriverWait(driver, 30).until(EC.url_to_be(mail_window_url))  # Wait until URL matches mail window
+            _debug_html(driver, "메일 창 진입 후")
 
-        if _check_if_on_mail_window(driver, mail_window_url):
-            logging.info("메일 창 열기 성공!")
-        else:
-            logging.error("메일 창 열기 실패. 수동 확인이 필요합니다.")
+            if _check_if_on_mail_window(driver, mail_window_url):
+                logging.info("메일 창 열기 성공!")
+            else:
+                logging.error(f"메일 창 진입 실패. 현재 URL: {driver.current_url}. 예상 URL: {mail_window_url}. 수동 확인이 필요합니다.")
+                _debug_html(driver, "메일 창 진입 실패 후")
+                sys.exit(1)
+        except Exception as e:
+            logging.error(f"메일 창 진입 대기 중 타임아웃 또는 기타 오류 발생: {e}", exc_info=True)
+            _debug_html(driver, "메일 창 진입 대기 중 오류 발생 후")
+            logging.error(f"현재 URL: {driver.current_url}")
             sys.exit(1)
 
 

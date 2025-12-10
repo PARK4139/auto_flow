@@ -6,6 +6,9 @@ from pk_internal_tools.pk_functions.ensure_seconds_measured import ensure_second
 # @lru_cache(maxsize=1)
 def ensure_pk_log_initialized(__file__, with_file_logging_mode=True):
     import logging
+    import os
+    import sys # Added for debugging print statement
+    from pathlib import Path # Added for PK_SUBPROCESS_LOG_FILE handling
 
     from pk_internal_tools.pk_objects.pk_colorful_logging_formatter import PkColorfulLoggingFormatter
     from pk_internal_tools.pk_objects.pk_files import F_PK_TEMP_LOG
@@ -28,10 +31,23 @@ def ensure_pk_log_initialized(__file__, with_file_logging_mode=True):
     # ENABLE_CONSOLE_LOGGING = False
 
     logging_file = None
-    if with_file_logging_mode:
+    pk_subprocess_log_file = os.environ.get('PK_SUBPROCESS_LOG_FILE')
+    print(f"DEBUG: ensure_pk_log_initialized: PK_SUBPROCESS_LOG_FILE = {pk_subprocess_log_file}", file=sys.stderr)
+
+    if pk_subprocess_log_file:
+        logging_file = Path(pk_subprocess_log_file)
+        # For subprocess logs, always append and do not clean up external logs
+        file_mode = "a" 
+        # No cleanup_old_log_files for subprocess-specific logs
+    elif with_file_logging_mode:
         logging_file = F_PK_LOG
+        file_mode = "w" if QC_MODE else "a"
+        # pk_option : 하루 이상 지난 로그 파일 삭제
+        if not QC_MODE:
+            cleanup_old_log_files(d_pk_logs)
     else:
         logging_file = F_PK_TEMP_LOG
+        file_mode = "a" # Temp log always appends
 
 
     # pk_system language setting (lazy initialization)
@@ -40,11 +56,7 @@ def ensure_pk_log_initialized(__file__, with_file_logging_mode=True):
 
     d_pk_logs.mkdir(parents=True, exist_ok=True)
 
-    # pk_option : 하루 이상 지난 로그 파일 삭제
-    if not QC_MODE:
-        cleanup_old_log_files(d_pk_logs)
-
-    if QC_MODE:
+    if QC_MODE and not pk_subprocess_log_file: # Only clear console if not a subprocess and in QC_MODE
         ensure_console_cleared()
 
     # 컬러풀 로깅 포맷터 import
@@ -54,9 +66,6 @@ def ensure_pk_log_initialized(__file__, with_file_logging_mode=True):
         # fallback: 기본 포맷터 사용
         log_format = "[%(asctime)s] [%(levelname)s] [%(filename)s:%(lineno)d] [%(message)s]"
         colorful_formatter = logging.Formatter(log_format)
-
-    # QC_MODE 모드에서는 새 파일로, 일반 모드에서는 append 모드로
-    file_mode = "w" if QC_MODE else "a"
 
     # 파일 핸들러 (ANSI 코드 제거 포맷)
     file_handler = logging.FileHandler(logging_file, encoding="utf-8", mode=file_mode)

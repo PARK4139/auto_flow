@@ -243,7 +243,7 @@ The application runs in an infinite loop:
 
 ### Common Issues
 
-1. **"pk_system 모듈을 가져오는 데 실패했습니다"**
+1. **"모듈을 가져오는 데 실패했습니다"**
    - Solution: Run `python scripts/install_pk_system.py`
 
 2. **"가상환경을 찾을 수 없습니다"**

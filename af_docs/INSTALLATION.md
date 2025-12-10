@@ -132,7 +132,7 @@ You should see the wrapper selection menu.
 
 ## Troubleshooting
 
-### Issue: "pk_system 모듈을 가져오는 데 실패했습니다"
+### Issue: "모듈을 가져오는 데 실패했습니다"
 
 **Solution**:
 ```bash

@@ -225,12 +225,18 @@ class SpokenManager:
         old_stderr = sys.stderr
         sys.stdout = io.StringIO()
         sys.stderr = io.StringIO()
+        self.pygame_available = False
         try:
             import pygame
+            self.pygame_available = True
             pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)
             if self.verbose: logging.info("Pygame mixer initialized successfully in SpokenManager.")
+        except ImportError:
+            if self.verbose: logging.error("Pygame module not found. Spoken features will be disabled.", exc_info=True)
+            self.pygame_available = False
         except pygame.error as e:
             if self.verbose: logging.error(f"Failed to initialize Pygame mixer in SpokenManager: {e}", exc_info=True)
+            self.pygame_available = False
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
@@ -310,12 +316,12 @@ class SpokenManager:
 
     def terminate(self):
         import logging
-        """FIFO 큐 처리를 중지하고 스레드를 종료합니다."""
         import pygame
+        """FIFO 큐 처리를 중지하고 스레드를 종료합니다."""
         if not self._stop_event.is_set():
             self._stop_event.set()
             self._worker_thread.join(timeout=2)
             if self.verbose: logging.info("SpokenManager terminated.")
-            if pygame.mixer.get_init():
+            if self.pygame_available and pygame.mixer.get_init(): # Only try to quit if pygame was successfully initialized
                 pygame.mixer.quit()
                 if self.verbose: logging.info("Pygame mixer quit successfully.")
