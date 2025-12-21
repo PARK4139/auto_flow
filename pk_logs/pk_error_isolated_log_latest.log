@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_functions\ensure_finally_routine_done.py", line 38, in ensure_finally_routine_done
-    get_pk_spoken_manager().terminate()  # 리소스 해제
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "C:\Users\USER\Desktop\박정훈\auto_flow\pk_internal_tools\pk_objects\pk_spoken_manager.py", line 324, in terminate
-    if self.pygame_available and pygame.mixer.get_init(): # Only try to quit if pygame was successfully initialized
-                                 ^^^^^^
-UnboundLocalError: cannot access local variable 'pygame' where it is not associated with a value
