@@ -1,0 +1,157 @@
+from pk_internal_tools.pk_functions.ensure_seconds_measured import ensure_seconds_measured
+
+
+@ensure_seconds_measured
+def ensure_pk_system_cli_executed(pk_wrapper_starter_files=None, mode_window_front=False):
+    import logging
+    import os
+    import subprocess
+    import time
+    import traceback
+    from pk_internal_tools.pk_objects.pk_files import F_UV_PYTHON_EXE
+    from pk_internal_tools.pk_objects.pk_fzf import PkFzf
+    from pk_internal_tools.pk_objects.pk_directories import D_PK_WRAPPERS
+    from pk_internal_tools.pk_objects.pk_texts import PK_WRAPPER_PREFIX
+    from pk_internal_tools.pk_functions.ensure_debugged_verbose import ensure_debugged_verbose
+    from pk_internal_tools.pk_functions.get_cached_files import get_cacheD_PK_WRAPPERS_path
+    from pk_internal_tools.pk_functions.get_nx import get_nx
+    from pk_internal_tools.pk_functions.get_smart_file_selection_fast import get_smart_file_selection_fast
+    from pk_internal_tools.pk_functions.ensure_slept import ensure_slept
+    from pk_internal_tools.pk_functions.ensure_window_to_front import ensure_window_to_front
+    from pk_internal_tools.pk_functions.get_f_historical import get_history_file_path
+    from pk_internal_tools.pk_functions.get_file_id import get_file_id
+    from pk_internal_tools.pk_functions.get_fzf_executable_command import get_fzf_executable_command
+    from pk_internal_tools.pk_functions.get_last_choice_from_history_file import get_last_choice_from_history_file
+    from pk_internal_tools.pk_functions.save_to_history import save_to_history
+    from pk_internal_tools.pk_functions.get_caller_name import get_caller_name
+    func_n = get_caller_name()
+
+    step_start = time.time()
+    logging.info(f"{func_n}.py is executed")
+
+    if pk_wrapper_starter_files is None:
+        t1 = time.time()
+        pk_wrapper_starter_files = get_cacheD_PK_WRAPPERS_path(D_PK_WRAPPERS)
+        logging.debug(f"get_cacheD_PK_WRAPPERS_path 실행 시간: {time.time() - t1:.3f}초")
+        # pk_files = get_pnxs_from_d_working(D_PK_WRAPPERS)
+
+    if not pk_wrapper_starter_files:
+        logging.info(f"실행 가능한 래퍼 파일이 없습니다.")
+        return False
+    logging.info(f"{len(pk_wrapper_starter_files)}개의 파일을 발견했습니다.")
+
+    #  히스토리 처리
+    t2 = time.time()
+    key_name = "last_choice"
+    history_file = get_history_file_path(file_id=get_file_id(key_name, func_n))
+    last_choice = get_last_choice_from_history_file(history_file)
+    logging.debug(f'last_choice={last_choice}')
+    logging.debug(f"히스토리 처리 시간: {time.time() - t2:.3f}초")
+
+    #  초고속 fzf 실행
+    t3 = time.time()
+    file_to_execute = None
+    fzf_cmd = get_fzf_executable_command()
+    if fzf_cmd:  # Path 객체일 수 있으므로 문자열로 변환
+        fzf_cmd = str(fzf_cmd)
+
+    if fzf_cmd and os.path.exists(fzf_cmd):
+        try:
+            last_choice = get_nx(last_choice).removeprefix(PK_WRAPPER_PREFIX)
+            processor = PkFzf(fzf_cmd=fzf_cmd, files=pk_wrapper_starter_files, last_choice=last_choice)
+            returncode, selected_name, err = processor.run_ultra_fast_fzf()
+
+            if returncode == 0 and selected_name:
+                logging.debug(f"selected_name='{selected_name}'")
+                for pk_file in pk_wrapper_starter_files:
+                    prefix = PK_WRAPPER_PREFIX
+                    if get_nx(pk_file).removeprefix(prefix) == selected_name.removeprefix(prefix):
+                        file_to_execute = pk_file
+                if file_to_execute:
+                    logging.debug(f"matched: {selected_name}")
+                else:
+                    logging.debug(f"not matched: {selected_name}")
+                    file_to_execute = None
+            elif returncode == 130:  # Ctrl+C
+                logging.info(f"사용자가 Ctrl+C로 취소했습니다.")
+                file_to_execute = None
+            elif returncode != 0:
+                logging.debug(f"fzf 오류 (code {returncode}): {err}")
+                file_to_execute = None
+            else:
+                logging.info(f"사용자가 선택을 취소했습니다.")
+                file_to_execute = None
+
+        except Exception as e:
+            ensure_debugged_verbose(traceback, e)
+            logging.debug(f"fallback as normal complete mode")
+            file_to_execute = get_smart_file_selection_fast(pk_wrapper_starter_files, last_choice)
+    else:
+        logging.debug(f"fzf를 찾을 수 없습니다")
+        return False
+
+    logging.debug(f"fzf 처리 시간: {time.time() - t3:.3f}초")
+
+    if not file_to_execute:
+        logging.info("선택된 파일이 없으므로 종료합니다.")
+        return False
+
+    last_choice_to_save = file_to_execute
+    logging.debug(f'last_choice_to_save={last_choice_to_save}')
+    if last_choice_to_save:
+        if not os.path.exists(last_choice_to_save):
+            logging.debug(f"파일이 존재하지 않습니다: {last_choice_to_save}")
+            return False
+        else:
+            save_to_history(contents_to_save=str(last_choice_to_save), history_file=history_file)
+
+    #  극한 성능 최적화 실행
+    file_to_execute = os.path.normpath(file_to_execute)
+    file_name_to_display = get_nx(file_to_execute)
+    if file_name_to_display.startswith(PK_WRAPPER_PREFIX):
+        file_name_to_display = file_name_to_display.removeprefix(PK_WRAPPER_PREFIX)
+    os_name = os.name
+    logging.info(f'os_name={os_name}')
+    logging.info(f"실행 중: {file_name_to_display}")
+
+    # 디버깅: 경로 확인
+    logging.info(f"file_to_execute: {file_to_execute}")
+    logging.info(f"file_to_execute exists: {os.path.exists(file_to_execute)}")
+    logging.info(f"F_UV_PYTHON_EXE: {F_UV_PYTHON_EXE}")
+    logging.info(f"F_UV_PYTHON_EXE exists: {os.path.exists(str(F_UV_PYTHON_EXE))}")
+
+    if os_name == 'nt':  # Windows
+        # cmd = f'start "" cmd.exe /k "python "{file_to_execute}""'
+        cmd = f'start "" {F_UV_PYTHON_EXE} "{file_to_execute}"'
+    elif os_name == 'posix':  # Linux/WSL
+        cmd = f'python3 "{file_to_execute}"'
+    else:
+        cmd = f'python "{file_to_execute}"'
+    logging.info(f'cmd={cmd}')
+
+    #  비동기 실행으로 UI 블로킹 방지
+    # subprocess.Popen(cmd, shell=True)
+    # ensure_python_file_executed_advanced(file_path = file_to_execute)
+    # cmd = rf'start "" cmd /D /K "{F_UV_PYTHON_EXE} "{file_to_execute}"'
+    # cmd = rf'start "" "{F_UV_PYTHON_EXE}" "{file_to_execute}"'
+    # cmd = rf'"{F_UV_PYTHON_EXE}" "{file_to_execute}"'
+    # ensure_command_executed(cmd, mode='a')
+
+    # Path 객체를 문자열로 변환
+    venv_python_str = str(F_UV_PYTHON_EXE)
+    file_to_execute_str = str(file_to_execute)
+
+    subprocess.Popen([venv_python_str, file_to_execute_str], creationflags=subprocess.CREATE_NEW_CONSOLE)
+    logging.debug(f"pk system wrapper 실행 완료")
+
+    #  실행 후 대기 (최소화)
+    # ensure_slept(milliseconds=200)  # 500ms → 200ms로 단축 # pk_checkpoint
+    ensure_slept(milliseconds=10)
+
+    #  윈도우 포커스
+    if mode_window_front:
+        ensure_window_to_front(rf"{file_to_execute}")
+
+    #  전체 실행 시간 측정
+    total_time = time.time() - step_start
+    logging.debug(f"총 실행 시간: {total_time:.3f}초")

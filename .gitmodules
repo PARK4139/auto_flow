@@ -1,0 +1,9 @@
+[submodule "prompts"]
+	path = prompts
+	url = https://github.com/PARK4139/prompts.git
+[submodule "services/fintech_investment_assistant"]
+	path = services/fintech_investment_assistant
+	url = https://github.com/PARK4139/fintech_investment_assistant.git
+[submodule "services/hospital_workers"]
+	path = services/hospital_workers
+	url = https://github.com/PARK4139/hospital_workers.git

@@ -1,0 +1,19 @@
+2025-12-20 12:44:36,829 - INFO - Starting routine for C:\Users\wjdgn\Downloads\pk_system\pk_internal_tools\pk_wrappers\push_auto_flow.py
+2025-12-20 12:44:36,829 - INFO - Setting up remote for C:\Users\wjdgn\Downloads\auto_flow
+2025-12-20 12:44:36,829 - INFO - Executing command: git remote add origin https://github.com/your-username/auto_flow.git in C:\Users\wjdgn\Downloads\auto_flow
+2025-12-20 12:44:36,861 - INFO - Command executed successfully.
+2025-12-20 12:44:36,861 - INFO - Pushing to the remote repository...
+2025-12-20 12:44:36,861 - INFO - Executing command: git push -u origin master in C:\Users\wjdgn\Downloads\auto_flow
+2025-12-20 12:44:37,538 - ERROR - Command failed with exit code 128
+2025-12-20 12:44:37,539 - ERROR - STDERR:
+remote: Repository not found.
+fatal: repository 'https://github.com/your-username/auto_flow.git/' not found
+
+2025-12-20 12:44:37,539 - INFO - Pushing to master failed, trying main branch...
+2025-12-20 12:44:37,539 - INFO - Executing command: git push -u origin main in C:\Users\wjdgn\Downloads\auto_flow
+2025-12-20 12:44:37,595 - ERROR - Command failed with exit code 1
+2025-12-20 12:44:37,595 - ERROR - STDERR:
+error: src refspec main does not match any
+error: failed to push some refs to 'https://github.com/your-username/auto_flow.git'
+
+2025-12-20 12:44:37,595 - ERROR - Failed to push to both master and main branches.
